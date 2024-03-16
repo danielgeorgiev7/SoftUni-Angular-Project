@@ -4,8 +4,14 @@ body {
   margin: 0;
   font-family: "Jost", sans-serif;
   box-sizing: border-box;
+  background-color: #666;
 }
 
 a {
   cursor: pointer;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  color: black !important;
 }

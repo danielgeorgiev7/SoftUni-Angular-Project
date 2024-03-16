@@ -1,0 +1,27 @@
+<h1
+  style="margin-left: 10%; margin-right: 10%; margin-top: 30px"
+  class="heading"
+>
+  {{ title }}
+</h1>
+<div style="margin-left: 10%; margin-right: 10%; margin-top: 30px">
+  <ngx-slick-carousel
+    class="carousel"
+    #slickModal="slick-carousel"
+    [config]="slideConfig"
+  >
+    <div class="slide" ngxSlickItem *ngFor="let slide of slides">
+      <div class="card" style="width: 18rem">
+        <img src="{{ slide.img }}" class="card-img-top" alt="..." />
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">
+            Some quick example text to build on the card title and make up the
+            bulk of the card's content.
+          </p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
+    </div>
+  </ngx-slick-carousel>
+</div>
