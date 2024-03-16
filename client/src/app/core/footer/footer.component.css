@@ -1,0 +1,38 @@
+.footer {
+  display: flex;
+  background-color: #333;
+  color: white;
+  padding: 0 10vw;
+  height: 7.5rem;
+  font-size: 1.1rem;
+  gap: 7rem;
+  justify-content: center;
+}
+
+.footer-content {
+  display: flex;
+}
+
+.footer-content img {
+  margin: auto;
+  max-width: 70%;
+  height: 70%;
+}
+
+.footer-content ul {
+  margin-left: 3rem;
+}
+.footer-content li {
+  list-style: none;
+}
+
+.footer-content a {
+  color: white;
+  text-decoration: none;
+}
+
+.pagination {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
