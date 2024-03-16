@@ -1,3 +1,21 @@
 .heading {
   color: white;
 }
+.img-wrapper {
+  height: 20rem;
+}
+
+.img-wrapper img {
+  height: 20rem;
+}
+
+.card {
+  border: 2px solid black;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.card-body {
+  background-color: #333;
+  color: white;
+}

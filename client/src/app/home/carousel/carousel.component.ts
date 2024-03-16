@@ -10,18 +10,6 @@ export class CarouselComponent {
   @Input('title') title: string = '';
   @Input('movies') movies: Movie[] = [];
 
-  slides = [
-    { img: '/assets/1.jpg' },
-    { img: '/assets/2.jpg' },
-    { img: '/assets/3.jpg' },
-    { img: '/assets/1.jpg' },
-    { img: '/assets/2.jpg' },
-    { img: '/assets/3.jpg' },
-    { img: '/assets/1.jpg' },
-    { img: '/assets/2.jpg' },
-    { img: '/assets/3.jpg' },
-  ];
-
   slideConfig = {
     slidesToShow: 4,
     slidesToScroll: 1,
