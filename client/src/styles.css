@@ -9,9 +9,12 @@ body {
 
 a {
   cursor: pointer;
+  color: white;
+  text-decoration: none;
 }
 
-.slick-prev:before,
-.slick-next:before {
+.slick-prev::before,
+.slick-next::before {
   color: black !important;
+  font-size: 40px !important;
 }

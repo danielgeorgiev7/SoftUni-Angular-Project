@@ -2,17 +2,24 @@
   color: white;
 }
 .img-wrapper {
-  height: 20rem;
+  height: 18rem;
+  overflow: hidden;
 }
 
 .img-wrapper img {
-  height: 20rem;
+  height: 18rem;
+  transition: transform 0.3s ease;
+}
+
+.card:hover .img-wrapper img {
+  transform: scale(1.2);
 }
 
 .card {
   border: 2px solid black;
   border-radius: 1rem;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .card-body {

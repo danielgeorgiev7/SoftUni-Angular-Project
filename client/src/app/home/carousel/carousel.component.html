@@ -7,7 +7,7 @@
 <app-loading-spinner *ngIf="movies.length === 0"> </app-loading-spinner>
 
 <div
-  style="margin-left: 10%; margin-right: 10%; margin-top: 30px"
+  style="margin-left: 8.5%; margin-right: 10%; margin-top: 30px"
   *ngIf="movies.length > 0"
 >
   <ngx-slick-carousel
@@ -16,16 +16,14 @@
     [config]="slideConfig"
   >
     <div class="slide" ngxSlickItem *ngFor="let movie of movies">
-      <div class="card" style="width: 18rem">
+      <div class="card" style="margin-left: 1.5rem; margin-right: 0.5rem">
         <div class="img-wrapper">
           <img src="{{ movie.image }}" class="card-img-top" alt="..." />
         </div>
         <div class="card-body">
-          <h5 class="card-title">{{ movie.title }}</h5>
-          <p class="card-text">
-            {{ movie.timeline }} - {{ movie.year }} - {{ movie.rating }}
-          </p>
-          <a href="#" class="btn btn-primary">Details</a>
+          <h5 class="card-title">{{ movie.title }} ({{ movie.year }})</h5>
+          <p class="card-text">Running Time: {{ movie.timeline }}</p>
+          <p class="card-text">Rating: {{ movie.rating }}</p>
         </div>
       </div>
     </div>

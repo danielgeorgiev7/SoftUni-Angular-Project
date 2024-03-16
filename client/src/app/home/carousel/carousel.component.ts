@@ -11,7 +11,7 @@ export class CarouselComponent {
   @Input('movies') movies: Movie[] = [];
 
   slideConfig = {
-    slidesToShow: 4,
+    slidesToShow: 5,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2500,
