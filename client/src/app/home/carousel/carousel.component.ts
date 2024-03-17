@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
+import { MoviesApiService } from 'src/app/movies-api.service';
 import { Movie } from 'src/app/types/Movie';
 
 @Component({
@@ -9,6 +11,11 @@ import { Movie } from 'src/app/types/Movie';
 export class CarouselComponent {
   @Input('title') title: string = '';
   @Input('movies') movies: Movie[] = [];
+
+  constructor(
+    private router: Router,
+    private moviesApiService: MoviesApiService
+  ) {}
 
   slideConfig = {
     slidesToShow: 5,

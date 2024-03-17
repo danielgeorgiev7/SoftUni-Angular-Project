@@ -33,7 +33,12 @@
         <div class="card-body" *ngIf="movie.weeksReleased">
           <h5 class="card-title">{{ movie.title }}</h5>
           <hr />
-          <p class="card-text">Released: {{ movie.weeksReleased }} weeks ago</p>
+          <p class="card-text">
+            Release: {{ movie.weeksReleased }} week{{
+              +movie.weeksReleased === 1 ? "" : "s"
+            }}
+            ago
+          </p>
           <p class="card-text">Gross Earnings: {{ movie.totalGross }}</p>
           <p class="card-text">Rating: {{ movie.imdbRating }}</p>
         </div>

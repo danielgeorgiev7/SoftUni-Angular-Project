@@ -4,10 +4,11 @@ import { HomeComponent } from './home/home.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { CarouselComponent } from './carousel/carousel.component';
 import { SharedModule } from '../shared/shared.module';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [HomeComponent, CarouselComponent],
-  imports: [CommonModule, SlickCarouselModule, SharedModule],
+  imports: [CommonModule, SlickCarouselModule, SharedModule, RouterModule],
   exports: [HomeComponent],
 })
 export class HomeModule {}

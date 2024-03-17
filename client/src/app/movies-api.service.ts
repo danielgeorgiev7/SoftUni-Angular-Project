@@ -26,7 +26,7 @@ export class MoviesApiService {
       .pipe(
         map(
           (movies) => {
-            return movies?.movies.slice();
+            return movies?.movies.slice(0, 15);
           },
           catchError((error: HttpErrorResponse) => {
             console.error('An error occurred:', error);

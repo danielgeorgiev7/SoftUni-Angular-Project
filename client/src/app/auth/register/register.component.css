@@ -1,0 +1,29 @@
+.register-wrapper {
+  margin: 5vw 10vw;
+}
+
+.register {
+  width: 30vw;
+  margin: 0 auto;
+}
+
+h1,
+p {
+  color: white;
+  text-align: center;
+  margin-bottom: 1vw;
+}
+
+.btn-wrapper {
+  text-align: center;
+}
+
+button {
+  margin: 1vw 0;
+  font-size: 1.5rem;
+  padding: 0.5rem 2rem;
+}
+
+p > a {
+  border-bottom: 1px solid white;
+}
