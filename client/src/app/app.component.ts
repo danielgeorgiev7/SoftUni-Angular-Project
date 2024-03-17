@@ -11,5 +11,6 @@ export class AppComponent {
 
   ngOnInit(): void {
     this.moviesApiService.getPopularMovies();
+    this.moviesApiService.getTopBoxOffice();
   }
 }

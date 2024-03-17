@@ -10,6 +10,7 @@ import { BehaviorSubject, catchError, map, throwError } from 'rxjs';
 export class MoviesApiService {
   constructor(private http: HttpClient) {}
   popularMovies = new BehaviorSubject<Movie[]>([]);
+  topBoxOfficeMovies = new BehaviorSubject<Movie[]>([]);
 
   getPopularMovies() {
     this.http
@@ -25,11 +26,11 @@ export class MoviesApiService {
       .pipe(
         map(
           (movies) => {
-            return movies?.movies.slice(0, 10);
+            return movies?.movies.slice();
           },
           catchError((error: HttpErrorResponse) => {
             console.error('An error occurred:', error);
-            return throwError('Something went wrong. Please try again later.'); // Return a custom error message
+            return throwError('Something went wrong. Please try again later.');
           })
         )
       )
@@ -37,5 +38,59 @@ export class MoviesApiService {
         this.popularMovies.next(movies);
         // console.log(movies);
       });
+  }
+
+  getTopBoxOffice() {
+    this.http
+      .get<{ movies: Movie[] }>(
+        'https://moviesverse1.p.rapidapi.com/top-box-office',
+        {
+          headers: {
+            'X-RapidAPI-Key': environment.moviesApiKey,
+            'X-RapidAPI-Host': 'moviesverse1.p.rapidapi.com',
+          },
+        }
+      )
+      .pipe(
+        map(
+          (movies) => {
+            return movies?.movies.slice(0, 10);
+          },
+          catchError((error: HttpErrorResponse) => {
+            console.error('An error occurred:', error);
+            return throwError('Something went wrong. Please try again later.');
+          })
+        )
+      )
+      .subscribe((movies) => {
+        this.topBoxOfficeMovies.next(movies);
+        // console.log(movies);
+      });
+  }
+
+  getMoviesByGenre(genre: string) {
+    return this.http
+      .get<{ movies: Movie[] }>(
+        'https://moviesverse1.p.rapidapi.com/get-by-genre',
+        {
+          params: { genre },
+          headers: {
+            'X-RapidAPI-Key': environment.moviesApiKey,
+            'X-RapidAPI-Host': 'moviesverse1.p.rapidapi.com',
+          },
+        }
+      )
+      .pipe(
+        map(
+          (movies) => {
+            console.log(movies);
+            return movies?.movies.slice();
+          },
+          catchError((error: HttpErrorResponse) => {
+            console.error('An error occurred:', error);
+            return throwError('Something went wrong. Please try again later.');
+          })
+        )
+      );
   }
 }

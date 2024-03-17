@@ -18,12 +18,24 @@
     <div class="slide" ngxSlickItem *ngFor="let movie of movies">
       <div class="card" style="margin-left: 1.5rem; margin-right: 0.5rem">
         <div class="img-wrapper">
-          <img src="{{ movie.image }}" class="card-img-top" alt="..." />
+          <img
+            src="{{ movie.image || movie.posterImage }}"
+            class="card-img-top"
+            alt="..."
+          />
         </div>
-        <div class="card-body">
+        <div class="card-body" *ngIf="movie.timeline">
           <h5 class="card-title">{{ movie.title }} ({{ movie.year }})</h5>
+          <hr />
           <p class="card-text">Running Time: {{ movie.timeline }}</p>
           <p class="card-text">Rating: {{ movie.rating }}</p>
+        </div>
+        <div class="card-body" *ngIf="movie.weeksReleased">
+          <h5 class="card-title">{{ movie.title }}</h5>
+          <hr />
+          <p class="card-text">Released: {{ movie.weeksReleased }} weeks ago</p>
+          <p class="card-text">Gross Earnings: {{ movie.totalGross }}</p>
+          <p class="card-text">Rating: {{ movie.imdbRating }}</p>
         </div>
       </div>
     </div>
