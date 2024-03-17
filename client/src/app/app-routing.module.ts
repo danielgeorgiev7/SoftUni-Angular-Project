@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home/home.component';
 import { CategoryComponent } from './category/category.component';
+import { GenrePageComponent } from './category/genre-page/genre-page.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,10 @@ const routes: Routes = [
   {
     path: 'categories',
     component: CategoryComponent,
+  },
+  {
+    path: 'categories/:genre',
+    component: GenrePageComponent,
   },
 ];
 
