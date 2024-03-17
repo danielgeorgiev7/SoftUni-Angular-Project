@@ -1,1 +1,11 @@
-<p>category works!</p>
+<div class="category-wrapper">
+  <h1 style="margin: 30px 0" class="heading">Choose a category</h1>
+  <div class="category">
+    <div class="card" *ngFor="let genre of genres">
+      <p class="genre-text">
+        {{ genre.charAt(0).toUpperCase() + genre.slice(1) }}
+      </p>
+      <img src="assets/night-sky.png" class="card-img-top" alt="..." />
+    </div>
+  </div>
+</div>

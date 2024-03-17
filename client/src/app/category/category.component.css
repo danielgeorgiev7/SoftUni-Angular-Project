@@ -1,0 +1,40 @@
+.category {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2rem;
+  background-image: url(/assets/2.png);
+}
+
+.category-wrapper {
+  margin: 2vw 10vw;
+}
+
+.card {
+  border: 1px solid #000;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+}
+.heading {
+  color: white;
+}
+
+img {
+  transition: transform 0.3s ease;
+  transform: scale(1.01);
+}
+
+.card:hover img {
+  transform: scale(1.2);
+}
+
+.genre-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  z-index: 100;
+  font-size: 2rem;
+}
