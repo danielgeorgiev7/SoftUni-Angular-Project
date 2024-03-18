@@ -6,6 +6,8 @@ import { GenrePageComponent } from './category/genre-page/genre-page.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { PostsComponent } from './posts/posts/posts.component';
+import { GuestGuardService } from './auth/guest-guard.service';
+import { UserGuardService } from './auth/user-guard.service';
 
 const routes: Routes = [
   {
@@ -28,14 +30,17 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+    canActivate: [UserGuardService],
   },
   {
     path: 'register',
     component: RegisterComponent,
+    canActivate: [UserGuardService],
   },
   {
     path: 'posts',
     component: PostsComponent,
+    canActivate: [GuestGuardService],
   },
 ];
 

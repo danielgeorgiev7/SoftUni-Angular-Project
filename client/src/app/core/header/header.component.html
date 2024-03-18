@@ -3,9 +3,9 @@
   <ul class="nav">
     <li><a routerLink="/home">Home</a></li>
     <li><a routerLink="/categories">Categories</a></li>
-    <li><a routerLink="/posts" *ngIf="user">Posts</a></li>
-    <li><a routerLink="/login" *ngIf="!user">Login</a></li>
-    <li><a routerLink="/register" *ngIf="!user">Register</a></li>
-    <li><a (click)="onLogout()" *ngIf="user">Logout</a></li>
+    <li *ngIf="user"><a routerLink="/posts">Posts</a></li>
+    <li *ngIf="!user"><a routerLink="/login">Login</a></li>
+    <li *ngIf="!user"><a routerLink="/register">Register</a></li>
+    <li *ngIf="user"><a (click)="onLogout()">Logout</a></li>
   </ul>
 </div>
