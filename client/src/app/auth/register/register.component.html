@@ -1,44 +1,53 @@
-<div class="register-wrapper" form="ngForm" (ngSubmit)="(onSubmit)">
+<div class="register-wrapper">
   <div class="register">
     <h1>Register</h1>
-    <div class="form-floating mb-3">
-      <input
-        type="email"
-        class="form-control"
-        id="floatingInput"
-        placeholder="name@example.com"
-        required
-        email
-        ngModel
-      />
-      <label for="floatingInput">Email address</label>
-    </div>
-    <div class="form-floating mb-3">
-      <input
-        type="password"
-        class="form-control"
-        id="floatingPassword"
-        placeholder="Password"
-        ngModel
-        required
-      />
-      <label for="floatingPassword">Password</label>
-    </div>
-    <div class="form-floating">
-      <input
-        type="password"
-        class="form-control"
-        id="floatingPassword"
-        placeholder="Repeat Password"
-        ngModel
-        required
-      />
-      <label for="floatingPassword">Repeat Password</label>
-    </div>
-    <div class="btn-wrapper">
-      <button class="btn btn-primary">Register</button>
-    </div>
+    <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+      <div class="form-floating mb-3">
+        <input
+          type="email"
+          class="form-control"
+          id="floatingInput"
+          name="email"
+          placeholder="name@example.com"
+          required
+          email
+          ngModel
+        />
+        <label for="email">Email address</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          name="password"
+          placeholder="Password"
+          minlength="6"
+          ngModel
+          required
+        />
+        <label for="password">Password</label>
+      </div>
+      <div class="form-floating">
+        <input
+          type="password"
+          class="form-control"
+          id="rePassword"
+          name="rePassword"
+          placeholder="Repeat Password"
+          ngModel
+          minlength="6"
+          required
+        />
+        <label for="rePassword">Repeat Password</label>
+      </div>
+      <div class="btn-wrapper">
+        <button class="btn btn-primary" [disabled]="form.invalid">
+          Register
+        </button>
+      </div>
 
-    <p>Already registered? <a routerLink="/login">To Login</a></p>
+      <p>Already registered? <a routerLink="/login">To Login</a></p>
+    </form>
   </div>
 </div>

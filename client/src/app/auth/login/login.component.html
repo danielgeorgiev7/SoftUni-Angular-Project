@@ -1,33 +1,38 @@
-<div class="login-wrapper" form="ngForm" (ngSubmit)="(onSubmit)">
+<div class="login-wrapper">
   <div class="login">
     <h1>Login</h1>
-    <div class="form-floating mb-3">
-      <input
-        type="email"
-        class="form-control"
-        id="floatingInput"
-        placeholder="name@example.com"
-        required
-        email
-        ngModel
-      />
-      <label for="floatingInput">Email address</label>
-    </div>
-    <div class="form-floating">
-      <input
-        type="password"
-        class="form-control"
-        id="floatingPassword"
-        placeholder="Password"
-        ngModel
-        required
-      />
-      <label for="floatingPassword">Password</label>
-    </div>
-    <div class="btn-wrapper">
-      <button class="btn btn-primary">Login</button>
-    </div>
+    <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+      <div class="form-floating mb-3">
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          name="email"
+          placeholder="name@example.com"
+          required
+          email
+          ngModel
+        />
+        <label for="email">Email address</label>
+      </div>
+      <div class="form-floating">
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          name="password"
+          placeholder="Password"
+          minlength="6"
+          ngModel
+          required
+        />
+        <label for="password">Password</label>
+      </div>
+      <div class="btn-wrapper">
+        <button class="btn btn-primary" [disabled]="form.invalid">Login</button>
+      </div>
 
-    <p>Haven't registered yet? <a routerLink="/register">To Register</a></p>
+      <p>Haven't registered yet? <a routerLink="/register">To Register</a></p>
+    </form>
   </div>
 </div>

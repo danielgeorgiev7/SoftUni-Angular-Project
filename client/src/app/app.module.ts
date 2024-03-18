@@ -8,6 +8,8 @@ import { HomeModule } from './home/home.module';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { CategoryModule } from './category/category.module';
+import { AuthModule } from './auth/auth.module';
+import { PostsModule } from './posts/posts.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,6 +21,8 @@ import { CategoryModule } from './category/category.module';
     CoreModule,
     SharedModule,
     CategoryModule,
+    AuthModule,
+    PostsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
