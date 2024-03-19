@@ -1,18 +1,30 @@
-<div class="card mb-3" style="max-width: 540px">
+<app-loading-spinner *ngIf="!user" />
+<div class="card" style="max-width: 850px" *ngIf="user">
   <div class="row g-0">
     <div class="col-md-4">
-      <img src="..." class="img-fluid rounded-start" alt="..." />
+      <img
+        src="{{ user.imageUrl }}"
+        class="img-fluid rounded-start w-100"
+        alt="{{ user.username }}"
+      />
     </div>
-    <div class="col-md-8">
+    <div class="col-md-8" style="padding-left: 2rem">
       <div class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <p class="card-text">
-          This is a wider card with supporting text below as a natural lead-in
-          to additional content. This content is a little bit longer.
+        <h5 class="card-title" style="font-size: 1.6rem">
+          {{ user.username }}
+        </h5>
+        <hr />
+        <p
+          class="card-text"
+          [ngStyle]="{
+            'font-style': user.bio === '' ? 'italic' : 'normal',
+            color: user.bio === '' ? '#ccc' : 'inherit'
+          }"
+        >
+          {{ user.bio === "" ? "No bio provided." : user.bio }}
         </p>
-        <p class="card-text">
-          <small class="text-body-secondary">Last updated 3 mins ago</small>
-        </p>
+        <p class="card-text">Email: {{ user.email }}</p>
+        <p class="card-text">Registered on: {{ formatDate(user.createdAt) }}</p>
       </div>
     </div>
   </div>

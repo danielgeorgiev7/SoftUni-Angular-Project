@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { LocalUser } from './local-user.model';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { DatabaseService } from '../database.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { UserCredential } from '@angular/fire/auth';
+import { LocalUser } from './LocalUser.model';
 
 @Injectable({
   providedIn: 'root',
@@ -18,11 +17,10 @@ export class AuthService {
     private afAuth: AngularFireAuth
   ) {}
 
-  signUp(email: string, password: string, username: string): Promise<void> {
+  signUp(email: string, password: string, username: string) {
     return this.afAuth
       .createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
-        // problem with user credential model
         const imageUrl = '/assets/profile-image-default.png';
         return userCredential.user
           ?.updateProfile({
@@ -103,6 +101,11 @@ export class AuthService {
         console.error('Error logging out:', error);
       });
   }
+
+  getCurrentUser(): Observable<any> {
+    return this.afAuth.authState;
+  }
+
   handleLocalUser(
     email: string,
     userId: string,

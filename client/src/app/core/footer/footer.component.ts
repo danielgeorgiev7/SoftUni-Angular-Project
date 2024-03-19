@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { LocalUser } from 'src/app/auth/LocalUser.model';
 import { AuthService } from 'src/app/auth/auth.service';
-import { LocalUser } from 'src/app/auth/local-user.model';
 
 @Component({
   selector: 'app-footer',
