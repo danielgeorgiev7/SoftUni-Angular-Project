@@ -20,11 +20,15 @@ export class LoginComponent implements OnDestroy {
     if (form.invalid) return;
     form.reset(); // add specific reset
     this.isLoading = true;
-    this.loginSub = this.authService // add error handling
-      .login(email, password)
-      .subscribe((resData) => {
-        this.isLoading = false;
+
+    this.authService
+      .signIn(email, password)
+      .then(() => {
         this.router.navigate(['/home']);
+      })
+      .catch((error) => {
+        form.reset();
+        console.error('Error signing in:', error);
       });
   }
 

@@ -27,3 +27,7 @@ button {
 p > a {
   border-bottom: 1px solid white;
 }
+
+p {
+  font-size: 1.1rem;
+}

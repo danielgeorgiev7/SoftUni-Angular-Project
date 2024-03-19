@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
-import { User } from 'src/app/auth/user.model';
+import { LocalUser } from 'src/app/auth/local-user.model';
 
 @Component({
   selector: 'app-footer',
@@ -9,7 +9,7 @@ import { User } from 'src/app/auth/user.model';
   styleUrls: ['./footer.component.css'],
 })
 export class FooterComponent {
-  user: User | null = null;
+  user: LocalUser | null = null;
   userSub: Subscription = new Subscription();
   constructor(private authService: AuthService) {}
 

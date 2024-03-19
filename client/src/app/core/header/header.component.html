@@ -6,6 +6,7 @@
     <li *ngIf="user"><a routerLink="/posts">Posts</a></li>
     <li *ngIf="!user"><a routerLink="/login">Login</a></li>
     <li *ngIf="!user"><a routerLink="/register">Register</a></li>
+    <li *ngIf="user"><a routerLink="/profile">Profile</a></li>
     <li *ngIf="user"><a (click)="onLogout()">Logout</a></li>
   </ul>
 </div>

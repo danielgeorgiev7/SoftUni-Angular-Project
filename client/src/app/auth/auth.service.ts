@@ -1,78 +1,124 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, tap, throwError } from 'rxjs';
-import { User } from './user.model';
+import { BehaviorSubject } from 'rxjs';
+import { LocalUser } from './local-user.model';
 import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment.development';
-
-export interface AuthResponseData {
-  kind: string;
-  idToken: string;
-  email: string;
-  refreshToken: string;
-  expiresIn: string;
-  localId: string;
-  registered?: boolean;
-}
+import { DatabaseService } from '../database.service';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { UserCredential } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  user = new BehaviorSubject<User | null>(null);
+  user = new BehaviorSubject<LocalUser | null>(null);
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private router: Router,
+    private databaseService: DatabaseService,
+    private afAuth: AngularFireAuth
+  ) {}
 
-  signup(email: string, password: string) {
-    return this.http
-      .post<AuthResponseData>(
-        `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.firebaseApiKey}`,
-        { email, password, returnSecureToken: true }
-      )
-      .pipe(
-        tap((resData) => {
-          this.handleAuthentication(
-            resData.email,
-            resData.localId,
-            resData.idToken,
-            +resData.expiresIn
-          );
-        })
-      );
+  signUp(email: string, password: string, username: string): Promise<void> {
+    return this.afAuth
+      .createUserWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        // problem with user credential model
+        const imageUrl = '/assets/profile-image-default.png';
+        return userCredential.user
+          ?.updateProfile({
+            displayName: username,
+            photoURL: imageUrl,
+          })
+          .then(() => {
+            const user = userCredential.user;
+
+            if (
+              !user ||
+              !user.email ||
+              !user.metadata?.lastSignInTime ||
+              !user.refreshToken ||
+              !user.displayName ||
+              !user.photoURL
+            ) {
+              return undefined;
+            }
+
+            this.handleLocalUser(
+              user.email,
+              user.uid,
+              user.refreshToken,
+              user?.metadata.lastSignInTime,
+              user.displayName,
+              user.photoURL
+            );
+            const userData = {
+              userId: user.uid,
+              email: user.email,
+              username: user.displayName,
+              imageUrl: user.photoURL,
+              createdAt: user?.metadata.creationTime,
+              bio: '',
+            };
+            return this.databaseService.createUserNode(user.uid, userData);
+          });
+      });
   }
 
-  login(email: string, password: string) {
-    return this.http
-      .post<AuthResponseData>(
-        `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.firebaseApiKey}`,
-        { email, password, returnSecureToken: true }
-      )
-      .pipe(
-        tap((resData) => {
-          this.handleAuthentication(
-            resData.email,
-            resData.localId,
-            resData.idToken,
-            +resData.expiresIn
-          );
-        })
-      );
+  signIn(email: string, password: string) {
+    return this.afAuth
+      .signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+
+        if (
+          !user ||
+          !user.email ||
+          !user.metadata?.lastSignInTime ||
+          !user.refreshToken ||
+          !user.displayName ||
+          !user.photoURL
+        ) {
+          return undefined;
+        }
+        this.handleLocalUser(
+          user.email,
+          user.uid,
+          user.refreshToken,
+          user?.metadata.lastSignInTime,
+          user.displayName,
+          user.photoURL
+        );
+      });
   }
 
   logout() {
-    this.user.next(null);
-    this.router.navigate(['/home']);
-    localStorage.removeItem('userData');
+    this.afAuth
+      .signOut()
+      .then(() => {
+        this.user.next(null);
+        localStorage.removeItem('userData');
+        this.router.navigate(['/login']);
+      })
+      .catch((error) => {
+        console.error('Error logging out:', error);
+      });
   }
-
-  private handleAuthentication(
+  handleLocalUser(
     email: string,
     userId: string,
     token: string,
-    expiresIn: number
+    lastLoginTime: string,
+    username: string,
+    imageUrl: string
   ) {
-    const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
-    const user = new User(email, userId, token, expirationDate);
+    const user = new LocalUser(
+      email,
+      userId,
+      token,
+      new Date(new Date(lastLoginTime).getTime() + 60 * 60 * 1000),
+      username,
+      imageUrl
+    );
     this.user.next(user);
     localStorage.setItem('userData', JSON.stringify(user));
   }
