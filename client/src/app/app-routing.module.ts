@@ -8,6 +8,7 @@ import { RegisterComponent } from './auth/register/register.component';
 import { PostsComponent } from './posts/posts/posts.component';
 import { GuestGuardService } from './auth/guest-guard.service';
 import { UserGuardService } from './auth/user-guard.service';
+import { ProfileComponent } from './profile/profile/profile.component';
 
 const routes: Routes = [
   {
@@ -40,6 +41,11 @@ const routes: Routes = [
   {
     path: 'posts',
     component: PostsComponent,
+    canActivate: [GuestGuardService],
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
     canActivate: [GuestGuardService],
   },
 ];
