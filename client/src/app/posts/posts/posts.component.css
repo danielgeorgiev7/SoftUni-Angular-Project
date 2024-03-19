@@ -1,0 +1,12 @@
+.create-post {
+  margin: 3vw 30vw;
+}
+
+.btn-wrapper {
+  text-align: center;
+}
+
+button {
+  font-size: 1.5rem;
+  padding: 0.5rem 2rem;
+}

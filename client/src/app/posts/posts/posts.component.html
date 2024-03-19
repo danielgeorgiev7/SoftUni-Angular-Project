@@ -1,1 +1,39 @@
-<p>posts works!</p>
+<div class="create-post">
+  <form>
+    <div class="mb-3 form-floating">
+      <input
+        type="email"
+        class="form-control"
+        id="exampleFormControlInput1"
+        placeholder="Title of your post"
+        required
+      />
+      <label for="exampleFormControlInput1" class="form-label"
+        >Title of your post</label
+      >
+    </div>
+    <div class="mb-3 form-floating">
+      <textarea
+        class="form-control"
+        id="exampleFormControlTextarea1"
+        placeholder="What is on your mind?"
+        rows="3"
+        style="height: 5rem"
+        required
+      ></textarea>
+      <label for="exampleFormControlTextarea1" class="form-label"
+        >What is on your mind?</label
+      >
+    </div>
+    <div class="btn-wrapper">
+      <button
+        class="btn btn-secondary"
+        type="button"
+        style="margin-right: 1rem"
+      >
+        Attach Image
+      </button>
+      <button class="btn btn-primary">Post</button>
+    </div>
+  </form>
+</div>
