@@ -1,0 +1,19 @@
+.upload {
+  display: flex;
+  background-color: #f7f7f7;
+  font-size: 1.2rem;
+  border-radius: 7px;
+  padding: 0.25rem;
+  align-items: center; /* Vertically center */
+}
+
+label {
+  font-size: 1.2rem;
+  white-space: nowrap;
+}
+
+p {
+  margin: 0 0.75rem;
+  white-space: nowrap;
+  overflow: hidden;
+}

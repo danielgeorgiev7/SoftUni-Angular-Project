@@ -93,7 +93,7 @@ export class AuthService {
       });
   }
 
-  createPost(title: string, content: string) {
+  createPost(title: string, content: string, photoURL: string) {
     if (!this.user.value) return Promise.reject(new Error('User is undefined'));
     const timestamp = new Date();
     const postId = timestamp.getTime().toString();
@@ -102,7 +102,7 @@ export class AuthService {
       createdAt: timestamp,
       userId: this.user.value.id,
       userPhoto: this.user.value.imageUrl,
-      attachedPhoto: '',
+      attachedPhoto: photoURL || '',
       postId,
       title,
       content,

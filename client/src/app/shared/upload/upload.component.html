@@ -1,0 +1,11 @@
+<div class="upload" [style.maxWidth]="selectedFile ? '38rem' : 'fit-content'">
+  <label for="fileInput" class="btn btn-secondary">Attach Image</label>
+  <p *ngIf="selectedFile?.name">{{ selectedFile?.name }}</p>
+  <input
+    type="file"
+    id="fileInput"
+    (change)="onFileSelected($event)"
+    ngModel
+    style="display: none"
+  />
+</div>
