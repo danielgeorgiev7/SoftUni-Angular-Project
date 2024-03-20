@@ -4,6 +4,9 @@ import { Router } from '@angular/router';
 import { DatabaseService } from '../database.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { LocalUser } from './LocalUser.model';
+import { DatabasePost } from '../types/DatabasePost';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +15,7 @@ export class AuthService {
   user = new BehaviorSubject<LocalUser | null>(null);
 
   constructor(
+    private http: HttpClient,
     private router: Router,
     private databaseService: DatabaseService,
     private afAuth: AngularFireAuth
@@ -89,6 +93,35 @@ export class AuthService {
       });
   }
 
+  createPost(title: string, content: string) {
+    if (!this.user.value) return Promise.reject(new Error('User is undefined'));
+    const timestamp = new Date();
+    const postId = timestamp.getTime().toString();
+
+    const postData: DatabasePost = {
+      createdAt: timestamp,
+      userId: this.user.value.id,
+      userPhoto: this.user.value.imageUrl,
+      attachedPhoto: '',
+      postId,
+      title,
+      content,
+    };
+
+    return this.databaseService.createPost(postData);
+
+    // this.http.put(
+    //   `https://cinemasync-4732b-default-rtdb.europe-west1.firebasedatabase.app/posts/${postId}.json`,
+    //   postData,
+    //   {
+    //     params: {
+    //       auth: this.user.value.token,
+    //       key: environment.firebaseConfig.apiKey,
+    //     },
+    //   }
+    // );
+  }
+
   logout() {
     this.afAuth
       .signOut()
@@ -114,14 +147,17 @@ export class AuthService {
     username: string,
     imageUrl: string
   ) {
-    const user = new LocalUser(
+    const user: LocalUser = {
       email,
-      userId,
+      id: userId,
       token,
-      new Date(new Date(lastLoginTime).getTime() + 60 * 60 * 1000),
+      tokenExpirationDate: new Date(
+        new Date(lastLoginTime).getTime() + 60 * 60 * 1000
+      ),
       username,
-      imageUrl
-    );
+      imageUrl,
+    };
+
     this.user.next(user);
     localStorage.setItem('userData', JSON.stringify(user));
   }
