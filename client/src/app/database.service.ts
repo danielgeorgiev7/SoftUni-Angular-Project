@@ -14,17 +14,22 @@ export class DatabaseService {
     return this.db.object(`users/${userId}`).set(userData);
   }
 
-  getUserData(uid: string): Observable<any> {
-    const userRef = this.db.object(`users/${uid}`);
+  getUserData(uid: string): Observable<DatabaseUser | null> {
+    const userRef = this.db.object<DatabaseUser | null>(`users/${uid}`);
     return userRef.valueChanges();
   }
 
   createPost(postData: DatabasePost) {
-    console.log(postData);
     return this.db.object(`posts/${postData.postId}`).set(postData);
   }
 
   getPosts(): Observable<DatabasePost[]> {
     return this.db.list<DatabasePost>('posts').valueChanges();
+  }
+
+  getSinglePost(postId: string): Observable<DatabasePost | null> {
+    return this.db
+      .object<DatabasePost | null>(`posts/${postId}`)
+      .valueChanges();
   }
 }

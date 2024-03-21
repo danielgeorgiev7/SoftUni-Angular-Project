@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { NgForm } from '@angular/forms';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { AuthService } from 'src/app/auth/auth.service';
+import { DatabasePost } from 'src/app/types/DatabasePost';
+import { DatabaseService } from 'src/app/database.service';
 
 @Component({
   selector: 'app-posts',
@@ -9,6 +11,7 @@ import { AuthService } from 'src/app/auth/auth.service';
   styleUrls: ['./posts.component.css'],
 })
 export class PostsComponent {
+  posts: DatabasePost[] = [];
   isLoading: boolean = false;
   error: string = '';
   photoUrl: string = '';
@@ -16,24 +19,31 @@ export class PostsComponent {
 
   constructor(
     private authService: AuthService,
+    private databaseService: DatabaseService,
     private storage: AngularFireStorage
   ) {}
+
+  ngOnInit(): void {
+    this.isLoading = true;
+    this.databaseService.getPosts().subscribe((posts) => {
+      this.posts = posts.reverse();
+      this.isLoading = false;
+    });
+  }
 
   onSelectedFileChange(selectedFile: File | null) {
     this.selectedFile = selectedFile;
   }
 
   async upload() {
-    if (this.selectedFile === null)
-      throw new Error(
-        'An error occurred while uploading file. Please try again.'
-      );
+    if (this.selectedFile === null) return '';
+
     if (this.authService.user.value?.id === undefined)
       throw new Error('User authentication failed.');
 
     const maxSizeInBytes = 5 * 1024 * 1024; // 5MB
 
-    if (this.selectedFile.size > maxSizeInBytes)
+    if (this.selectedFile !== null && this.selectedFile.size > maxSizeInBytes)
       throw new Error('File size exceeds the maximum limit of 5MB.');
 
     const path = `${this.authService.user.value.id}/${this.selectedFile.name}`;

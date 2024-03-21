@@ -20,3 +20,11 @@
 img {
   object-fit: cover;
 }
+
+.heading {
+  color: white;
+  text-align: center;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid white;
+}

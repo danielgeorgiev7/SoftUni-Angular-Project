@@ -1,5 +1,6 @@
 export interface DatabasePost {
-  createdAt: Date;
+  createdAt: string;
+  updatedAt: string;
   userId: string;
   userPhoto: string;
   attachedPhoto: string;

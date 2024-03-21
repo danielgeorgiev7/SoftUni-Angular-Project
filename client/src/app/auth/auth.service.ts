@@ -99,7 +99,8 @@ export class AuthService {
     const postId = timestamp.getTime().toString();
 
     const postData: DatabasePost = {
-      createdAt: timestamp,
+      createdAt: timestamp.toString(),
+      updatedAt: '',
       userId: this.user.value.id,
       userPhoto: this.user.value.imageUrl,
       attachedPhoto: photoURL || '',
