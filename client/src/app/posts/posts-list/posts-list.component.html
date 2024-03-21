@@ -1,0 +1,32 @@
+<app-loading-spinner *ngIf="isLoading" />
+<div class="posts-list" *ngIf="!isLoading">
+  <div class="card mb-3" *ngFor="let post of posts">
+    <div class="row g-0">
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title">{{ post.title }}</h5>
+          <p class="card-text">
+            {{ post.content }}
+          </p>
+          <p class="card-text">
+            <small class="text-body-secondary">Last updated 3 mins ago</small>
+          </p>
+        </div>
+      </div>
+      <div class="col-md-4 img-wrapper">
+        <img
+          src="{{ post.attachedPhoto }}"
+          class="img-fluid rounded-start"
+          alt="{{ post.title }}"
+          *ngIf="post.attachedPhoto"
+        />
+        <p
+          style="font-style: italic; border-bottom: 1px solid black"
+          *ngIf="!post.attachedPhoto"
+        >
+          No photo attached
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

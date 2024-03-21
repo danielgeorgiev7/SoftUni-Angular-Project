@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-upload',
@@ -9,8 +8,6 @@ import { AuthService } from 'src/app/auth/auth.service';
 export class UploadComponent {
   @Input() selectedFile: File | null = null;
   @Output() selectedFileChange = new EventEmitter<File | null>();
-
-  constructor(private authService: AuthService) {}
 
   onFileSelected(event: Event) {
     const inputElement = event.target as HTMLInputElement;

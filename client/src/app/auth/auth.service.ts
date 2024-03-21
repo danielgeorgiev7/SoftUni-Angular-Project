@@ -109,17 +109,6 @@ export class AuthService {
     };
 
     return this.databaseService.createPost(postData);
-
-    // this.http.put(
-    //   `https://cinemasync-4732b-default-rtdb.europe-west1.firebasedatabase.app/posts/${postId}.json`,
-    //   postData,
-    //   {
-    //     params: {
-    //       auth: this.user.value.token,
-    //       key: environment.firebaseConfig.apiKey,
-    //     },
-    //   }
-    // );
   }
 
   logout() {

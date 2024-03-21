@@ -1,0 +1,22 @@
+.posts-list {
+  margin: 3vw 30vw;
+}
+
+.card {
+  width: 100%;
+  cursor: pointer;
+  padding: 0.75rem;
+}
+
+.img-wrapper {
+  max-width: 12rem;
+  max-height: 8rem;
+  overflow: hidden;
+  margin: auto 0 auto auto;
+  border-radius: 7px;
+  text-align: center;
+}
+
+img {
+  object-fit: cover;
+}
