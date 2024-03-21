@@ -10,6 +10,7 @@ import { DatabasePost } from 'src/app/types/DatabasePost';
   styleUrls: ['./post-details.component.css'],
 })
 export class PostDetailsComponent implements OnInit, OnDestroy {
+  isLoading = true;
   postId: string = '';
   post: DatabasePost | null = null;
   routeSub: Subscription = new Subscription();
@@ -27,7 +28,7 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
         .getSinglePost(this.postId)
         .subscribe((post) => {
           this.post = post;
-          console.log(post);
+          this.isLoading = false;
         });
     });
   }
@@ -35,5 +36,19 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.routeSub.unsubscribe();
     this.postSub.unsubscribe();
+  }
+
+  formatDate(dateString: string | undefined) {
+    if (dateString === undefined) return;
+    const date = new Date(dateString);
+    const formattedDate = date.toLocaleDateString('en-GB', {
+      day: '2-digit', // 2-digit day (e.g., "19")
+      month: '2-digit', // 2-digit month (e.g., "03")
+      year: 'numeric', // full year (e.g., "2024")
+    });
+    const formattedTime = date.toLocaleTimeString('en-GB', {
+      hour12: false, // Use 24-hour format
+    });
+    return `${formattedDate} at ${formattedTime}`;
   }
 }

@@ -102,6 +102,7 @@ export class AuthService {
       createdAt: timestamp.toString(),
       updatedAt: '',
       userId: this.user.value.id,
+      username: this.user.value.username,
       userPhoto: this.user.value.imageUrl,
       attachedPhoto: photoURL || '',
       postId,

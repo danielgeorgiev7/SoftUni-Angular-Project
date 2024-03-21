@@ -1,10 +1,22 @@
 <div class="posts-list">
   <h1 class="heading" *ngIf="posts.length > 0">Posts</h1>
   <h2 class="heading" *ngIf="posts.length === 0">No posts yet.</h2>
-  <div class="card mb-3" *ngFor="let post of posts" [routerLink]="'/posts/' + post.postId">
+  <div
+    class="card mb-3"
+    *ngFor="let post of posts"
+    [routerLink]="'/posts/' + post.postId"
+  >
     <div class="row g-0">
       <div class="col-md-8">
         <div class="card-body">
+          <div class="user">
+            <img
+              src="{{ post.userPhoto }}"
+              alt="{{ post.username }}"
+              class="user-photo"
+            />
+            <p class="card-title">{{ post.username }}</p>
+          </div>
           <h5 class="card-title">{{ post.title }}</h5>
           <p class="card-text">
             {{ post.content }}
@@ -25,11 +37,8 @@
           alt="{{ post.title }}"
           *ngIf="post.attachedPhoto"
         />
-        <p
-          style="font-style: italic; border-bottom: 1px solid black"
-          *ngIf="!post.attachedPhoto"
-        >
-          No photo attached
+        <p style="font-style: italic; color: #666" *ngIf="!post.attachedPhoto">
+          No photo attached.
         </p>
       </div>
     </div>

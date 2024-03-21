@@ -1,1 +1,45 @@
-<p>post-details works!</p>
+<app-loading-spinner *ngIf="isLoading" />
+<h1 class="heading" *ngIf="!isLoading && post === null">
+  Post couldn't load. Try again later.
+</h1>
+<div class="details-page" *ngIf="!isLoading && post !== null">
+  <div class="card mb-3">
+    <div class="row g-0">
+      <div class="col-md-8">
+        <div class="card-body">
+          <div class="user">
+            <img
+              src="{{ post.userPhoto }}"
+              alt="{{ post.username }}"
+              class="user-photo"
+            />
+            <p class="card-title">{{ post.username }}</p>
+          </div>
+          <h5 class="card-title">{{ post.title }}</h5>
+          <p class="card-text">
+            {{ post.content }}
+          </p>
+          <p class="card-text">
+            <small class="text-body-secondary">{{
+              post.updatedAt !== ""
+                ? "Last updated on " + formatDate(post.updatedAt)
+                : "Created on " + formatDate(post.createdAt)
+            }}</small>
+          </p>
+        </div>
+      </div>
+      <div class="col-md-4 img-wrapper">
+        <img
+          src="{{ post.attachedPhoto }}"
+          class="img-fluid rounded-start"
+          alt="{{ post.title }}"
+          *ngIf="post.attachedPhoto"
+        />
+        <p style="font-style: italic; color: #666" *ngIf="!post.attachedPhoto">
+          No photo attached.
+        </p>
+      </div>
+    </div>
+  </div>
+  <h2 class="heading" style="margin-top: 2rem">Comments</h2>
+</div>
