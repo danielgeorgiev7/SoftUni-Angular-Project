@@ -12,8 +12,14 @@ export class UploadComponent {
 
   constructor(private authService: AuthService) {}
 
-  async onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0];
+  onFileSelected(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    this.selectedFile = inputElement.files?.[0] || null;
     this.selectedFileChange.emit(this.selectedFile);
+  }
+
+  removeSelectedFile(fileInput: HTMLInputElement) {
+    fileInput.value = '';
+    fileInput.dispatchEvent(new Event('change'));
   }
 }

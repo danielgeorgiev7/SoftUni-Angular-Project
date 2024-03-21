@@ -1,11 +1,20 @@
-<div class="upload" [style.maxWidth]="selectedFile ? '38rem' : 'fit-content'">
+<div class="upload" [class.file-selected]="selectedFile">
   <label for="fileInput" class="btn btn-secondary">Attach Image</label>
-  <p *ngIf="selectedFile?.name">{{ selectedFile?.name }}</p>
+  <div class="p-wrapper" *ngIf="selectedFile?.name">
+    <p>{{ selectedFile?.name }}</p>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="removeSelectedFile(fileInput)"
+    ></button>
+  </div>
+
   <input
     type="file"
     id="fileInput"
+    #fileInput
     (change)="onFileSelected($event)"
-    ngModel
     style="display: none"
   />
 </div>
