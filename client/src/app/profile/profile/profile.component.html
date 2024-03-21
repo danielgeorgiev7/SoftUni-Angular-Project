@@ -24,7 +24,9 @@
           {{ user.bio === "" ? "No bio provided." : user.bio }}
         </p>
         <p class="card-text">Email: {{ user.email }}</p>
-        <p class="card-text">Registered on: {{ formatDate(user.createdAt) }}</p>
+        <p class="card-text">
+          Registered on: {{ getFormattedDate(user.createdAt) }}
+        </p>
       </div>
     </div>
   </div>

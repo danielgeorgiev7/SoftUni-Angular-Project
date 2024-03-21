@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DatabaseService } from 'src/app/database.service';
+import { UtilService } from 'src/app/shared/util.service';
 import { DatabaseUser } from 'src/app/types/DatabaseUser';
 
 @Component({
@@ -12,7 +13,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
   user: DatabaseUser | null = null;
   userSub: Subscription = new Subscription();
 
-  constructor(private databaseService: DatabaseService) {}
+  constructor(
+    private databaseService: DatabaseService,
+    private utilService: UtilService
+  ) {}
 
   ngOnInit(): void {
     const userDataJson = localStorage.getItem('userData');
@@ -35,17 +39,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.userSub.unsubscribe();
   }
 
-  formatDate(dateString: string | undefined) {
-    if (dateString === undefined) return;
-    const date = new Date(dateString);
-    const formattedDate = date.toLocaleDateString('en-GB', {
-      day: '2-digit', // 2-digit day (e.g., "19")
-      month: '2-digit', // 2-digit month (e.g., "03")
-      year: 'numeric', // full year (e.g., "2024")
-    });
-    const formattedTime = date.toLocaleTimeString('en-GB', {
-      hour12: false, // Use 24-hour format
-    });
-    return `${formattedDate} at ${formattedTime}`;
+  getFormattedDate(dateString: string | undefined) {
+    return this.utilService.formatDate(dateString);
   }
 }

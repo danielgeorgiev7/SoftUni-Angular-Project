@@ -24,8 +24,8 @@
           <p class="card-text">
             <small class="text-body-secondary">{{
               post.updatedAt !== ""
-                ? "Last updated on " + formatDate(post.updatedAt)
-                : "Created on " + formatDate(post.createdAt)
+                ? "Last updated on " + getFormattedDate(post.updatedAt)
+                : "Created on " + getFormattedDate(post.createdAt)
             }}</small>
           </p>
         </div>
