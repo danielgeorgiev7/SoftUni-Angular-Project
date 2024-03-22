@@ -1,11 +1,16 @@
 .details-page {
-  margin: 3vw 30vw;
+  margin: 0 30vw 3vw;
+  font-size: 1.3rem;
 }
 
 .card {
   width: 100%;
   cursor: pointer;
   padding: 0.75rem;
+}
+
+.card-title {
+  font-size: 1.5rem;
 }
 
 .img-wrapper {
@@ -40,4 +45,12 @@ img {
   height: 2.5rem;
   width: 2.5rem;
   border-radius: 100%;
+}
+
+.icon-wrapper {
+  color: white;
+  margin: 1vw;
+  margin-left: 30vw;
+  width: fit-content;
+  cursor: pointer;
 }

@@ -1,11 +1,16 @@
 .posts-list {
   margin: 3vw 30vw;
+  font-size: 1.3rem;
 }
 
 .card {
   width: 100%;
   cursor: pointer;
   padding: 0.75rem;
+}
+
+.card-title {
+  font-size: 1.5rem;
 }
 
 .img-wrapper {

@@ -2,6 +2,11 @@
   margin: 3vw 30vw;
 }
 
+.create-post-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
 .btn-wrapper {
   text-align: center;
   display: flex;

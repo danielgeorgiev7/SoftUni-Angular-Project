@@ -11,11 +11,11 @@ import { DatabaseService } from 'src/app/database.service';
   styleUrls: ['./posts.component.css'],
 })
 export class PostsComponent {
+  showCreatePost = false;
   posts: DatabasePost[] = [];
+  selectedFile: File | null = null;
   isLoading: boolean = false;
   error: string = '';
-  photoUrl: string = '';
-  selectedFile: File | null = null;
 
   constructor(
     private authService: AuthService,
@@ -29,6 +29,10 @@ export class PostsComponent {
       this.posts = posts.reverse();
       this.isLoading = false;
     });
+  }
+
+  switchShowCreatePost() {
+    this.showCreatePost = !this.showCreatePost;
   }
 
   onSelectedFileChange(selectedFile: File | null) {

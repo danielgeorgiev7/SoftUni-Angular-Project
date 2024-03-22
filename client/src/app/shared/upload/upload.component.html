@@ -1,7 +1,14 @@
 <div class="upload" [class.file-selected]="selectedFile">
-  <label for="fileInput" class="btn btn-secondary">Attach Image</label>
-  <div class="p-wrapper" *ngIf="selectedFile?.name">
-    <p>{{ selectedFile?.name }}</p>
+  <label
+    for="fileInput"
+    class="btn"
+    style="background-color: #444; color: white"
+    >Attach Image</label
+  >
+  <div class="selected-file-container" *ngIf="selectedFile?.name">
+    <div class="p-wrapper">
+      <p>{{ selectedFile?.name }}</p>
+    </div>
     <button
       type="button"
       class="btn-close"

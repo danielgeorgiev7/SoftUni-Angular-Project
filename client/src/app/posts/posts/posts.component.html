@@ -1,5 +1,15 @@
 <div class="create-post">
-  <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+  <div class="create-post-wrapper">
+    <button
+      class="btn btn-primary"
+      (click)="switchShowCreatePost()"
+      style="width: 12rem"
+      *ngIf="!showCreatePost"
+    >
+      Create Post
+    </button>
+  </div>
+  <form #form="ngForm" (ngSubmit)="onSubmit(form)" *ngIf="showCreatePost">
     <div class="mb-3 form-floating">
       <input
         class="form-control"
@@ -31,6 +41,9 @@
         [selectedFile]="selectedFile"
       />
       <button class="btn btn-primary">Post</button>
+      <button class="btn btn-secondary" (click)="switchShowCreatePost()">
+        Cancel
+      </button>
     </div>
   </form>
 </div>
