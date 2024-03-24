@@ -7,6 +7,7 @@ import { LocalUser } from './LocalUser.model';
 import { DatabasePost } from '../types/DatabasePost';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment.development';
+import { DatabaseComment } from '../types/DatabaseComment';
 
 @Injectable({
   providedIn: 'root',
@@ -111,6 +112,27 @@ export class AuthService {
     };
 
     return this.databaseService.createPost(postData);
+  }
+
+  createComment(postId: string, comment: string, photoURL: string) {
+    if (!this.user.value) return Promise.reject(new Error('User is undefined'));
+
+    const timestamp = new Date();
+    const commentId = timestamp.getTime().toString();
+
+    const commentData: DatabaseComment = {
+      createdAt: timestamp.toString(),
+      updatedAt: '',
+      userId: this.user.value.id,
+      username: this.user.value.username,
+      userPhoto: this.user.value.imageUrl,
+      attachedPhoto: photoURL || '',
+      postId,
+      commentId,
+      comment,
+    };
+
+    return this.databaseService.createComment(commentData);
   }
 
   logout() {

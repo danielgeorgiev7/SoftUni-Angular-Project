@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
+import { AuthService } from '../auth/auth.service';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UtilService {
-  constructor() {}
+  constructor(
+    private authService: AuthService,
+    private storage: AngularFireStorage
+  ) {}
 
   formatDate(dateString: string | undefined) {
     if (dateString === undefined) return;
@@ -18,5 +23,22 @@ export class UtilService {
       hour12: false, // Use 24-hour format
     });
     return `${formattedDate} at ${formattedTime}`;
+  }
+
+  async upload(selectedFile: File | null) {
+    if (selectedFile === null) return '';
+
+    if (this.authService.user.value?.id === undefined)
+      throw new Error('User authentication failed.');
+
+    const maxSizeInBytes = 5 * 1024 * 1024; // 5MB
+
+    if (selectedFile !== null && selectedFile.size > maxSizeInBytes)
+      throw new Error('File size exceeds the maximum limit of 5MB.');
+
+    const path = `${this.authService.user.value.id}/${selectedFile.name}`;
+    const uploadTask = await this.storage.upload(path, selectedFile);
+    const downloadUrL = await uploadTask.ref.getDownloadURL();
+    return downloadUrL;
   }
 }

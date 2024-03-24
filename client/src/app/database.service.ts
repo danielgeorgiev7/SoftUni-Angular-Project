@@ -3,6 +3,7 @@ import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { Observable } from 'rxjs';
 import { DatabaseUser } from './types/DatabaseUser';
 import { DatabasePost } from './types/DatabasePost';
+import { DatabaseComment } from './types/DatabaseComment';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +22,13 @@ export class DatabaseService {
 
   createPost(postData: DatabasePost) {
     return this.db.object(`posts/${postData.postId}`).set(postData);
+  }
+
+  createComment(commentData: DatabaseComment) {
+    console.log(commentData);
+    return this.db
+      .object(`comments/${commentData.postId}/${commentData.commentId}`)
+      .set(commentData);
   }
 
   getPosts(): Observable<DatabasePost[]> {

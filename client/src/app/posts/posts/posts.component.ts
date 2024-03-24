@@ -4,6 +4,7 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { AuthService } from 'src/app/auth/auth.service';
 import { DatabasePost } from 'src/app/types/DatabasePost';
 import { DatabaseService } from 'src/app/database.service';
+import { UtilService } from 'src/app/shared/util.service';
 
 @Component({
   selector: 'app-posts',
@@ -20,7 +21,7 @@ export class PostsComponent {
   constructor(
     private authService: AuthService,
     private databaseService: DatabaseService,
-    private storage: AngularFireStorage
+    private utilService: UtilService
   ) {}
 
   ngOnInit(): void {
@@ -39,30 +40,13 @@ export class PostsComponent {
     this.selectedFile = selectedFile;
   }
 
-  async upload() {
-    if (this.selectedFile === null) return '';
-
-    if (this.authService.user.value?.id === undefined)
-      throw new Error('User authentication failed.');
-
-    const maxSizeInBytes = 5 * 1024 * 1024; // 5MB
-
-    if (this.selectedFile !== null && this.selectedFile.size > maxSizeInBytes)
-      throw new Error('File size exceeds the maximum limit of 5MB.');
-
-    const path = `${this.authService.user.value.id}/${this.selectedFile.name}`;
-    const uploadTask = await this.storage.upload(path, this.selectedFile);
-    const downloadUrL = await uploadTask.ref.getDownloadURL();
-    return downloadUrL;
-  }
-
   async onSubmit(form: NgForm) {
     if (form.invalid) return;
     this.isLoading = true;
     const { title, content } = form.form.value;
 
     try {
-      const downloadUrL = await this.upload();
+      const downloadUrL = await this.utilService.upload(this.selectedFile);
 
       await this.authService.createPost(title, content, downloadUrL);
 
