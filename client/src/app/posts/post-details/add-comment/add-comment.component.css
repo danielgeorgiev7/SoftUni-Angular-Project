@@ -1,0 +1,48 @@
+.add-comment-btn-wrapper {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.heading {
+  text-align: center;
+  color: white;
+  margin-bottom: 2rem;
+}
+
+.btn-wrapper {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+button {
+  font-size: 1.5rem;
+  padding: 0.5rem 2rem;
+  margin-bottom: 2px;
+}
+
+.form-floating {
+  position: relative;
+}
+
+.form-floating:before {
+  content: "";
+  position: absolute;
+  top: 1px; /* border-width (default by BS) */
+  left: 1px; /* border-width (default by BS) */
+  border-radius: 4px; /* (default by BS) */
+  background-color: #ffffff;
+}
+
+.form-floating textarea.form-control {
+  padding-top: 32px; /* height of pseudo element */
+}
+
+textarea {
+  font-size: 1.5rem;
+}
