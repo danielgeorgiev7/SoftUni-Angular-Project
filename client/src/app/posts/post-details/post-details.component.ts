@@ -34,6 +34,7 @@ import { DatabasePost } from 'src/app/types/DatabasePost';
 export class PostDetailsComponent implements OnInit, OnDestroy {
   isLoading = true;
   showDeleteModal = false;
+  showEditModal = false;
   postId: string = '';
 
   post: DatabasePost | null = null;
@@ -81,6 +82,10 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
 
   switchDeleteModal = () => {
     this.showDeleteModal = !this.showDeleteModal;
+  };
+
+  switchEditModal = () => {
+    this.showEditModal = !this.showEditModal;
   };
 
   onDeletePost() {

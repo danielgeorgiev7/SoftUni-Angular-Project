@@ -8,6 +8,12 @@
   [primaryBtnClasses]="'btn btn-danger'"
   [primaryBtnClick]="onDeletePost.bind(this)"
   [secondaryBtnClick]="switchDeleteModal"
+  [closeBtnClick]="switchDeleteModal"
+/>
+<app-edit-modal
+  *ngIf="showEditModal"
+  [switchEditModal]="switchEditModal.bind(this)"
+  [post]="post"
 />
 <!-- [@modalAnimation]="'enter'" -->
 <h1
@@ -27,7 +33,7 @@
 <div
   class="details-page"
   *ngIf="!isLoading && post !== null"
-  [ngClass]="{ 'background-blur': showDeleteModal }"
+  [ngClass]="{ 'background-blur': showDeleteModal || showEditModal }"
 >
   <div class="card mb-3">
     <div class="row g-0">
@@ -70,7 +76,13 @@
       class="edit-and-delete"
       *ngIf="currentUser !== null && currentUser.id === post.userId"
     >
-      <button type="button" class="btn btn-secondary">Edit</button>
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="switchEditModal()"
+      >
+        Edit
+      </button>
       <button
         type="button"
         class="btn btn-danger"

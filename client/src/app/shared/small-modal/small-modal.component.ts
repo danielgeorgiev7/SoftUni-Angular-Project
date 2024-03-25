@@ -18,4 +18,5 @@ export class SmallModalComponent {
 
   @Input('primaryBtnClick') primaryBtnClick: VoidFunction | null = null;
   @Input('secondaryBtnClick') secondaryBtnClick: VoidFunction | null = null;
+  @Input('closeBtnClick') closeBtnClick: VoidFunction | null = null;
 }

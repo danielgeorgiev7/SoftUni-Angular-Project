@@ -39,3 +39,27 @@ import { ProfileModule } from './profile/profile.module';
   bootstrap: [AppComponent],
 })
 export class AppModule {}
+
+// TODO:
+
+// Edit post:
+// image logic
+// submit + updatedAt
+
+// Comments
+// Edit and delete
+
+// Important:
+// Add toast
+// Add error handling
+// Add form validations
+
+// Profile:
+// Add Change profile picture
+// Add My Posts to profile page
+
+// General:
+// Add lazy loading
+// Add angular animations
+// Add state management ?
+// Deploy
