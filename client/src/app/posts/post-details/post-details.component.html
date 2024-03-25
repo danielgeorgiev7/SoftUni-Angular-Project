@@ -1,4 +1,14 @@
 <app-loading-spinner *ngIf="isLoading" />
+<app-small-modal
+  *ngIf="showDeleteModal"
+  [title]="'Delete post'"
+  [text]="'Are you sure you want to delete this post?'"
+  [secondaryBtnText]="'Cancel'"
+  [primaryBtnText]="'Delete'"
+  [primaryBtnClasses]="'btn btn-danger'"
+  [secondaryBtnClick]="switchDeleteModal"
+/>
+<!-- [@modalAnimation]="'enter'" -->
 <h1 class="heading" *ngIf="!isLoading && post === null">
   Post couldn't load. Try again later.
 </h1>
@@ -10,7 +20,11 @@
     height="3rem"
   ></i-bs>
 </div>
-<div class="details-page" *ngIf="!isLoading && post !== null">
+<div
+  class="details-page"
+  *ngIf="!isLoading && post !== null"
+  [ngClass]="{ 'background-blur': showDeleteModal }"
+>
   <div class="card mb-3">
     <div class="row g-0">
       <div class="col-md-8">
@@ -47,6 +61,19 @@
           No photo attached.
         </p> -->
       </div>
+    </div>
+    <div
+      class="edit-and-delete"
+      *ngIf="currentUser !== null && currentUser.id === post.userId"
+    >
+      <button type="button" class="btn btn-secondary">Edit</button>
+      <button
+        type="button"
+        class="btn btn-danger"
+        (click)="switchDeleteModal()"
+      >
+        Delete
+      </button>
     </div>
   </div>
   <app-add-comment [postId]="postId" />
