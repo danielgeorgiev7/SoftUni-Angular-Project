@@ -1,6 +1,6 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { LocalUser } from 'src/app/auth/LocalUser.model';
 import { AuthService } from 'src/app/auth/auth.service';
@@ -49,7 +49,8 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private databaseService: DatabaseService,
     private utilService: UtilService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -81,6 +82,15 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
   switchDeleteModal = () => {
     this.showDeleteModal = !this.showDeleteModal;
   };
+
+  onDeletePost() {
+    this.databaseService
+      .deletePost(this.postId)
+      .then(() => this.router.navigate(['/posts']))
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
   getFormattedDate(dateString: string | undefined) {
     return this.utilService.formatDate(dateString);

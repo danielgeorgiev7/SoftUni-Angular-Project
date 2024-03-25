@@ -41,6 +41,16 @@ export class DatabaseService {
       .valueChanges();
   }
 
+  deletePost(postId: string): Promise<[void, void]> {
+    const postRef = this.db.object(`posts/${postId}`);
+    const postDeletionPromise = postRef.remove();
+
+    const commentsRef = this.db.object(`comments/${postId}`);
+    const commentsDeletionPromise = commentsRef.remove();
+
+    return Promise.all([postDeletionPromise, commentsDeletionPromise]);
+  }
+
   getComments(commentId: string): Observable<DatabaseComment[]> {
     return this.db
       .list<DatabaseComment>(`comments/${commentId}`)
