@@ -1,29 +1,28 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from 'src/app/auth/auth.service';
 import { DatabaseService } from 'src/app/database.service';
 import { UtilService } from 'src/app/shared/util.service';
-import { DatabaseComment } from 'src/app/types/DatabaseComment';
+import { DatabasePost } from 'src/app/types/DatabasePost';
 
 @Component({
-  selector: 'app-add-comment',
-  templateUrl: './add-comment.component.html',
-  styleUrls: ['./add-comment.component.css'],
+  selector: 'app-create-post',
+  templateUrl: './create-post.component.html',
+  styleUrls: ['./create-post.component.css'],
 })
-export class AddCommentComponent {
-  @Input('postId') postId: string = '';
+export class CreatePostComponent {
+  showCreatePost = false;
   selectedFile: File | null = null;
-  addCommentMode = false;
-  isLoading = false;
+  isLoading: boolean = false;
 
   constructor(
     private authService: AuthService,
-    private utilService: UtilService,
-    private databaseService: DatabaseService
+    private databaseService: DatabaseService,
+    private utilService: UtilService
   ) {}
 
-  switchAddCommentMode() {
-    this.addCommentMode = !this.addCommentMode;
+  switchShowCreatePost() {
+    this.showCreatePost = !this.showCreatePost;
   }
 
   onSelectedFileChange(selectedFile: File | null) {
@@ -32,14 +31,13 @@ export class AddCommentComponent {
 
   async onSubmit(form: NgForm) {
     if (form.invalid) return;
-    if (this.postId === '') return;
     this.isLoading = true;
-    const { comment } = form.form.value;
+    const { title, content } = form.form.value;
 
     try {
       const downloadUrL = await this.utilService.upload(this.selectedFile);
 
-      await this.buildComment(this.postId, comment, downloadUrL);
+      await this.buildPost(title, content, downloadUrL);
 
       form.reset();
     } catch (error) {
@@ -50,15 +48,14 @@ export class AddCommentComponent {
     }
   }
 
-  buildComment(postId: string, comment: string, photoURL: string) {
+  buildPost(title: string, content: string, photoURL: string) {
     const currentUser = this.authService.user.value;
     if (!currentUser || !currentUser.id)
       return Promise.reject(new Error('User is undefined'));
-
     const timestamp = new Date();
-    const commentId = timestamp.getTime().toString();
+    const postId = timestamp.getTime().toString();
 
-    const commentData: DatabaseComment = {
+    const postData: DatabasePost = {
       createdAt: timestamp.toString(),
       updatedAt: '',
       userId: currentUser.id,
@@ -66,10 +63,10 @@ export class AddCommentComponent {
       userPhoto: currentUser.imageUrl,
       attachedPhoto: photoURL || '',
       postId,
-      commentId,
-      comment,
+      title,
+      content,
     };
 
-    return this.databaseService.createComment(commentData);
+    return this.databaseService.createPost(postData);
   }
 }

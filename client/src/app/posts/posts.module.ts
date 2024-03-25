@@ -3,15 +3,24 @@ import { CommonModule } from '@angular/common';
 import { PostsComponent } from './posts/posts.component';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
-import { PostsListComponent } from './posts-list/posts-list.component';
 import { PostDetailsComponent } from './post-details/post-details.component';
 import { RouterModule } from '@angular/router';
 import { NgxBootstrapIconsModule } from 'ngx-bootstrap-icons';
 import { environment } from 'src/environments/environment.development';
 import { AddCommentComponent } from './post-details/add-comment/add-comment.component';
+import { CommentListComponent } from './post-details/comment-list/comment-list.component';
+import { CreatePostComponent } from './posts/create-post/create-post.component';
+import { PostsListComponent } from './posts/posts-list/posts-list.component';
 
 @NgModule({
-  declarations: [PostsComponent, PostsListComponent, PostDetailsComponent, AddCommentComponent],
+  declarations: [
+    PostsComponent,
+    PostsListComponent,
+    PostDetailsComponent,
+    AddCommentComponent,
+    CommentListComponent,
+    CreatePostComponent,
+  ],
   imports: [
     CommonModule,
     FormsModule,

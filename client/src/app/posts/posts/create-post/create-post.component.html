@@ -1,0 +1,49 @@
+<div class="create-post">
+  <div class="create-post-wrapper">
+    <button
+      class="btn btn-primary"
+      (click)="switchShowCreatePost()"
+      style="width: 12rem"
+      *ngIf="!showCreatePost"
+    >
+      Create Post
+    </button>
+  </div>
+  <form #form="ngForm" (ngSubmit)="onSubmit(form)" *ngIf="showCreatePost">
+    <div class="mb-3 form-floating">
+      <input
+        class="form-control"
+        type="text"
+        id="title"
+        name="title"
+        placeholder="Title of your post"
+        required
+        ngModel
+      />
+      <label for="title" class="form-label">Title of your post</label>
+    </div>
+    <div class="mb-3 form-floating">
+      <textarea
+        class="form-control"
+        id="content"
+        name="content"
+        placeholder="What is on your mind?"
+        rows="3"
+        style="height: 5rem"
+        required
+        ngModel
+      ></textarea>
+      <label for="content" class="form-label">What is on your mind?</label>
+    </div>
+    <div class="btn-wrapper">
+      <app-upload
+        (selectedFileChange)="onSelectedFileChange($event)"
+        [selectedFile]="selectedFile"
+      />
+      <button class="btn btn-primary">Post</button>
+      <button class="btn btn-secondary" (click)="switchShowCreatePost()">
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>
