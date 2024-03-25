@@ -40,4 +40,10 @@ export class DatabaseService {
       .object<DatabasePost | null>(`posts/${postId}`)
       .valueChanges();
   }
+
+  getComments(commentId: string): Observable<DatabaseComment[]> {
+    return this.db
+      .list<DatabaseComment>(`comments/${commentId}`)
+      .valueChanges();
+  }
 }

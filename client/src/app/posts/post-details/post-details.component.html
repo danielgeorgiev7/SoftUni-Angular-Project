@@ -43,12 +43,12 @@
           alt="{{ post.title }}"
           *ngIf="post.attachedPhoto"
         />
-        <p style="font-style: italic; color: #666" *ngIf="!post.attachedPhoto">
+        <!-- <p style="font-style: italic; color: #666" *ngIf="!post.attachedPhoto">
           No photo attached.
-        </p>
+        </p> -->
       </div>
     </div>
   </div>
   <app-add-comment [postId]="postId" />
-  <h1 class="heading" style="margin-top: 2rem">Comments</h1>
+  <app-comment-list [comments]="comments" />
 </div>

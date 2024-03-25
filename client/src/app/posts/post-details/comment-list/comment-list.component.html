@@ -1,0 +1,41 @@
+<h2 class="heading-underline" style="margin-top: 2rem">
+  Comments {{ comments.length === 0 ? "" : "(" + comments.length + ")" }}
+</h2>
+<h3 class="heading" *ngIf="comments.length === 0">No comments yet.</h3>
+<div class="card mb-3" *ngFor="let comment of comments">
+  <div class="row g-0">
+    <div class="col-md-8">
+      <div class="card-body">
+        <div class="user">
+          <img
+            src="{{ comment.userPhoto }}"
+            alt="{{ comment.username }}"
+            class="user-photo"
+          />
+          <p class="card-title">{{ comment.username }}</p>
+        </div>
+        <p class="card-text">
+          {{ comment.comment }}
+        </p>
+        <p class="card-text">
+          <small class="text-body-secondary">{{
+            comment.updatedAt !== ""
+              ? "Last updated on " + getFormattedDate(comment.updatedAt)
+              : "Created on " + getFormattedDate(comment.createdAt)
+          }}</small>
+        </p>
+      </div>
+    </div>
+    <div class="col-md-4 img-wrapper">
+      <img
+        src="{{ comment.attachedPhoto }}"
+        class="img-fluid rounded-start"
+        alt="Attached Photo"
+        *ngIf="comment.attachedPhoto"
+      />
+      <!-- <p style="font-style: italic; color: #666" *ngIf="!post.attachedPhoto">
+          No photo attached.
+        </p> -->
+    </div>
+  </div>
+</div>

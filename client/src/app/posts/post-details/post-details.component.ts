@@ -1,8 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/auth/auth.service';
 import { DatabaseService } from 'src/app/database.service';
 import { UtilService } from 'src/app/shared/util.service';
+import { DatabaseComment } from 'src/app/types/DatabaseComment';
 import { DatabasePost } from 'src/app/types/DatabasePost';
 
 @Component({
@@ -14,8 +16,10 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
   isLoading = true;
   postId: string = '';
   post: DatabasePost | null = null;
+  comments: DatabaseComment[] = [];
   routeSub: Subscription = new Subscription();
   postSub: Subscription = new Subscription();
+  commentSub: Subscription = new Subscription();
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -32,12 +36,19 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
           this.post = post;
           this.isLoading = false;
         });
+      this.commentSub = this.databaseService
+        .getComments(this.postId)
+        .subscribe((comments: DatabaseComment[]) => {
+          this.comments = comments;
+          console.log(this.comments);
+        });
     });
   }
 
   ngOnDestroy(): void {
     this.routeSub.unsubscribe();
     this.postSub.unsubscribe();
+    this.commentSub.unsubscribe();
   }
 
   getFormattedDate(dateString: string | undefined) {
