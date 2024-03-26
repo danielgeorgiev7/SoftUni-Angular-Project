@@ -1,0 +1,62 @@
+<form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+  <div class="modal" tabindex="-1">
+    <!-- Modal content -->
+    <div class="modal-dialog">
+      <div class="modal-content" *ngIf="data && dataType">
+        <div class="modal-header">
+          <h4 class="modal-title">
+            Edit {{ getCapitalizedFirstLetter(dataType) }}
+          </h4>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+            (click)="closeEditModal && closeEditModal()"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div *ngFor="let input of values">
+            <label for="{{ input[0] }}">{{
+              getCapitalizedFirstLetter(input[0])
+            }}</label>
+            <div class="mb-3 input-group">
+              <input
+                *ngIf="input[0] === 'title'"
+                type="text"
+                class="form-control"
+                id="{{ input[0] }}"
+                formControlName="{{ input[0] }}"
+              />
+              <textarea
+                *ngIf="input[0] !== 'title'"
+                class="form-control"
+                id="{{ input[0] }}"
+                formControlName="{{ input[0] }}"
+                rows="3"
+                >{{ input[1] }}</textarea
+              >
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <app-upload
+            (selectedFileChange)="onSelectedFileChange($event)"
+            [selectedFile]="selectedFile"
+            [btnText]="
+              data.attachedPhoto === '' ? 'Attach Image' : 'Change Image'
+            "
+          />
+          <button type="submit" class="btn btn-primary">Post</button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="closeEditModal && closeEditModal()"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
