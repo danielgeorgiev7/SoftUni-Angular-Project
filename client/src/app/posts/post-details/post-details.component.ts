@@ -78,7 +78,6 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
               this.currentUser?.id in this.post.likes
             )
               this.hasUserLiked = true;
-            console.log(post);
           });
         this.commentSub = this.databaseService
           .getComments(this.postId)

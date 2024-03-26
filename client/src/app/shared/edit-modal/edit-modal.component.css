@@ -1,15 +1,15 @@
 .modal {
   display: block !important;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
 }
 
 .modal-dialog {
   margin-top: 10rem;
-  max-width: calc(100% - 60vw);
+  max-width: calc(100% - 55vw);
 }
 
-button {
-  font-size: 1.2rem;
+.modal-content {
+  border: 3px solid #444;
 }
 
 .create-post-wrapper {
@@ -17,7 +17,7 @@ button {
   justify-content: center;
 }
 
-.btn-wrapper {
+.modal-footer {
   text-align: center;
   display: flex;
   align-items: center;
@@ -26,14 +26,14 @@ button {
 }
 
 button {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   padding: 0.5rem 2rem;
   margin-bottom: 2px;
 }
 
 input,
 textarea {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
 }
 
 label {

@@ -9,7 +9,6 @@ import {
 import { Subscription } from 'rxjs';
 import { LocalUser } from 'src/app/auth/LocalUser.model';
 import { AuthService } from 'src/app/auth/auth.service';
-import { UtilService } from 'src/app/shared/util.service';
 import { DatabaseComment } from 'src/app/types/DatabaseComment';
 
 @Component({
@@ -24,10 +23,7 @@ export class CommentListComponent implements OnInit, OnDestroy {
   currentUser: LocalUser | null = null;
   currentUserSub: Subscription = new Subscription();
 
-  constructor(
-    private utilService: UtilService,
-    private authService: AuthService
-  ) {}
+  constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
     this.currentUserSub = this.authService.user.subscribe((user) => {
@@ -44,9 +40,5 @@ export class CommentListComponent implements OnInit, OnDestroy {
 
   emitCommentForDelete(comment: DatabaseComment) {
     this.commentDelete.emit(comment);
-  }
-
-  getFormattedDate(dateString: string | undefined) {
-    return this.utilService.formatDate(dateString);
   }
 }

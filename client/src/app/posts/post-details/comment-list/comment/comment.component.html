@@ -1,0 +1,73 @@
+<div class="card mb-3" *ngIf="comment !== null">
+  <div class="row g-0">
+    <div class="col-md-8">
+      <div class="card-body">
+        <div class="user">
+          <img
+            src="{{ comment.data.userPhoto }}"
+            alt="{{ comment.data.username }}"
+            class="user-photo"
+          />
+          <p class="card-title">{{ comment.data.username }}</p>
+        </div>
+        <p class="card-text">
+          {{ comment.data.comment }}
+        </p>
+        <p class="card-text">
+          <small class="text-body-secondary">{{
+            comment.data.updatedAt !== ""
+              ? "Last updated on " + getFormattedDate(comment.data.updatedAt)
+              : "Created on " + getFormattedDate(comment.data.createdAt)
+          }}</small>
+        </p>
+      </div>
+    </div>
+    <div class="col-md-4 img-wrapper">
+      <img
+        src="{{ comment.data.attachedPhoto }}"
+        class="img-fluid rounded-start"
+        alt="Attached Photo"
+        *ngIf="comment.data.attachedPhoto"
+      />
+      <!-- <p style="font-style: italic; color: #666" *ngIf="!post.attachedPhoto">
+          No photo attached.
+        </p> -->
+    </div>
+  </div>
+  <hr />
+  <div class="like-btn" *ngIf="comment.data.userId !== currentUser?.id">
+    <div class="before-like" *ngIf="!hasUserLiked" (click)="onLikeSwitch()">
+      <i-bs name="hand-thumbs-up" width="25" height="25"> </i-bs>
+      <p>Like ({{ comment.likes ? getTotalLikes() : "0" }})</p>
+    </div>
+    <div class="after-like" *ngIf="hasUserLiked" (click)="onLikeSwitch()">
+      <i-bs name="hand-thumbs-up-fill" width="25" height="25"> </i-bs>
+      <p>Liked ({{ comment.likes ? getTotalLikes() : "0" }})</p>
+    </div>
+  </div>
+  <div
+    class="like-edit-delete"
+    *ngIf="currentUser !== null && currentUser.id === comment.data.userId"
+  >
+    <div *ngIf="comment.data.userId === currentUser?.id">
+      <div class="owner-like">
+        <i-bs name="hand-thumbs-up-fill" width="25" height="25"> </i-bs>
+        <p>Likes ({{ comment.likes ? getTotalLikes() : "0" }})</p>
+      </div>
+    </div>
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="emitCommentForEdit(comment)"
+    >
+      Edit
+    </button>
+    <button
+      type="button"
+      class="btn btn-danger"
+      (click)="emitCommentForDelete(comment)"
+    >
+      Delete
+    </button>
+  </div>
+</div>

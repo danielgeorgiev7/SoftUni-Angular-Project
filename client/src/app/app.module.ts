@@ -46,6 +46,7 @@ export class AppModule {}
 // Add toast
 // Add error handling
 // Add form validations
+// Footer fix
 
 // Profile:
 // Add Change profile picture

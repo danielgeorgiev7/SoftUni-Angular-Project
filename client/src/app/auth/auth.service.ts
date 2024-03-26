@@ -96,9 +96,9 @@ export class AuthService {
     this.afAuth
       .signOut()
       .then(() => {
-        this.user.next(null);
+        this.router.navigate(['/home']);
         localStorage.removeItem('userData');
-        this.router.navigate(['/login']);
+        this.user.next(null);
       })
       .catch((error) => {
         console.error('Error logging out:', error);

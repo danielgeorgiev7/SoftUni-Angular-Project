@@ -11,6 +11,7 @@ import { AddCommentComponent } from './post-details/add-comment/add-comment.comp
 import { CommentListComponent } from './post-details/comment-list/comment-list.component';
 import { CreatePostComponent } from './posts/create-post/create-post.component';
 import { PostsListComponent } from './posts/posts-list/posts-list.component';
+import { CommentComponent } from './post-details/comment-list/comment/comment.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { PostsListComponent } from './posts/posts-list/posts-list.component';
     AddCommentComponent,
     CommentListComponent,
     CreatePostComponent,
+    CommentComponent,
   ],
   imports: [
     CommonModule,
