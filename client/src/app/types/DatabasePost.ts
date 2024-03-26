@@ -1,4 +1,9 @@
 export interface DatabasePost {
+  data: DatabasePostData;
+  likes: { string: true }[];
+}
+
+export interface DatabasePostData {
   createdAt: string;
   updatedAt: string;
   userId: string;

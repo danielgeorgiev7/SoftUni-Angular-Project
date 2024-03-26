@@ -61,3 +61,14 @@ img {
 .background-blur {
   filter: blur(5px);
 }
+
+.before-like,
+.after-like {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: 0.5rem;
+}
+
+.owner-like {
+  cursor: not-allowed;
+}

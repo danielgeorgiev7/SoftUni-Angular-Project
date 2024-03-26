@@ -1,4 +1,9 @@
 export interface DatabaseComment {
+  data: DatabaseCommentData;
+  likes: { string: true }[];
+}
+
+export interface DatabaseCommentData {
   createdAt: string;
   updatedAt: string;
   userId: string;

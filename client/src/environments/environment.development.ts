@@ -1,4 +1,4 @@
-import { arrowLeft } from 'ngx-bootstrap-icons';
+import { arrowLeft, handThumbsUpFill, handThumbsUp } from 'ngx-bootstrap-icons';
 
 export const environment = {
   moviesApiKey: '5de9badeb4mshdf77ee0ef8b4323p103019jsnb4d72af6b5de',
@@ -13,5 +13,9 @@ export const environment = {
     appId: '1:903449404400:web:8f2fd83310a4c90c29f335',
     measurementId: 'G-K6YNQDHLVN',
   },
-  icons: { arrowLeft },
+  icons: {
+    arrowLeft,
+    handThumbsUp,
+    handThumbsUpFill,
+  },
 };

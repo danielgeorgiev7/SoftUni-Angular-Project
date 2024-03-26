@@ -36,7 +36,7 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
   postId: string = '';
   showDeleteModalFor: string | null = null;
   showEditModalFor: string | null = null;
-  editForm: FormGroup | null = null;
+  hasUserLiked = false;
   isLoading = true;
   showBlur = false;
 
@@ -44,6 +44,7 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
   comments: DatabaseComment[] = [];
   currentComment: DatabaseComment | null = null;
   currentUser: LocalUser | null = null;
+  editForm: FormGroup | null = null;
 
   routeSub: Subscription = new Subscription();
   postSub: Subscription = new Subscription();
@@ -60,22 +61,31 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.routeSub = this.activatedRoute.params.subscribe((params) => {
-      this.postId = params['postId'];
-      this.postSub = this.databaseService
-        .getSinglePost(this.postId)
-        .subscribe((post) => {
-          this.post = post;
-          this.isLoading = false;
-        });
-      this.commentSub = this.databaseService
-        .getComments(this.postId)
-        .subscribe((comments: DatabaseComment[]) => {
-          this.comments = comments;
-        });
-    });
     this.currentUserSub = this.authService.user.subscribe((user) => {
       this.currentUser = user;
+
+      this.routeSub = this.activatedRoute.params.subscribe((params) => {
+        this.postId = params['postId'];
+        this.postSub = this.databaseService
+          .getSinglePost(this.postId)
+          .subscribe((post) => {
+            this.post = post;
+            this.isLoading = false;
+            if (
+              this.post &&
+              this.post.likes &&
+              this.currentUser &&
+              this.currentUser?.id in this.post.likes
+            )
+              this.hasUserLiked = true;
+            console.log(post);
+          });
+        this.commentSub = this.databaseService
+          .getComments(this.postId)
+          .subscribe((comments: DatabaseComment[]) => {
+            this.comments = comments;
+          });
+      });
     });
   }
 
@@ -83,6 +93,28 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
     this.routeSub.unsubscribe();
     this.postSub.unsubscribe();
     this.commentSub.unsubscribe();
+  }
+
+  onLikeSwitch() {
+    try {
+      if (!this.currentUser) throw new Error('User not found!');
+      if (!this.hasUserLiked) {
+        this.databaseService
+          .addLike('post', this.currentUser?.id, this.postId)
+          .then(() => (this.hasUserLiked = true));
+      } else {
+        this.databaseService
+          .removeLike('post', this.currentUser?.id, this.postId)
+          .then(() => (this.hasUserLiked = false));
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  getTotalLikes() {
+    if (!this.post) return null;
+    return Object.keys(this.post.likes).length;
   }
 
   switchBlur() {
@@ -135,7 +167,7 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
   onDeleteComment() {
     if (!this.currentComment) return;
     this.databaseService
-      .deleteComment(this.postId, this.currentComment.commentId)
+      .deleteComment(this.postId, this.currentComment.data.commentId)
       .catch((error) => {
         console.log(error);
       });
@@ -144,12 +176,12 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
   buildEditForm(): FormGroup<any> | null {
     if (this.showEditModalFor == 'post') {
       return (this.editForm = this.fb.group({
-        title: [this.post?.title, Validators.required],
-        content: [this.post?.content, Validators.required],
+        title: [this.post?.data.title, Validators.required],
+        content: [this.post?.data.content, Validators.required],
       }));
     } else if (this.showEditModalFor == 'comment') {
       return (this.editForm = this.fb.group({
-        comment: [this.currentComment?.comment, Validators.required],
+        comment: [this.currentComment?.data.comment, Validators.required],
       }));
     } else return null;
   }

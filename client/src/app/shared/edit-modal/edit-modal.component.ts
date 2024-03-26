@@ -1,10 +1,10 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { AuthService } from 'src/app/auth/auth.service';
 import { DatabaseService } from 'src/app/database.service';
 import { UtilService } from 'src/app/shared/util.service';
-import { DatabaseComment } from 'src/app/types/DatabaseComment';
-import { DatabasePost } from 'src/app/types/DatabasePost';
+import { DatabaseCommentData } from 'src/app/types/DatabaseComment';
+import { DatabasePostData } from 'src/app/types/DatabasePost';
 
 @Component({
   selector: 'app-edit-modal',
@@ -13,7 +13,11 @@ import { DatabasePost } from 'src/app/types/DatabasePost';
 })
 export class EditModalComponent implements OnInit {
   @Input('closeEditModal') closeEditModal: VoidFunction | null = null;
-  @Input('data') data: DatabasePost | DatabaseComment | null = null;
+  @Input('data') data:
+    | DatabasePostData
+    | DatabaseCommentData
+    | undefined
+    | null = null;
   @Input('dataType') dataType: string | null = null;
   @Input('editForm') editForm: FormGroup = new FormGroup({});
   // values: [string, unknown][] = [];
@@ -44,26 +48,27 @@ export class EditModalComponent implements OnInit {
       const downloadUrL = await this.utilService.upload(this.selectedFile);
       const timestamp = new Date();
 
-      const editData: Partial<DatabasePost> | Partial<DatabaseComment> = {
+      const editData = {
         updatedAt: timestamp.toString(),
         attachedPhoto:
           downloadUrL === '' ? this.data.attachedPhoto : downloadUrL,
       };
 
       if (this.dataType === 'post') {
-        (editData as Partial<DatabasePost>).title = this.editForm.value.title;
-        (editData as Partial<DatabasePost>).content =
+        (editData as Partial<DatabasePostData>).title =
+          this.editForm.value.title;
+        (editData as Partial<DatabasePostData>).content =
           this.editForm.value.content;
 
         await this.databaseService.editPost(this.data.postId, editData);
       }
       if (this.dataType === 'comment') {
-        (editData as Partial<DatabaseComment>).comment =
+        (editData as Partial<DatabaseCommentData>).comment =
           this.editForm.value.comment;
 
         await this.databaseService.editComment(
           this.data.postId,
-          (this.data as DatabaseComment).commentId,
+          (this.data as DatabaseCommentData).commentId,
           editData
         );
       }

@@ -57,15 +57,18 @@ export class CreatePostComponent {
     const postId = timestamp.getTime().toString();
 
     const postData: DatabasePost = {
-      createdAt: timestamp.toString(),
-      updatedAt: '',
-      userId: currentUser.id,
-      username: currentUser.username,
-      userPhoto: currentUser.imageUrl,
-      attachedPhoto: photoURL || '',
-      postId,
-      title,
-      content,
+      data: {
+        createdAt: timestamp.toString(),
+        updatedAt: '',
+        userId: currentUser.id,
+        username: currentUser.username,
+        userPhoto: currentUser.imageUrl,
+        attachedPhoto: photoURL || '',
+        postId,
+        title,
+        content,
+      },
+      likes: [],
     };
 
     return this.databaseService.createPost(postData);

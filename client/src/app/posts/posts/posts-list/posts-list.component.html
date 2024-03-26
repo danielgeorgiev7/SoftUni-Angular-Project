@@ -4,38 +4,38 @@
   <div
     class="card mb-3"
     *ngFor="let post of posts"
-    [routerLink]="'/posts/' + post.postId"
+    [routerLink]="'/posts/' + post.data.postId"
   >
     <div class="row g-0">
       <div class="col-md-8">
         <div class="card-body">
           <div class="user">
             <img
-              src="{{ post.userPhoto }}"
-              alt="{{ post.username }}"
+              src="{{ post.data.userPhoto }}"
+              alt="{{ post.data.username }}"
               class="user-photo"
             />
-            <p class="card-text">{{ post.username }}</p>
+            <p class="card-text">{{ post.data.username }}</p>
           </div>
-          <h5 class="card-title">{{ post.title }}</h5>
+          <h5 class="card-title">{{ post.data.title }}</h5>
           <p class="card-text">
-            {{ post.content }}
+            {{ post.data.content }}
           </p>
           <p class="card-text">
             <small class="text-body-secondary">{{
-              post.updatedAt !== ""
-                ? "Last updated on " + getFormattedDate(post.updatedAt)
-                : "Created on " + getFormattedDate(post.createdAt)
+              post.data.updatedAt !== ""
+                ? "Last updated on " + getFormattedDate(post.data.updatedAt)
+                : "Created on " + getFormattedDate(post.data.createdAt)
             }}</small>
           </p>
         </div>
       </div>
       <div class="col-md-4 img-wrapper">
         <img
-          src="{{ post.attachedPhoto }}"
+          src="{{ post.data.attachedPhoto }}"
           class="img-fluid rounded-start"
-          alt="{{ post.title }}"
-          *ngIf="post.attachedPhoto"
+          alt="{{ post.data.title }}"
+          *ngIf="post.data.attachedPhoto"
         />
         <!-- <p style="font-style: italic; color: #666" *ngIf="!post.attachedPhoto">
           No photo attached.

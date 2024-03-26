@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { Observable } from 'rxjs';
 import { DatabaseUser } from './types/DatabaseUser';
-import { DatabasePost } from './types/DatabasePost';
-import { DatabaseComment } from './types/DatabaseComment';
+import { DatabasePost, DatabasePostData } from './types/DatabasePost';
+import { DatabaseComment, DatabaseCommentData } from './types/DatabaseComment';
 
 @Injectable({
   providedIn: 'root',
@@ -21,13 +21,14 @@ export class DatabaseService {
   }
 
   createPost(postData: DatabasePost) {
-    return this.db.object(`posts/${postData.postId}`).set(postData);
+    return this.db.object(`posts/${postData.data.postId}`).set(postData);
   }
 
   createComment(commentData: DatabaseComment) {
-    console.log(commentData);
     return this.db
-      .object(`comments/${commentData.postId}/${commentData.commentId}`)
+      .object(
+        `comments/${commentData.data.postId}/${commentData.data.commentId}`
+      )
       .set(commentData);
   }
 
@@ -41,9 +42,10 @@ export class DatabaseService {
       .valueChanges();
   }
 
-  editPost(postId: string, editData: Partial<DatabasePost>) {
-    const postRef = this.db.object<DatabasePost>(`posts/${postId}`);
-    return postRef.update(editData);
+  editPost(postId: string, editData: Partial<DatabasePostData>) {
+    return this.db
+      .object<DatabasePostData>(`posts/${postId}/data`)
+      .update(editData);
   }
 
   deletePost(postId: string): Promise<[void, void]> {
@@ -65,15 +67,43 @@ export class DatabaseService {
   editComment(
     postId: string,
     commentId: string,
-    editData: Partial<DatabaseComment>
+    editData: Partial<DatabaseCommentData>
   ) {
-    const comRef = this.db.object<DatabasePost>(
-      `comments/${postId}/${commentId}`
+    const comRef = this.db.object<DatabaseCommentData>(
+      `comments/${postId}/${commentId}/data`
     );
     return comRef.update(editData);
   }
 
   deleteComment(postId: string, commentId: string): Promise<void> {
     return this.db.object(`comments/${postId}/${commentId}`).remove();
+  }
+
+  addLike(
+    targetType: 'post' | 'comment',
+    userId: string,
+    postId: string,
+    commentId?: string
+  ) {
+    const url =
+      targetType === 'post'
+        ? `/posts/${postId}/likes/${userId}`
+        : `/comments/${postId}/${commentId}/likes/${userId}`;
+
+    return this.db.object(url).set(true);
+  }
+
+  removeLike(
+    targetType: 'post' | 'comment',
+    userId: string,
+    postId: string,
+    commentId?: string
+  ) {
+    const url =
+      targetType === 'post'
+        ? `/posts/${postId}/likes/${userId}`
+        : `/comments/${postId}/${commentId}/likes/${userId}`;
+
+    return this.db.object(url).remove();
   }
 }

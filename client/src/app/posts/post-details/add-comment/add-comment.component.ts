@@ -60,15 +60,18 @@ export class AddCommentComponent {
     const commentId = timestamp.getTime().toString();
 
     const commentData: DatabaseComment = {
-      createdAt: timestamp.toString(),
-      updatedAt: '',
-      userId: currentUser.id,
-      username: currentUser.username,
-      userPhoto: currentUser.imageUrl,
-      attachedPhoto: photoURL || '',
-      postId,
-      commentId,
-      comment,
+      data: {
+        createdAt: timestamp.toString(),
+        updatedAt: '',
+        userId: currentUser.id,
+        username: currentUser.username,
+        userPhoto: currentUser.imageUrl,
+        attachedPhoto: photoURL || '',
+        postId,
+        commentId,
+        comment,
+      },
+      likes: [],
     };
 
     return this.databaseService.createComment(commentData);

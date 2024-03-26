@@ -16,7 +16,7 @@
 />
 <app-edit-modal
   [closeEditModal]="closeEditModal.bind(this)"
-  [data]="showEditModalFor === 'comment' ? currentComment : post"
+  [data]="showEditModalFor === 'comment' ? currentComment?.data : post?.data"
   [dataType]="showEditModalFor"
   [editForm]="editForm"
   *ngIf="showEditModalFor && editForm"
@@ -53,41 +53,59 @@
         <div class="card-body">
           <div class="user">
             <img
-              src="{{ post.userPhoto }}"
-              alt="{{ post.username }}"
+              src="{{ post.data.userPhoto }}"
+              alt="{{ post.data.username }}"
               class="user-photo"
             />
-            <p class="card-title">{{ post.username }}</p>
+            <p class="card-title">{{ post.data.username }}</p>
           </div>
-          <h5 class="card-title">{{ post.title }}</h5>
+          <h5 class="card-title">{{ post.data.title }}</h5>
           <p class="card-text">
-            {{ post.content }}
+            {{ post.data.content }}
           </p>
           <p class="card-text">
             <small class="text-body-secondary">{{
-              post.updatedAt !== ""
-                ? "Last updated on " + getFormattedDate(post.updatedAt)
-                : "Created on " + getFormattedDate(post.createdAt)
+              post.data.updatedAt !== ""
+                ? "Last updated on " + getFormattedDate(post.data.updatedAt)
+                : "Created on " + getFormattedDate(post.data.createdAt)
             }}</small>
           </p>
         </div>
       </div>
       <div class="col-md-4 img-wrapper">
         <img
-          src="{{ post.attachedPhoto }}"
+          src="{{ post.data.attachedPhoto }}"
           class="img-fluid rounded-start"
-          alt="{{ post.title }}"
-          *ngIf="post.attachedPhoto"
+          alt="{{ post.data.title }}"
+          *ngIf="post.data.attachedPhoto"
         />
-        <!-- <p style="font-style: italic; color: #666" *ngIf="!post.attachedPhoto">
+        <!-- <p style="font-style: italic; color: #666" *ngIf="!post.data.attachedPhoto">
           No photo attached.
         </p> -->
       </div>
     </div>
     <hr />
+    <div class="like-btn">
+      <div *ngIf="post.data.userId !== currentUser?.id">
+        <div class="before-like" *ngIf="!hasUserLiked" (click)="onLikeSwitch()">
+          <i-bs name="hand-thumbs-up" width="25" height="25"> </i-bs>
+          <p>Like ({{ post.likes ? getTotalLikes() : "0" }})</p>
+        </div>
+        <div class="after-like" *ngIf="hasUserLiked" (click)="onLikeSwitch()">
+          <i-bs name="hand-thumbs-up-fill" width="25" height="25"> </i-bs>
+          <p>Liked ({{ post.likes ? getTotalLikes() : "0" }})</p>
+        </div>
+      </div>
+      <div *ngIf="post.data.userId === currentUser?.id">
+        <div class="owner-like">
+          <i-bs name="hand-thumbs-up-fill" width="25" height="25"> </i-bs>
+          <p>Likes ({{ post.likes ? getTotalLikes() : "0" }})</p>
+        </div>
+      </div>
+    </div>
     <div
       class="edit-and-delete"
-      *ngIf="currentUser !== null && currentUser.id === post.userId"
+      *ngIf="currentUser !== null && currentUser.id === post.data.userId"
     >
       <button
         type="button"

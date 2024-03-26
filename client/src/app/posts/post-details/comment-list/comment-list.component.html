@@ -8,30 +8,30 @@
       <div class="card-body">
         <div class="user">
           <img
-            src="{{ comment.userPhoto }}"
-            alt="{{ comment.username }}"
+            src="{{ comment.data.userPhoto }}"
+            alt="{{ comment.data.username }}"
             class="user-photo"
           />
-          <p class="card-title">{{ comment.username }}</p>
+          <p class="card-title">{{ comment.data.username }}</p>
         </div>
         <p class="card-text">
-          {{ comment.comment }}
+          {{ comment.data.comment }}
         </p>
         <p class="card-text">
           <small class="text-body-secondary">{{
-            comment.updatedAt !== ""
-              ? "Last updated on " + getFormattedDate(comment.updatedAt)
-              : "Created on " + getFormattedDate(comment.createdAt)
+            comment.data.updatedAt !== ""
+              ? "Last updated on " + getFormattedDate(comment.data.updatedAt)
+              : "Created on " + getFormattedDate(comment.data.createdAt)
           }}</small>
         </p>
       </div>
     </div>
     <div class="col-md-4 img-wrapper">
       <img
-        src="{{ comment.attachedPhoto }}"
+        src="{{ comment.data.attachedPhoto }}"
         class="img-fluid rounded-start"
         alt="Attached Photo"
-        *ngIf="comment.attachedPhoto"
+        *ngIf="comment.data.attachedPhoto"
       />
       <!-- <p style="font-style: italic; color: #666" *ngIf="!post.attachedPhoto">
           No photo attached.
@@ -42,7 +42,7 @@
 
   <div
     class="edit-and-delete"
-    *ngIf="currentUser !== null && currentUser.id === comment.userId"
+    *ngIf="currentUser !== null && currentUser.id === comment.data.userId"
   >
     <button
       type="button"
