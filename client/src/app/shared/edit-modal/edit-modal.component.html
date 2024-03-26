@@ -4,9 +4,7 @@
     <div class="modal-dialog">
       <div class="modal-content" *ngIf="data && dataType">
         <div class="modal-header">
-          <h4 class="modal-title">
-            Edit {{ getCapitalizedFirstLetter(dataType) }}
-          </h4>
+          <h4 class="modal-title">Edit {{ dataType | titlecase }}</h4>
           <button
             type="button"
             class="btn-close"
@@ -16,25 +14,23 @@
           ></button>
         </div>
         <div class="modal-body">
-          <div *ngFor="let input of values">
-            <label for="{{ input[0] }}">{{
-              getCapitalizedFirstLetter(input[0])
-            }}</label>
+          <div *ngFor="let input of values | keyvalue">
+            <label for="{{ input.key }}">{{ input.key | titlecase }}</label>
             <div class="mb-3 input-group">
               <input
-                *ngIf="input[0] === 'title'"
+                *ngIf="input.key === 'title'"
                 type="text"
                 class="form-control"
-                id="{{ input[0] }}"
-                formControlName="{{ input[0] }}"
+                id="{{ input.key }}"
+                formControlName="{{ input.key }}"
               />
               <textarea
-                *ngIf="input[0] !== 'title'"
+                *ngIf="input.key !== 'title'"
                 class="form-control"
-                id="{{ input[0] }}"
-                formControlName="{{ input[0] }}"
+                id="{{ input.key }}"
+                formControlName="{{ input.key }}"
                 rows="3"
-                >{{ input[1] }}</textarea
+                >{{ input.value }}</textarea
               >
             </div>
           </div>

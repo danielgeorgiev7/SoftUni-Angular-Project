@@ -1,6 +1,4 @@
-<h1 style="margin: 2vw 10vw">
-  Top {{ genre.charAt(0).toUpperCase() + genre.slice(1) }} Movies
-</h1>
+<h1 style="margin: 2vw 10vw">Top {{ genre | titlecase }} Movies</h1>
 <app-loading-spinner *ngIf="movies.length === 0" />
 <div class="container-wrapper">
   <div class="cards-container" *ngIf="movies.length > 0">

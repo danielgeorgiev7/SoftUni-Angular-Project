@@ -7,7 +7,7 @@
       [routerLink]="'/categories/' + genre"
     >
       <p class="genre-text">
-        {{ genre.charAt(0).toUpperCase() + genre.slice(1) }}
+        {{ genre | titlecase }}
       </p>
       <img src="assets/night-sky.png" class="card-img-top" alt="..." />
     </div>

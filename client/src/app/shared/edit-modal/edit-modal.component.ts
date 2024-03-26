@@ -16,7 +16,8 @@ export class EditModalComponent implements OnInit {
   @Input('data') data: DatabasePost | DatabaseComment | null = null;
   @Input('dataType') dataType: string | null = null;
   @Input('editForm') editForm: FormGroup = new FormGroup({});
-  values: [string, unknown][] = [];
+  // values: [string, unknown][] = [];
+  values: { [key: string]: any } = {};
 
   selectedFile: File | null = null;
 
@@ -27,15 +28,12 @@ export class EditModalComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.values = Object.entries(this.editForm.value);
+    // this.values = Object.entries(this.editForm.value);
+    this.values = this.editForm.value;
   }
 
   onSelectedFileChange(selectedFile: File | null) {
     this.selectedFile = selectedFile;
-  }
-
-  getCapitalizedFirstLetter(word: string): string {
-    return this.utilService.capitalizeFirstLetter(word);
   }
 
   async onSubmit() {
