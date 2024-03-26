@@ -40,6 +40,9 @@
             <app-upload
               (selectedFileChange)="onSelectedFileChange($event)"
               [selectedFile]="selectedFile"
+              [btnText]="
+                post.attachedPhoto === '' ? 'Attach Image' : 'Change Image'
+              "
             />
             <button type="submit" class="btn btn-primary">Post</button>
             <button

@@ -7,6 +7,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class UploadComponent {
   @Input() selectedFile: File | null = null;
+  @Input() btnText: string = '';
   @Output() selectedFileChange = new EventEmitter<File | null>();
 
   onFileSelected(event: Event) {

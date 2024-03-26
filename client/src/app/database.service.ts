@@ -41,6 +41,11 @@ export class DatabaseService {
       .valueChanges();
   }
 
+  editPost(postId: string, editData: Partial<DatabasePost>) {
+    const postRef = this.db.object<DatabasePost>(`posts/${postId}`);
+    return postRef.update(editData);
+  }
+
   deletePost(postId: string): Promise<[void, void]> {
     const postRef = this.db.object(`posts/${postId}`);
     const postDeletionPromise = postRef.remove();

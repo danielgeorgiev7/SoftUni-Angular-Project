@@ -28,6 +28,7 @@
     <app-upload
       (selectedFileChange)="onSelectedFileChange($event)"
       [selectedFile]="selectedFile"
+      [btnText]="'Attach Image'"
     />
     <button class="btn btn-primary">Post</button>
     <button class="btn btn-secondary" (click)="switchAddCommentMode()">
