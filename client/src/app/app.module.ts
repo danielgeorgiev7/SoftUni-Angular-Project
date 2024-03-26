@@ -42,13 +42,6 @@ export class AppModule {}
 
 // TODO:
 
-// Edit post:
-// image logic
-// submit + updatedAt
-
-// Comments
-// Edit and delete
-
 // Important:
 // Add toast
 // Add error handling

@@ -54,3 +54,14 @@ img {
   width: fit-content;
   cursor: pointer;
 }
+
+.edit-and-delete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.edit-and-delete button {
+  font-size: 1.2rem;
+}

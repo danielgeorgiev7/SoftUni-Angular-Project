@@ -1,28 +1,40 @@
 <app-loading-spinner *ngIf="isLoading" />
 <app-small-modal
-  *ngIf="showDeleteModal"
-  [title]="'Delete post'"
-  [text]="'Are you sure you want to delete this post?'"
+  *ngIf="showDeleteModalFor"
+  [title]="'Delete ' + showDeleteModalFor"
+  [text]="'Are you sure you want to delete this ' + showDeleteModalFor + '?'"
   [secondaryBtnText]="'Cancel'"
   [primaryBtnText]="'Delete'"
   [primaryBtnClasses]="'btn btn-danger'"
-  [primaryBtnClick]="onDeletePost.bind(this)"
-  [secondaryBtnClick]="switchDeleteModal"
-  [closeBtnClick]="switchDeleteModal"
+  [primaryBtnClick]="
+    showDeleteModalFor === 'post'
+      ? onDeletePost.bind(this)
+      : onDeleteComment.bind(this)
+  "
+  [secondaryBtnClick]="closeDeleteModal.bind(this)"
+  [closeBtnClick]="closeDeleteModal.bind(this)"
 />
 <app-edit-modal
-  *ngIf="showEditModal"
-  [switchEditModal]="switchEditModal.bind(this)"
-  [post]="post"
+  [closeEditModal]="closeEditModal.bind(this)"
+  [data]="showEditModalFor === 'comment' ? currentComment : post"
+  [dataType]="showEditModalFor"
+  [editForm]="editForm"
+  *ngIf="showEditModalFor && editForm"
 />
+<!-- [editForm]="editForm" -->
+
 <!-- [@modalAnimation]="'enter'" -->
 <h1
   class="heading"
-  *ngIf="!isLoading && post === null && showDeleteModal === false"
+  *ngIf="!isLoading && post === null && showDeleteModalFor !== 'post'"
 >
   Post couldn't load. Try again later.
 </h1>
-<div class="icon-wrapper" routerLink="/posts">
+<div
+  class="icon-wrapper"
+  routerLink="/posts"
+  [ngClass]="{ 'background-blur': showBlur }"
+>
   <i-bs
     name="arrow-left"
     class="arrow-left-icon"
@@ -33,7 +45,7 @@
 <div
   class="details-page"
   *ngIf="!isLoading && post !== null"
-  [ngClass]="{ 'background-blur': showDeleteModal || showEditModal }"
+  [ngClass]="{ 'background-blur': showBlur }"
 >
   <div class="card mb-3">
     <div class="row g-0">
@@ -72,6 +84,7 @@
         </p> -->
       </div>
     </div>
+    <hr />
     <div
       class="edit-and-delete"
       *ngIf="currentUser !== null && currentUser.id === post.userId"
@@ -79,19 +92,23 @@
       <button
         type="button"
         class="btn btn-secondary"
-        (click)="switchEditModal()"
+        (click)="onPostEditClick()"
       >
         Edit
       </button>
       <button
         type="button"
         class="btn btn-danger"
-        (click)="switchDeleteModal()"
+        (click)="onPostDeleteClick()"
       >
         Delete
       </button>
     </div>
   </div>
   <app-add-comment [postId]="postId" />
-  <app-comment-list [comments]="comments" />
+  <app-comment-list
+    [comments]="comments"
+    (commentDelete)="onCommentDeleteClick($event)"
+    (commentEdit)="onCommentEditClick($event)"
+  />
 </div>

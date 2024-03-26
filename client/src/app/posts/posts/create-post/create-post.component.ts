@@ -40,6 +40,7 @@ export class CreatePostComponent {
       await this.buildPost(title, content, downloadUrL);
 
       form.reset();
+      this.showCreatePost = false;
     } catch (error) {
       console.error('Error occurred while creating post:', error);
     } finally {

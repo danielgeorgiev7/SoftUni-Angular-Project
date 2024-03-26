@@ -1,5 +1,6 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { LocalUser } from 'src/app/auth/LocalUser.model';
@@ -32,13 +33,16 @@ import { DatabasePost } from 'src/app/types/DatabasePost';
   // ],
 })
 export class PostDetailsComponent implements OnInit, OnDestroy {
-  isLoading = true;
-  showDeleteModal = false;
-  showEditModal = false;
   postId: string = '';
+  showDeleteModalFor: string | null = null;
+  showEditModalFor: string | null = null;
+  editForm: FormGroup | null = null;
+  isLoading = true;
+  showBlur = false;
 
   post: DatabasePost | null = null;
   comments: DatabaseComment[] = [];
+  currentComment: DatabaseComment | null = null;
   currentUser: LocalUser | null = null;
 
   routeSub: Subscription = new Subscription();
@@ -51,7 +55,8 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
     private databaseService: DatabaseService,
     private utilService: UtilService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
@@ -80,13 +85,43 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
     this.commentSub.unsubscribe();
   }
 
-  switchDeleteModal = () => {
-    this.showDeleteModal = !this.showDeleteModal;
-  };
+  switchBlur() {
+    this.showBlur = !this.showBlur;
+  }
 
-  switchEditModal = () => {
-    this.showEditModal = !this.showEditModal;
-  };
+  closeDeleteModal() {
+    this.showDeleteModalFor = null;
+    this.switchBlur();
+  }
+
+  closeEditModal() {
+    this.showEditModalFor = null;
+    this.switchBlur();
+  }
+
+  onPostDeleteClick() {
+    this.showDeleteModalFor = 'post';
+    this.switchBlur();
+  }
+
+  onCommentDeleteClick(comment: DatabaseComment) {
+    this.currentComment = comment;
+    this.showDeleteModalFor = 'comment';
+    this.switchBlur();
+  }
+
+  onPostEditClick() {
+    this.showEditModalFor = 'post';
+    this.editForm = this.buildEditForm();
+    this.switchBlur();
+  }
+
+  onCommentEditClick(comment: DatabaseComment) {
+    this.showEditModalFor = 'comment';
+    this.currentComment = comment;
+    this.editForm = this.buildEditForm();
+    this.switchBlur();
+  }
 
   onDeletePost() {
     this.databaseService
@@ -95,6 +130,28 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
       .catch((error) => {
         console.log(error);
       });
+  }
+
+  onDeleteComment() {
+    if (!this.currentComment) return;
+    this.databaseService
+      .deleteComment(this.postId, this.currentComment.commentId)
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  buildEditForm(): FormGroup<any> | null {
+    if (this.showEditModalFor == 'post') {
+      return (this.editForm = this.fb.group({
+        title: [this.post?.title, Validators.required],
+        content: [this.post?.content, Validators.required],
+      }));
+    } else if (this.showEditModalFor == 'comment') {
+      return (this.editForm = this.fb.group({
+        comment: [this.currentComment?.comment, Validators.required],
+      }));
+    } else return null;
   }
 
   getFormattedDate(dateString: string | undefined) {

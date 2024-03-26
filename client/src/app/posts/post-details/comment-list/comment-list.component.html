@@ -38,4 +38,25 @@
         </p> -->
     </div>
   </div>
+  <hr />
+
+  <div
+    class="edit-and-delete"
+    *ngIf="currentUser !== null && currentUser.id === comment.userId"
+  >
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="emitCommentForEdit(comment)"
+    >
+      Edit
+    </button>
+    <button
+      type="button"
+      class="btn btn-danger"
+      (click)="emitCommentForDelete(comment)"
+    >
+      Delete
+    </button>
+  </div>
 </div>

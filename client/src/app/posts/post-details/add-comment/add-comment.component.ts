@@ -42,6 +42,7 @@ export class AddCommentComponent {
       await this.buildComment(this.postId, comment, downloadUrL);
 
       form.reset();
+      this.addCommentMode = false;
     } catch (error) {
       console.error('Error occurred while creating post:', error);
     } finally {

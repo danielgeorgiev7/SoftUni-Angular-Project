@@ -61,4 +61,19 @@ export class DatabaseService {
       .list<DatabaseComment>(`comments/${commentId}`)
       .valueChanges();
   }
+
+  editComment(
+    postId: string,
+    commentId: string,
+    editData: Partial<DatabaseComment>
+  ) {
+    const comRef = this.db.object<DatabasePost>(
+      `comments/${postId}/${commentId}`
+    );
+    return comRef.update(editData);
+  }
+
+  deleteComment(postId: string, commentId: string): Promise<void> {
+    return this.db.object(`comments/${postId}/${commentId}`).remove();
+  }
 }
