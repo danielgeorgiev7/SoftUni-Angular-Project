@@ -1,66 +1,138 @@
-<div class="register-wrapper">
-  <div class="register">
-    <h1>Register</h1>
-    <form #form="ngForm" (ngSubmit)="onSubmit(form)">
-      <div class="form-floating mb-3">
-        <input
-          type="username"
-          class="form-control"
-          id="username"
-          name="username"
-          placeholder="@username"
-          required
-          minlength="6"
-          ngModel
-        />
-        <label for="username">Username</label>
-      </div>
-      <div class="form-floating mb-3">
-        <input
-          type="email"
-          class="form-control"
-          id="email"
-          name="email"
-          placeholder="name@example.com"
-          required
-          email
-          ngModel
-        />
-        <label for="email">Email address</label>
-      </div>
-      <div class="form-floating mb-3">
-        <input
-          type="password"
-          class="form-control"
-          id="password"
-          name="password"
-          placeholder="Password"
-          minlength="6"
-          ngModel
-          required
-        />
-        <label for="password">Password</label>
-      </div>
-      <div class="form-floating">
-        <input
-          type="password"
-          class="form-control"
-          id="rePassword"
-          name="rePassword"
-          placeholder="Repeat Password"
-          ngModel
-          minlength="6"
-          required
-        />
-        <label for="rePassword">Repeat Password</label>
-      </div>
-      <div class="btn-wrapper">
-        <button class="btn btn-primary" [disabled]="form.invalid">
-          Register
-        </button>
-      </div>
+<div class="message-wrapper">
+  <p-messages
+    [(value)]="messages"
+    [enableService]="false"
+    [closable]="true"
+  ></p-messages>
+</div>
 
-      <p>Already registered? <a routerLink="/login">To Login</a></p>
-    </form>
-  </div>
+<div class="register-wrapper">
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register">
+    <h1 class="heading">Register</h1>
+    <div
+      class="form-floating mb-3"
+      [class.has-error]="
+        registerForm.get('username')?.invalid &&
+        registerForm.get('username')?.touched
+      "
+    >
+      <input
+        type="text"
+        class="form-control"
+        id="username"
+        formControlName="username"
+        placeholder="@username"
+      />
+      <label for="username">Username</label>
+      <div
+        *ngIf="
+          registerForm.get('username')?.invalid &&
+          registerForm.get('username')?.touched
+        "
+        class="invalid-feedback"
+      >
+        <p *ngIf="registerForm.get('username')?.errors?.['required']">
+          Username is required.
+        </p>
+        <p *ngIf="registerForm.get('username')?.errors?.['minlength']">
+          Username must be at least 4 characters long.
+        </p>
+      </div>
+    </div>
+    <div
+      class="form-floating mb-3"
+      [class.has-error]="
+        registerForm.get('email')?.invalid && registerForm.get('email')?.touched
+      "
+    >
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        formControlName="email"
+        placeholder="name@example.com"
+      />
+      <label for="email">Email address</label>
+      <div
+        *ngIf="
+          registerForm.get('email')?.invalid &&
+          registerForm.get('email')?.touched
+        "
+        class="invalid-feedback"
+      >
+        <p *ngIf="registerForm.get('email')?.errors?.['required']">
+          Email is required.
+        </p>
+        <p *ngIf="registerForm.get('email')?.errors?.['email']">
+          Invalid email format.
+        </p>
+      </div>
+    </div>
+    <div
+      class="form-floating mb-3"
+      [class.has-error]="
+        registerForm.get('password')?.invalid &&
+        registerForm.get('password')?.touched
+      "
+    >
+      <input
+        type="password"
+        class="form-control"
+        id="password"
+        formControlName="password"
+        placeholder="Password"
+      />
+      <label for="password">Password</label>
+      <div
+        *ngIf="
+          registerForm.get('password')?.invalid &&
+          registerForm.get('password')?.touched
+        "
+        class="invalid-feedback"
+      >
+        <p *ngIf="registerForm.get('password')?.errors?.['required']">
+          Password is required.
+        </p>
+        <p *ngIf="registerForm.get('password')?.errors?.['minlength']">
+          Password must be at least 6 characters long.
+        </p>
+      </div>
+    </div>
+    <div
+      class="form-floating"
+      [class.has-error]="
+        registerForm.get('rePassword')?.invalid &&
+        registerForm.get('rePassword')?.touched
+      "
+    >
+      <input
+        type="password"
+        class="form-control"
+        id="rePassword"
+        formControlName="rePassword"
+        placeholder="Repeat Password"
+      />
+      <label for="rePassword">Repeat Password</label>
+      <div
+        *ngIf="
+          registerForm.get('rePassword')?.invalid &&
+          registerForm.get('rePassword')?.touched
+        "
+        class="invalid-feedback"
+      >
+        <p *ngIf="registerForm.get('rePassword')?.errors?.['required']">
+          Confirm password is required.
+        </p>
+        <p *ngIf="registerForm.get('rePassword')?.errors?.['minlength']">
+          Confirm password must be at least 6 characters long.
+        </p>
+      </div>
+    </div>
+    <div class="btn-wrapper">
+      <button class="btn btn-primary" [disabled]="registerForm.invalid">
+        Register
+      </button>
+    </div>
+    <p>Already registered? <a routerLink="/login">To Login</a></p>
+  </form>
 </div>
