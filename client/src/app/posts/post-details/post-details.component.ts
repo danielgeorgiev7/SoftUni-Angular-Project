@@ -157,7 +157,10 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
   onDeletePost() {
     this.databaseService
       .deletePost(this.postId)
-      .then(() => this.router.navigate(['/posts']))
+      .then(() => {
+        this.showDeleteModalFor = null;
+        this.closeDeleteModal();
+      })
       .catch((error) => {
         console.log(error);
       });
@@ -167,6 +170,9 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
     if (!this.currentComment) return;
     this.databaseService
       .deleteComment(this.postId, this.currentComment.data.commentId)
+      .then(() => {
+        this.closeDeleteModal();
+      })
       .catch((error) => {
         console.log(error);
       });

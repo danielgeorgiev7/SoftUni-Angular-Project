@@ -43,7 +43,7 @@ export class AppModule {}
 // TODO:
 
 // Important:
-// Add toast
+// Toast multiple msg fix
 // Add error handling
 // Add form validations
 // Footer fix
