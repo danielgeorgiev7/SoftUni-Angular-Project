@@ -11,7 +11,7 @@ h1,
 p {
   color: white;
   text-align: center;
-  margin-bottom: 1vw;
+  margin: 1vw 0;
 }
 
 .btn-wrapper {
@@ -30,4 +30,33 @@ p > a {
 
 p {
   font-size: 1.1rem;
+}
+
+input:focus {
+  box-shadow: 0 0 0 0.3rem #555;
+}
+
+.message-wrapper {
+  max-width: fit-content;
+  position: absolute;
+  top: 6.25vw;
+  right: 0.5rem;
+  margin: 0 auto;
+}
+
+.has-error .form-control {
+  box-shadow: 0 0 0 0.25rem rgba(220, 20, 60, 0.5);
+}
+
+.has-error .invalid-feedback {
+  display: block;
+  color: crimson;
+  margin-top: 5px;
+  font-size: 0.9em;
+}
+
+.invalid-feedback p {
+  font-size: 1.3rem;
+  margin-top: 1rem;
+  color: white;
 }

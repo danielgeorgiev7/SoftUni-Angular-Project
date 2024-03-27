@@ -1,5 +1,6 @@
-import { Component, OnDestroy } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Message, MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
@@ -8,17 +9,45 @@ import { Router } from '@angular/router';
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
+  providers: [MessageService],
 })
-export class LoginComponent implements OnDestroy {
+export class LoginComponent implements OnInit, OnDestroy {
   loginSub: Subscription = new Subscription();
-  isLoading: boolean = false; // add loading
-  error: string = ''; // add error displaying
-  constructor(private authService: AuthService, private router: Router) {}
+  isLoading: boolean = false;
+  error: string = '';
+  messages: Message[] = [];
 
-  onSubmit(form: NgForm) {
-    const { email, password } = form.form.value;
-    if (form.invalid) return;
-    form.reset(); // add specific reset
+  loginForm: FormGroup;
+
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private messageService: MessageService,
+    private formBuilder: FormBuilder
+  ) {
+    this.loginForm = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+    });
+  }
+
+  ngOnInit(): void {
+    this.messageService.messageObserver.subscribe((messages) => {
+      if (Array.isArray(messages)) {
+        this.messages = messages;
+      } else {
+        this.messages = [messages];
+      }
+    });
+  }
+
+  onSubmit() {
+    if (this.loginForm.invalid) {
+      return;
+    }
+
+    const { email, password } = this.loginForm.value;
+
     this.isLoading = true;
 
     this.authService
@@ -26,10 +55,17 @@ export class LoginComponent implements OnDestroy {
       .then(() => {
         this.router.navigate(['/home']);
       })
-      .catch((error) => {
-        form.reset();
-        console.error('Error signing in:', error);
-      });
+      .catch(() => {
+        this.loginForm.get('password')?.setValue('');
+        this.loginForm.get('password')?.markAsUntouched();
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Logging Error:',
+          detail: 'Incorrect email or password',
+          life: 2500,
+        });
+      })
+      .finally(() => (this.isLoading = false));
   }
 
   ngOnDestroy(): void {
