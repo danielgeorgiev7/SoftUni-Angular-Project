@@ -33,6 +33,4 @@ export class GenrePageComponent implements OnInit, OnDestroy {
     this.routeSub.unsubscribe();
     this.apiSub.unsubscribe();
   }
-
-  onLoadMore(): void {}
 }
