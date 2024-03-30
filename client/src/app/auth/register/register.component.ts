@@ -15,8 +15,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
   signupSub: Subscription = new Subscription();
   isLoading: boolean = false;
   error: string = '';
-  messages: Message[] = [];
   registerForm: FormGroup;
+  messages: Message[] = [];
+  messagesSub: Subscription = new Subscription();
 
   constructor(
     private authService: AuthService,
@@ -33,11 +34,20 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.messageService.messageObserver.subscribe((messages) => {
-      if (!Array.isArray(messages)) {
-        this.messages.push(messages);
+    this.messagesSub = this.messageService.messageObserver.subscribe(
+      (messages) => {
+        if (Array.isArray(messages)) {
+          this.messages = messages;
+        } else {
+          this.messages = [messages];
+        }
       }
-    });
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.signupSub.unsubscribe();
+    this.messagesSub.unsubscribe();
   }
 
   onSubmit() {
@@ -55,6 +65,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       this.registerForm.get('password')?.markAsUntouched();
       this.registerForm.get('rePassword')?.setValue('');
       this.registerForm.get('rePassword')?.markAsUntouched();
+      return;
     }
 
     this.isLoading = true;
@@ -74,9 +85,5 @@ export class RegisterComponent implements OnInit, OnDestroy {
       .finally(() => {
         this.isLoading = false;
       });
-  }
-
-  ngOnDestroy(): void {
-    this.signupSub.unsubscribe();
   }
 }

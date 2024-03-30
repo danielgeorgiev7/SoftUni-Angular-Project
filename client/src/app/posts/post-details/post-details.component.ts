@@ -2,6 +2,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Message, MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { LocalUser } from 'src/app/auth/LocalUser.model';
 import { AuthService } from 'src/app/auth/auth.service';
@@ -14,6 +15,7 @@ import { DatabasePost } from 'src/app/types/DatabasePost';
   selector: 'app-post-details',
   templateUrl: './post-details.component.html',
   styleUrls: ['./post-details.component.css'],
+  providers: [MessageService],
   // animations: [
   //   trigger('modalAnimation', [
   //     transition(':enter', [
@@ -50,14 +52,18 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
   postSub: Subscription = new Subscription();
   commentSub: Subscription = new Subscription();
   currentUserSub: Subscription = new Subscription();
+  messagesSub: Subscription = new Subscription();
+
+  messages: Message[] = [];
 
   constructor(
-    private activatedRoute: ActivatedRoute,
+    private fb: FormBuilder,
+    private authService: AuthService,
     private databaseService: DatabaseService,
     private utilService: UtilService,
-    private authService: AuthService,
+    private activatedRoute: ActivatedRoute,
     private router: Router,
-    private fb: FormBuilder
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -84,6 +90,15 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
           .subscribe((comments: DatabaseComment[]) => {
             this.comments = comments;
           });
+        this.messagesSub = this.messageService.messageObserver.subscribe(
+          (messages) => {
+            if (Array.isArray(messages)) {
+              this.messages = messages;
+            } else {
+              this.messages = [messages];
+            }
+          }
+        );
       });
     });
   }
@@ -92,6 +107,14 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
     this.routeSub.unsubscribe();
     this.postSub.unsubscribe();
     this.commentSub.unsubscribe();
+    this.currentUserSub.unsubscribe();
+    this.messagesSub.unsubscribe();
+  }
+
+  addMessages(msg: Message[]) {
+    msg.forEach((message) => {
+      this.messageService.add(message);
+    });
   }
 
   onLikeSwitch() {
@@ -160,6 +183,7 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
       .then(() => {
         this.showDeleteModalFor = null;
         this.closeDeleteModal();
+        this.router.navigate(['/posts']);
       })
       .catch((error) => {
         console.log(error);
@@ -180,14 +204,20 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
 
   buildEditForm(): FormGroup<any> | null {
     if (this.showEditModalFor == 'post') {
-      return (this.editForm = this.fb.group({
-        title: [this.post?.data.title, Validators.required],
-        content: [this.post?.data.content, Validators.required],
-      }));
+      return this.fb.group({
+        title: [
+          this.post?.data.title,
+          [Validators.required, Validators.minLength(6)],
+        ],
+        content: [
+          this.post?.data.content,
+          [Validators.required, Validators.minLength(6)],
+        ],
+      });
     } else if (this.showEditModalFor == 'comment') {
-      return (this.editForm = this.fb.group({
+      return this.fb.group({
         comment: [this.currentComment?.data.comment, Validators.required],
-      }));
+      });
     } else return null;
   }
 

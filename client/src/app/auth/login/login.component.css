@@ -39,8 +39,8 @@ input:focus {
 .message-wrapper {
   max-width: fit-content;
   position: absolute;
-  top: 6.25vw;
-  right: 0.5rem;
+  top: 0.5rem;
+  right: 1rem;
   margin: 0 auto;
 }
 

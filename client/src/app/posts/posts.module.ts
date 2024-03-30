@@ -12,6 +12,7 @@ import { CommentListComponent } from './post-details/comment-list/comment-list.c
 import { CreatePostComponent } from './posts/create-post/create-post.component';
 import { PostsListComponent } from './posts/posts-list/posts-list.component';
 import { CommentComponent } from './post-details/comment-list/comment/comment.component';
+import { MessagesModule } from 'primeng/messages';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { CommentComponent } from './post-details/comment-list/comment/comment.co
     SharedModule,
     RouterModule,
     ReactiveFormsModule,
+    MessagesModule,
     NgxBootstrapIconsModule.pick(environment.icons),
   ],
   exports: [PostsComponent],

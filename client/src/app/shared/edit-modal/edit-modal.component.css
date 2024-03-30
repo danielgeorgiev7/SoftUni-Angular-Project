@@ -41,10 +41,18 @@ label {
   margin-left: 0.5rem;
 }
 
-.message-wrapper {
-  max-width: fit-content;
-  position: absolute;
-  top: 6.25vw;
-  right: 0.5rem;
-  margin: 0 auto;
+.has-error .form-control {
+  box-shadow: 0 0 0 0.25rem rgba(220, 20, 60, 0.5);
+}
+
+.has-error .invalid-feedback {
+  display: block;
+  color: crimson;
+  margin-top: 5px;
+}
+
+.invalid-feedback p {
+  font-size: 1.4rem;
+  margin-top: 1rem;
+  color: crimson;
 }

@@ -1,7 +1,6 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Message, MessageService } from 'primeng/api';
-import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { DatabaseService } from 'src/app/database.service';
 import { UtilService } from 'src/app/shared/util.service';
@@ -14,7 +13,7 @@ import { DatabasePostData } from 'src/app/types/DatabasePost';
   styleUrls: ['./edit-modal.component.css'],
   providers: [MessageService],
 })
-export class EditModalComponent implements OnInit, OnDestroy {
+export class EditModalComponent implements OnInit {
   @Input('closeEditModal') closeEditModal: VoidFunction | null = null;
   @Input('data') data:
     | DatabasePostData
@@ -23,34 +22,19 @@ export class EditModalComponent implements OnInit, OnDestroy {
     | null = null;
   @Input('dataType') dataType: string | null = null;
   @Input('editForm') editForm: FormGroup = new FormGroup({});
-  @Input('messages') messages: Message[] = [];
-  // values: [string, unknown][] = [];
+  @Output('messages') messageEmit: EventEmitter<Message[]> = new EventEmitter();
   values: { [key: string]: any } = {};
   selectedFile: File | null = null;
-  messageSubscription: Subscription = new Subscription();
+  messages: Message[] = [];
 
   constructor(
     private databaseService: DatabaseService,
     private utilService: UtilService,
-    private authService: AuthService,
-    private messageService: MessageService
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
     this.values = this.editForm.value;
-    this.messageSubscription = this.messageService.messageObserver.subscribe(
-      (messages) => {
-        if (Array.isArray(messages)) {
-          this.messages = messages;
-        } else {
-          this.messages = [messages];
-        }
-      }
-    );
-  }
-
-  ngOnDestroy(): void {
-    this.messageSubscription.unsubscribe();
   }
 
   onSelectedFileChange(selectedFile: File | null) {
@@ -58,10 +42,11 @@ export class EditModalComponent implements OnInit, OnDestroy {
   }
 
   async onSubmit() {
+    console.log(this.editForm);
     if (this.editForm.invalid) return;
-    if (!this.data) return;
+    if (!this.data || !this.dataType) return;
     if (this.data.userId !== this.authService.user.value?.id) {
-      this.messageService.add({
+      this.messages.push({
         severity: 'error',
         summary: 'Unauthorized User:',
         detail: 'Try logging in again',
@@ -69,6 +54,7 @@ export class EditModalComponent implements OnInit, OnDestroy {
       });
       return;
     }
+
     try {
       const downloadUrL = await this.utilService.upload(this.selectedFile);
       const timestamp = new Date();
@@ -98,6 +84,15 @@ export class EditModalComponent implements OnInit, OnDestroy {
         );
       }
 
+      this.messages.push({
+        severity: 'success',
+        summary: 'Success!',
+        detail: `${
+          this.dataType.charAt(0).toUpperCase() + this.dataType.slice(1)
+        } has been edited.`,
+        life: 2500,
+      });
+
       this.editForm.reset();
     } catch (error: any) {
       let errorMessage: string;
@@ -107,7 +102,7 @@ export class EditModalComponent implements OnInit, OnDestroy {
         errorMessage = 'An error occurred while editing';
       }
 
-      this.messageService.add({
+      this.messages.push({
         severity: 'error',
         summary: 'Edit Error:',
         detail: errorMessage,
@@ -115,6 +110,8 @@ export class EditModalComponent implements OnInit, OnDestroy {
       });
     } finally {
       this.selectedFile = null;
+      this.messageEmit.emit(this.messages);
+      this.messages = [];
       if (this.closeEditModal) this.closeEditModal();
     }
   }

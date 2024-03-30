@@ -1,6 +1,14 @@
 .details-page {
   margin: 0 30vw 3vw;
   font-size: 1.3rem;
+  position: relative;
+}
+
+.heading {
+  color: white;
+  width: 100%;
+  text-align: center;
+  margin: 2rem;
 }
 
 .card {
@@ -77,4 +85,12 @@ img {
 
 .background-blur {
   filter: blur(5px);
+}
+
+.message-wrapper {
+  max-width: fit-content;
+  position: fixed;
+  top: 0.5rem;
+  right: 1rem;
+  margin: 0 auto;
 }

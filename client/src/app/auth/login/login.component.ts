@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   isLoading: boolean = false;
   error: string = '';
   messages: Message[] = [];
+  messagesSub: Subscription = new Subscription();
 
   loginForm: FormGroup;
 
@@ -32,13 +33,20 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.messageService.messageObserver.subscribe((messages) => {
-      if (Array.isArray(messages)) {
-        this.messages = messages;
-      } else {
-        this.messages = [messages];
+    this.messagesSub = this.messageService.messageObserver.subscribe(
+      (messages) => {
+        if (Array.isArray(messages)) {
+          this.messages = messages;
+        } else {
+          this.messages = [messages];
+        }
       }
-    });
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.loginSub.unsubscribe();
+    this.messagesSub.unsubscribe();
   }
 
   onSubmit() {
@@ -66,9 +74,5 @@ export class LoginComponent implements OnInit, OnDestroy {
         });
       })
       .finally(() => (this.isLoading = false));
-  }
-
-  ngOnDestroy(): void {
-    this.loginSub.unsubscribe();
   }
 }

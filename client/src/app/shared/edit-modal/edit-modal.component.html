@@ -1,6 +1,5 @@
 <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
   <div class="modal" tabindex="-1">
-    <!-- Modal content -->
     <div class="modal-dialog">
       <div class="modal-content" *ngIf="data && dataType">
         <div class="modal-header">
@@ -14,24 +13,70 @@
           ></button>
         </div>
         <div class="modal-body">
+          <div
+            *ngIf="values['title'] !== undefined"
+            [ngClass]="
+              editForm.get('title')?.invalid && editForm.get('title')?.touched
+                ? 'has-error'
+                : ''
+            "
+          >
+            <label for="title">Title</label>
+            <input
+              type="text"
+              class="form-control"
+              id="title"
+              formControlName="title"
+            />
+            <div
+              *ngIf="
+                editForm.get('title')?.invalid && editForm.get('title')?.touched
+              "
+              class="invalid-feedback"
+            >
+              <p *ngIf="editForm.get('title')?.errors?.['required']">
+                Title is required.
+              </p>
+              <p *ngIf="editForm.get('title')?.errors?.['minlength']">
+                Title has to be at least 6 characters long.
+              </p>
+            </div>
+          </div>
           <div *ngFor="let input of values | keyvalue">
-            <label for="{{ input.key }}">{{ input.key | titlecase }}</label>
-            <div class="mb-3 input-group">
-              <input
-                *ngIf="input.key === 'title'"
-                type="text"
-                class="form-control"
-                id="{{ input.key }}"
-                formControlName="{{ input.key }}"
-              />
-              <textarea
-                *ngIf="input.key !== 'title'"
-                class="form-control"
-                id="{{ input.key }}"
-                formControlName="{{ input.key }}"
-                rows="3"
-                >{{ input.value }}</textarea
+            <div *ngIf="input.key !== 'title'">
+              <label for="{{ input.key }}">{{ input.key | titlecase }}</label>
+              <div
+                class="mb-3 input-group"
+                [ngClass]="
+                  editForm.get(input.key)?.invalid &&
+                  editForm.get(input.key)?.touched
+                    ? 'has-error'
+                    : ''
+                "
               >
+                <textarea
+                  class="form-control"
+                  id="{{ input.key }}"
+                  formControlName="{{ input.key }}"
+                  rows="3"
+                  >{{ input.value }}</textarea
+                >
+                <div
+                  *ngIf="
+                    editForm.get(input.key)?.invalid &&
+                    editForm.get(input.key)?.touched
+                  "
+                  class="invalid-feedback"
+                >
+                  <p *ngIf="editForm.get(input.key)?.errors?.['required']">
+                    {{ input.key | titlecase }} is required.
+                  </p>
+                  <p *ngIf="editForm.get(input.key)?.errors?.['minlength']">
+                    {{ input.key | titlecase }} has to be at least 6 characters
+                    long.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -1,4 +1,3 @@
-<app-loading-spinner *ngIf="isLoading" />
 <app-small-modal
   *ngIf="showDeleteModalFor"
   [title]="'Delete ' + showDeleteModalFor"
@@ -20,16 +19,20 @@
   [dataType]="showEditModalFor"
   [editForm]="editForm"
   *ngIf="showEditModalFor && editForm"
+  (messages)="addMessages($event)"
 />
 <!-- [editForm]="editForm" -->
 
 <!-- [@modalAnimation]="'enter'" -->
-<h1
-  class="heading"
-  *ngIf="!isLoading && post === null && showDeleteModalFor !== 'post'"
->
-  Post couldn't load. Try again later.
-</h1>
+
+<div class="message-wrapper">
+  <p-messages
+    [(value)]="messages"
+    [enableService]="false"
+    [closable]="true"
+  ></p-messages>
+</div>
+
 <div
   class="icon-wrapper"
   routerLink="/posts"
@@ -42,6 +45,16 @@
     height="3rem"
   ></i-bs>
 </div>
+
+<app-loading-spinner *ngIf="isLoading" />
+
+<h1
+  class="heading"
+  *ngIf="!isLoading && post === null && showDeleteModalFor !== 'post'"
+>
+  Post couldn't load. Try again later.
+</h1>
+
 <div
   class="details-page"
   *ngIf="!isLoading && post !== null"
