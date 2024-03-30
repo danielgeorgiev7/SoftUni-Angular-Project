@@ -1,3 +1,11 @@
+<div class="message-wrapper">
+  <p-messages
+    [(value)]="messages"
+    [enableService]="false"
+    [closable]="true"
+  ></p-messages>
+</div>
+
 <div class="add-comment-btn-wrapper">
   <button
     class="btn btn-primary"
@@ -7,31 +15,61 @@
     Add comment
   </button>
 </div>
+
 <h1 class="heading" *ngIf="addCommentMode">Add Comment</h1>
-<form #form="ngForm" (ngSubmit)="onSubmit(form)" *ngIf="addCommentMode">
-  <div class="mb-3 form-floating">
+<form [formGroup]="commentForm" (ngSubmit)="onSubmit()" *ngIf="addCommentMode">
+  <div
+    class="mb-3 form-floating"
+    [ngClass]="
+      commentForm.get('comment')?.invalid && commentForm.get('comment')?.touched
+        ? 'has-error'
+        : ''
+    "
+  >
     <textarea
       class="form-control"
       id="comment"
-      name="comment"
+      formControlName="comment"
       placeholder="What is on your mind?"
       rows="3"
       style="height: 7.5rem"
-      required
-      ngModel
     ></textarea>
     <label for="comment" class="form-label"
       >What do you think about this post?</label
     >
+    <div
+      *ngIf="
+        commentForm.get('comment')?.invalid &&
+        commentForm.get('comment')?.touched
+      "
+      class="invalid-feedback"
+    >
+      <p *ngIf="commentForm.get('comment')?.errors?.['required']">
+        Comment field is required.
+      </p>
+      <p *ngIf="commentForm.get('comment')?.errors?.['minlength']">
+        Comment has to be at least 6 characters long.
+      </p>
+    </div>
   </div>
   <div class="btn-wrapper">
     <app-upload
       (selectedFileChange)="onSelectedFileChange($event)"
       [selectedFile]="selectedFile"
       [btnText]="'Attach Image'"
-    />
-    <button class="btn btn-primary">Post</button>
-    <button class="btn btn-secondary" (click)="switchAddCommentMode()">
+    ></app-upload>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="commentForm.invalid"
+    >
+      Post
+    </button>
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="switchAddCommentMode()"
+    >
       Cancel
     </button>
   </div>

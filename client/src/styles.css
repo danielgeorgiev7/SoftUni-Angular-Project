@@ -20,3 +20,13 @@ a {
   color: black !important;
   font-size: 40px !important;
 }
+
+app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+router-outlet {
+  flex-grow: 1;
+}

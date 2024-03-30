@@ -1,3 +1,11 @@
+<div class="message-wrapper">
+  <p-messages
+    [(value)]="messages"
+    [enableService]="false"
+    [closable]="true"
+  ></p-messages>
+</div>
+
 <div class="create-post">
   <div class="create-post-wrapper">
     <button
@@ -9,40 +17,75 @@
       Create Post
     </button>
   </div>
-  <form #form="ngForm" (ngSubmit)="onSubmit(form)" *ngIf="showCreatePost">
-    <div class="mb-3 form-floating">
+  <form [formGroup]="postForm" (ngSubmit)="onSubmit()" *ngIf="showCreatePost">
+    <div
+      class="mb-3 input-group"
+      [ngClass]="
+        postForm.get('title')?.invalid && postForm.get('title')?.touched
+          ? 'has-error'
+          : ''
+      "
+    >
       <input
         class="form-control"
         type="text"
-        id="title"
-        name="title"
+        formControlName="title"
         placeholder="Title of your post"
-        required
-        ngModel
       />
-      <label for="title" class="form-label">Title of your post</label>
+      <div
+        *ngIf="postForm.get('title')?.invalid && postForm.get('title')?.touched"
+        class="invalid-feedback"
+      >
+        <p *ngIf="postForm.get('title')?.errors?.['required']">
+          Title field is required.
+        </p>
+        <p *ngIf="postForm.get('title')?.errors?.['minlength']">
+          Title has to be at least 6 characters long.
+        </p>
+      </div>
     </div>
-    <div class="mb-3 form-floating">
+    <div
+      class="mb-3 input-group"
+      [ngClass]="
+        postForm.get('title')?.invalid && postForm.get('content')?.touched
+          ? 'has-error'
+          : ''
+      "
+    >
       <textarea
         class="form-control"
-        id="content"
-        name="content"
+        formControlName="content"
         placeholder="What is on your mind?"
         rows="3"
-        style="height: 5rem"
-        required
-        ngModel
       ></textarea>
-      <label for="content" class="form-label">What is on your mind?</label>
+      <div
+        *ngIf="
+          postForm.get('content')?.invalid && postForm.get('content')?.touched
+        "
+        class="invalid-feedback"
+      >
+        <p *ngIf="postForm.get('content')?.errors?.['required']">
+          Content field is required.
+        </p>
+        <p *ngIf="postForm.get('content')?.errors?.['minlength']">
+          Content has to be at least 6 characters long.
+        </p>
+      </div>
     </div>
     <div class="btn-wrapper">
       <app-upload
         (selectedFileChange)="onSelectedFileChange($event)"
         [selectedFile]="selectedFile"
         [btnText]="'Attach Image'"
-      />
-      <button class="btn btn-primary">Post</button>
-      <button class="btn btn-secondary" (click)="switchShowCreatePost()">
+      ></app-upload>
+      <button class="btn btn-primary" [disabled]="postForm.invalid">
+        Post
+      </button>
+      <button
+        class="btn btn-secondary"
+        type="button"
+        (click)="switchShowCreatePost()"
+      >
         Cancel
       </button>
     </div>

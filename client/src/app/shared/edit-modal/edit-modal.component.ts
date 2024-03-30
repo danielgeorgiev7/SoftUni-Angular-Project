@@ -104,7 +104,7 @@ export class EditModalComponent implements OnInit {
 
       this.messages.push({
         severity: 'error',
-        summary: 'Edit Error:',
+        summary: 'Editing Error:',
         detail: errorMessage,
         life: 2500,
       });
