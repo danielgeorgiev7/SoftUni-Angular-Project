@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { DatabaseUser } from './types/DatabaseUser';
 import { DatabasePost, DatabasePostData } from './types/DatabasePost';
 import { DatabaseComment, DatabaseCommentData } from './types/DatabaseComment';
@@ -34,6 +34,15 @@ export class DatabaseService {
 
   getPosts(): Observable<DatabasePost[]> {
     return this.db.list<DatabasePost>('posts').valueChanges();
+  }
+
+  getPostsByUser(userId: string): Observable<DatabasePost[]> {
+    return this.db
+      .list<DatabasePost>('posts')
+      .valueChanges()
+      .pipe(
+        map((posts) => posts.filter((post) => post.data.userId === userId))
+      );
   }
 
   getSinglePost(postId: string): Observable<DatabasePost | null> {

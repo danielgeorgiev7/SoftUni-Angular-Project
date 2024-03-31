@@ -1,33 +1,44 @@
-<app-loading-spinner *ngIf="!user" />
-<div class="card" style="max-width: 850px" *ngIf="user">
-  <div class="row g-0">
-    <div class="col-md-4">
-      <img
-        src="{{ user.imageUrl }}"
-        class="img-fluid rounded-start w-100"
-        alt="{{ user.username }}"
-      />
-    </div>
-    <div class="col-md-8" style="padding-left: 2rem">
-      <div class="card-body">
-        <h5 class="card-title" style="font-size: 1.6rem">
-          {{ user.username }}
-        </h5>
-        <hr />
-        <p
-          class="card-text"
-          [ngStyle]="{
-            'font-style': user.bio === '' ? 'italic' : 'normal',
-            color: user.bio === '' ? '#ccc' : 'inherit'
-          }"
-        >
-          {{ user.bio === "" ? "No bio provided." : user.bio }}
-        </p>
-        <p class="card-text">Email: {{ user.email }}</p>
-        <p class="card-text">
-          Registered on: {{ getFormattedDate(user.createdAt) }}
-        </p>
+<div class="profile">
+  <app-loading-spinner *ngIf="!user" />
+  <div class="card" style="max-width: 850px" *ngIf="user">
+    <div class="row g-0">
+      <div class="col-md-4">
+        <img
+          src="{{ user.imageUrl }}"
+          class="img-fluid rounded-start w-100"
+          alt="{{ user.username }}"
+        />
+      </div>
+      <div class="col-md-8" style="padding-left: 2rem">
+        <div class="card-body">
+          <h5 class="card-title" style="font-size: 1.6rem">
+            {{ user.username }}
+          </h5>
+          <hr />
+          <p
+            class="card-text"
+            [ngStyle]="{
+              'font-style': user.bio === '' ? 'italic' : 'normal',
+              color: user.bio === '' ? '#ccc' : 'inherit'
+            }"
+          >
+            {{ user.bio === "" ? "No bio provided." : user.bio }}
+          </p>
+          <p class="card-text">Email: {{ user.email }}</p>
+          <p class="card-text">
+            Registered on: {{ getFormattedDate(user.createdAt) }}
+          </p>
+        </div>
       </div>
     </div>
   </div>
+  <div class="change-image">
+    <app-upload
+      (selectedFileChange)="onSelectedFileChange($event)"
+      [selectedFile]="selectedFile"
+      [btnText]="'Attach Image'"
+    />
+    <button class="btn btn-primary" (onClick)="changeImage()">Change</button>
+  </div>
+  <app-my-posts [posts]="posts" [isLoadingPosts]="isLoadingPosts" />
 </div>

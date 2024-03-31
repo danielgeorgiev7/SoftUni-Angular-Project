@@ -1,3 +1,11 @@
+<div class="message-wrapper">
+  <p-messages
+    [(value)]="messages"
+    [enableService]="false"
+    [closable]="true"
+  ></p-messages>
+</div>
+
 <div class="card mb-3" *ngIf="comment !== null">
   <div class="row g-0">
     <div class="col-md-8">

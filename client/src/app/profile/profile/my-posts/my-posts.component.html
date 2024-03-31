@@ -1,6 +1,9 @@
 <div class="posts-list">
-  <h1 class="heading" *ngIf="posts.length > 0">Posts</h1>
-  <h2 class="heading" *ngIf="posts.length === 0">No posts yet.</h2>
+  <h1 class="heading-underline">My Posts</h1>
+  <app-loading-spinner *ngIf="isLoadingPosts" />
+  <h2 class="heading" *ngIf="posts.length === 0 && !isLoadingPosts">
+    No posts yet.
+  </h2>
   <div
     class="card mb-3"
     *ngFor="let post of posts"

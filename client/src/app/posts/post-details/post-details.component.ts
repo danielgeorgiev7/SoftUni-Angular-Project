@@ -119,7 +119,15 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
 
   onLikeSwitch() {
     try {
-      if (!this.currentUser) throw new Error('User not found!');
+      if (!this.currentUser) {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Unauthorized User:',
+          detail: 'Try logging in again',
+          life: 2500,
+        });
+        return;
+      }
       if (!this.hasUserLiked) {
         this.databaseService
           .addLike('post', this.currentUser?.id, this.postId)

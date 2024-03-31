@@ -21,9 +21,6 @@
   *ngIf="showEditModalFor && editForm"
   (messages)="addMessages($event)"
 />
-<!-- [editForm]="editForm" -->
-
-<!-- [@modalAnimation]="'enter'" -->
 
 <div class="message-wrapper">
   <p-messages
@@ -46,7 +43,7 @@
   ></i-bs>
 </div>
 
-<app-loading-spinner *ngIf="isLoading" />
+<app-loading-spinner *ngIf="isLoading" class="loading-spinner" />
 
 <h1
   class="heading"

@@ -1,12 +1,22 @@
 <div class="header">
   <img src="assets/logo.png" alt="Logo" routerLink="/home" />
   <ul class="nav">
-    <li><a routerLink="/home">Home</a></li>
-    <li><a routerLink="/categories">Categories</a></li>
-    <li *ngIf="user"><a routerLink="/posts">Posts</a></li>
-    <li *ngIf="!user"><a routerLink="/login">Login</a></li>
-    <li *ngIf="!user"><a routerLink="/register">Register</a></li>
-    <li *ngIf="user"><a routerLink="/profile">Profile</a></li>
+    <li><a routerLinkActive="active" routerLink="/home">Home</a></li>
+    <li>
+      <a routerLinkActive="active" routerLink="/categories">Categories</a>
+    </li>
+    <li *ngIf="user">
+      <a routerLinkActive="active" routerLink="/posts">Posts</a>
+    </li>
+    <li *ngIf="!user">
+      <a routerLinkActive="active" routerLink="/login">Login</a>
+    </li>
+    <li *ngIf="!user">
+      <a routerLinkActive="active" routerLink="/register">Register</a>
+    </li>
+    <li *ngIf="user">
+      <a routerLinkActive="active" routerLink="/profile">Profile</a>
+    </li>
     <li *ngIf="user"><a (click)="onLogout()">Logout</a></li>
   </ul>
 </div>

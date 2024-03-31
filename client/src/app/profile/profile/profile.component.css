@@ -1,7 +1,23 @@
+.profile {
+  margin: 3vw 30vw;
+}
+
 .card {
-  margin: 3vw auto;
   padding: 3.5rem;
   background-color: #333;
   color: white;
   font-size: 1.4rem;
+}
+
+.change-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem 0;
+  gap: 0.5rem;
+}
+
+.change-image button {
+  padding: 0.6rem 1.2rem;
+  font-size: 1.3rem;
 }

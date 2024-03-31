@@ -25,3 +25,16 @@
 img {
   cursor: pointer;
 }
+
+.nav > li > a::after {
+  display: block;
+  content: "";
+  width: 0;
+  background-color: white;
+  transition: width 0.3s ease;
+}
+
+.active::after {
+  width: 100% !important;
+  height: 2px;
+}
