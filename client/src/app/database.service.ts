@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
-import { Observable, map } from 'rxjs';
+import { Observable, filter, map } from 'rxjs';
 import { DatabaseUser } from './types/DatabaseUser';
 import { DatabasePost, DatabasePostData } from './types/DatabasePost';
 import { DatabaseComment, DatabaseCommentData } from './types/DatabaseComment';
@@ -114,5 +114,52 @@ export class DatabaseService {
         : `/comments/${postId}/${commentId}/likes/${userId}`;
 
     return this.db.object(url).remove();
+  }
+
+  changeImage(userId: string, imageUrl: string): Promise<void[]> {
+    const promises: Promise<void>[] = [];
+
+    const userRef = this.db.object(`users/${userId}/imageUrl`);
+    promises.push(userRef.set(imageUrl));
+
+    this.db
+      .list<DatabasePost>('posts')
+      .valueChanges()
+      .pipe(map((posts) => posts.filter((post) => post.data.userId === userId)))
+      .subscribe((posts) => {
+        posts.forEach((post) => {
+          const postRef = this.db.object(
+            `posts/${post.data.postId}/data/userPhoto`
+          );
+          promises.push(postRef.set(imageUrl));
+        });
+      });
+
+    this.db
+      .list<{ [key: string]: DatabaseComment }>('comments')
+      .valueChanges()
+      .pipe(
+        map((posts) => {
+          return posts.map((post) =>
+            Object.values(post).filter(
+              (comment) => comment.data.userId === userId
+            )
+          );
+        })
+      )
+      .subscribe((comments) => {
+        if (comments.length > 0) {
+          comments.forEach((comment) => {
+            Object.values(comment).forEach((commentObj) => {
+              const commentRef = this.db.object(
+                `comments/${commentObj.data.postId}/${commentObj.data.commentId}/data/userPhoto`
+              );
+              promises.push(commentRef.set(imageUrl));
+            });
+          });
+        }
+      });
+
+    return Promise.all(promises);
   }
 }

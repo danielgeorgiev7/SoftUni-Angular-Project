@@ -21,3 +21,10 @@
   padding: 0.6rem 1.2rem;
   font-size: 1.3rem;
 }
+
+.profile-photo {
+  height: 13rem;
+  width: 13rem;
+  border-radius: 50%;
+  object-fit: cover;
+}

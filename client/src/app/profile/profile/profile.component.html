@@ -1,32 +1,32 @@
 <div class="profile">
-  <app-loading-spinner *ngIf="!user" />
-  <div class="card" style="max-width: 850px" *ngIf="user">
+  <app-loading-spinner *ngIf="!dbUser" />
+  <div class="card" style="max-width: 850px" *ngIf="dbUser">
     <div class="row g-0">
       <div class="col-md-4">
         <img
-          src="{{ user.imageUrl }}"
-          class="img-fluid rounded-start w-100"
-          alt="{{ user.username }}"
+          src="{{ dbUser.imageUrl }}"
+          class="img-fluid profile-photo"
+          alt="{{ dbUser.username }}"
         />
       </div>
       <div class="col-md-8" style="padding-left: 2rem">
         <div class="card-body">
           <h5 class="card-title" style="font-size: 1.6rem">
-            {{ user.username }}
+            {{ dbUser.username }}
           </h5>
           <hr />
           <p
             class="card-text"
             [ngStyle]="{
-              'font-style': user.bio === '' ? 'italic' : 'normal',
-              color: user.bio === '' ? '#ccc' : 'inherit'
+              'font-style': dbUser.bio === '' ? 'italic' : 'normal',
+              color: dbUser.bio === '' ? '#ccc' : 'inherit'
             }"
           >
-            {{ user.bio === "" ? "No bio provided." : user.bio }}
+            {{ dbUser.bio === "" ? "No bio provided." : dbUser.bio }}
           </p>
-          <p class="card-text">Email: {{ user.email }}</p>
+          <p class="card-text">Email: {{ dbUser.email }}</p>
           <p class="card-text">
-            Registered on: {{ getFormattedDate(user.createdAt) }}
+            Registered on: {{ getFormattedDate(dbUser.createdAt) }}
           </p>
         </div>
       </div>
@@ -38,7 +38,7 @@
       [selectedFile]="selectedFile"
       [btnText]="'Attach Image'"
     />
-    <button class="btn btn-primary" (onClick)="changeImage()">Change</button>
+    <button class="btn btn-primary" (click)="changeImage()">Change</button>
   </div>
   <app-my-posts [posts]="posts" [isLoadingPosts]="isLoadingPosts" />
 </div>
