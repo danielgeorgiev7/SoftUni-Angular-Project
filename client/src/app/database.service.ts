@@ -15,9 +15,14 @@ export class DatabaseService {
     return this.db.object(`users/${userId}`).set(userData);
   }
 
-  getUserData(uid: string): Observable<DatabaseUser | null> {
-    const userRef = this.db.object<DatabaseUser | null>(`users/${uid}`);
+  getUserData(userId: string): Observable<DatabaseUser | null> {
+    const userRef = this.db.object<DatabaseUser | null>(`users/${userId}`);
     return userRef.valueChanges();
+  }
+
+  updateUserBio(userId: string, editData: Partial<DatabaseUser>) {
+    const userRef = this.db.object<DatabaseUser>(`users/${userId}`);
+    return userRef.update(editData);
   }
 
   createPost(postData: DatabasePost) {

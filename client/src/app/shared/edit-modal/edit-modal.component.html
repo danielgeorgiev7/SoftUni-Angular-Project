@@ -3,7 +3,10 @@
     <div class="modal-dialog">
       <div class="modal-content" *ngIf="data && dataType">
         <div class="modal-header">
-          <h4 class="modal-title">Edit {{ dataType | titlecase }}</h4>
+          <h4 class="modal-title">
+            {{ dataType === "profile" ? "Update" : "Edit" }}
+            {{ dataType | titlecase }}
+          </h4>
           <button
             type="button"
             class="btn-close"
@@ -84,9 +87,7 @@
           <app-upload
             (selectedFileChange)="onSelectedFileChange($event)"
             [selectedFile]="selectedFile"
-            [btnText]="
-              data.attachedPhoto === '' ? 'Attach Image' : 'Change Image'
-            "
+            [btnText]="getBtnText()"
           />
           <button type="submit" class="btn btn-primary">Post</button>
           <button

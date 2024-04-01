@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { DatabaseService } from 'src/app/database.service';
@@ -15,16 +16,23 @@ export class ProfileComponent implements OnInit, OnDestroy {
   dbUser: DatabaseUser | null = null;
   userSub: Subscription = new Subscription();
   posts: DatabasePost[] = [];
-  selectedFile: File | null = null;
   isLoadingPosts: boolean = true;
+
+  showEditProfile: boolean = false;
+  editForm: FormGroup | null = null;
+  showBlur = false;
 
   constructor(
     private authService: AuthService,
     private databaseService: DatabaseService,
-    private utilService: UtilService
+    private utilService: UtilService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
+    this.editForm = this.fb.group({
+      bio: [''],
+    });
     const userId = this.authService.user.value?.id;
     if (!userId) return;
     // error message for user
@@ -32,6 +40,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.userSub = this.databaseService.getUserData(userId).subscribe(
       (dbUserData) => {
         this.dbUser = dbUserData;
+        this.updateEditForm();
       },
       (error) => {
         console.error('Error fetching user:', error);
@@ -46,24 +55,17 @@ export class ProfileComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.userSub.unsubscribe();
   }
-
-  onSelectedFileChange(selectedFile: File | null) {
-    this.selectedFile = selectedFile;
+  updateEditForm() {
+    if (this.editForm) {
+      this.editForm.patchValue({
+        bio: this.dbUser?.bio || '',
+      });
+    }
   }
 
-  async changeImage() {
-    try {
-      const downloadUrl = await this.utilService.upload(this.selectedFile);
-      if (downloadUrl === '') return;
-      // error message for selected file
-      if (!this.dbUser) return;
-      // error message for user
-      await this.databaseService.changeImage(this.dbUser.userId, downloadUrl);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      this.selectedFile = null;
-    }
+  switchShowEdit() {
+    this.showEditProfile = !this.showEditProfile;
+    this.showBlur = !this.showBlur;
   }
 
   getFormattedDate(dateString: string | undefined) {

@@ -6,6 +6,7 @@ import { DatabaseService } from 'src/app/database.service';
 import { UtilService } from 'src/app/shared/util.service';
 import { DatabaseCommentData } from 'src/app/types/DatabaseComment';
 import { DatabasePostData } from 'src/app/types/DatabasePost';
+import { DatabaseUser } from 'src/app/types/DatabaseUser';
 
 @Component({
   selector: 'app-edit-modal',
@@ -18,6 +19,7 @@ export class EditModalComponent implements OnInit {
   @Input('data') data:
     | DatabasePostData
     | DatabaseCommentData
+    | DatabaseUser
     | undefined
     | null = null;
   @Input('dataType') dataType: string | null = null;
@@ -35,6 +37,7 @@ export class EditModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.values = this.editForm.value;
+    console.log(this.editForm);
   }
 
   onSelectedFileChange(selectedFile: File | null) {
@@ -42,7 +45,6 @@ export class EditModalComponent implements OnInit {
   }
 
   async onSubmit() {
-    console.log(this.editForm);
     if (this.editForm.invalid) return;
     if (!this.data || !this.dataType) return;
     if (this.data.userId !== this.authService.user.value?.id) {
@@ -56,14 +58,20 @@ export class EditModalComponent implements OnInit {
     }
 
     try {
-      const downloadUrL = await this.utilService.upload(this.selectedFile);
+      const downloadUrl = await this.utilService.upload(this.selectedFile);
       const timestamp = new Date();
 
-      const editData = {
-        updatedAt: timestamp.toString(),
-        attachedPhoto:
-          downloadUrL === '' ? this.data.attachedPhoto : downloadUrL,
-      };
+      let editData = {};
+      if (this.dataType === 'post' || this.dataType === 'comment') {
+        editData = {
+          updatedAt: timestamp.toString(),
+          attachedPhoto:
+            downloadUrl === ''
+              ? (this.data as DatabasePostData | DatabaseCommentData)
+                  .attachedPhoto
+              : downloadUrl,
+        };
+      }
 
       if (this.dataType === 'post') {
         (editData as Partial<DatabasePostData>).title =
@@ -71,17 +79,30 @@ export class EditModalComponent implements OnInit {
         (editData as Partial<DatabasePostData>).content =
           this.editForm.value.content;
 
-        await this.databaseService.editPost(this.data.postId, editData);
+        await this.databaseService.editPost(
+          (this.data as DatabasePostData).postId,
+          editData
+        );
       }
       if (this.dataType === 'comment') {
         (editData as Partial<DatabaseCommentData>).comment =
           this.editForm.value.comment;
 
         await this.databaseService.editComment(
-          this.data.postId,
+          (this.data as DatabaseCommentData).postId,
           (this.data as DatabaseCommentData).commentId,
           editData
         );
+      }
+      if (this.dataType === 'profile') {
+        (editData as Partial<DatabaseUser>).bio = this.editForm.value.bio;
+        await this.databaseService.updateUserBio(
+          (this.data as DatabaseUser).userId,
+          editData
+        );
+        if (downloadUrl !== '') {
+          await this.databaseService.changeImage(this.data.userId, downloadUrl);
+        }
       }
 
       this.messages.push({
@@ -89,7 +110,7 @@ export class EditModalComponent implements OnInit {
         summary: 'Success!',
         detail: `${
           this.dataType.charAt(0).toUpperCase() + this.dataType.slice(1)
-        } has been edited.`,
+        } has been ${this.dataType === 'profile' ? 'updated' : 'edited'}.`,
         life: 2500,
       });
 
@@ -99,12 +120,16 @@ export class EditModalComponent implements OnInit {
       if (error instanceof Error) {
         errorMessage = error.message;
       } else {
-        errorMessage = 'An error occurred while editing';
+        errorMessage = `An error occurred while  ${
+          this.dataType === 'profile' ? 'updating' : 'editing'
+        }.`;
       }
 
       this.messages.push({
         severity: 'error',
-        summary: 'Editing Error:',
+        summary: `${
+          this.dataType === 'profile' ? 'Updating' : 'Editing'
+        } Error:`,
         detail: errorMessage,
         life: 2500,
       });
@@ -114,5 +139,16 @@ export class EditModalComponent implements OnInit {
       this.messages = [];
       if (this.closeEditModal) this.closeEditModal();
     }
+  }
+
+  getBtnText() {
+    if (
+      this.dataType !== 'profile' ||
+      !!(this.data as DatabaseCommentData | DatabasePostData).attachedPhoto
+        ?.length
+    ) {
+      return 'Change Photo';
+    }
+    return 'Attach Photo';
   }
 }

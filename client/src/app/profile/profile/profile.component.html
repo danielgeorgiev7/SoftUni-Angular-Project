@@ -1,4 +1,14 @@
-<div class="profile">
+<app-edit-modal
+  [closeEditModal]="switchShowEdit.bind(this)"
+  [data]="dbUser"
+  [dataType]="'profile'"
+  [editForm]="editForm"
+  *ngIf="showEditProfile && editForm"
+/>
+<!--  error message -->
+<!-- (messages)="addMessages($event)" -->
+
+<div class="profile" [ngClass]="{ 'background-blur': showBlur }">
   <app-loading-spinner *ngIf="!dbUser" />
   <div class="card" style="max-width: 850px" *ngIf="dbUser">
     <div class="row g-0">
@@ -18,11 +28,11 @@
           <p
             class="card-text"
             [ngStyle]="{
-              'font-style': dbUser.bio === '' ? 'italic' : 'normal',
-              color: dbUser.bio === '' ? '#ccc' : 'inherit'
+              'font-style': !dbUser.bio ? 'italic' : 'normal',
+              color: !dbUser.bio ? '#ccc' : 'inherit'
             }"
           >
-            {{ dbUser.bio === "" ? "No bio provided." : dbUser.bio }}
+            {{ !dbUser.bio ? "No bio provided." : dbUser.bio }}
           </p>
           <p class="card-text">Email: {{ dbUser.email }}</p>
           <p class="card-text">
@@ -32,13 +42,15 @@
       </div>
     </div>
   </div>
-  <div class="change-image">
-    <app-upload
-      (selectedFileChange)="onSelectedFileChange($event)"
-      [selectedFile]="selectedFile"
-      [btnText]="'Attach Image'"
-    />
-    <button class="btn btn-primary" (click)="changeImage()">Change</button>
+
+  <div class="edit-profile">
+    <button
+      class="btn btn-primary"
+      *ngIf="!showEditProfile"
+      (click)="switchShowEdit()"
+    >
+      Edit Profile
+    </button>
   </div>
   <app-my-posts [posts]="posts" [isLoadingPosts]="isLoadingPosts" />
 </div>

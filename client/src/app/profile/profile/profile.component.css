@@ -9,22 +9,24 @@
   font-size: 1.4rem;
 }
 
-.change-image {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 2rem 0;
-  gap: 0.5rem;
-}
-
-.change-image button {
-  padding: 0.6rem 1.2rem;
-  font-size: 1.3rem;
-}
-
 .profile-photo {
   height: 13rem;
   width: 13rem;
   border-radius: 50%;
   object-fit: cover;
+}
+
+.edit-profile {
+  margin-top: 3rem;
+  display: flex;
+  justify-content: center;
+}
+
+.edit-profile button {
+  font-size: 1.4rem;
+  padding: 0.6rem 1.2rem;
+}
+
+.background-blur {
+  filter: blur(5px);
 }
