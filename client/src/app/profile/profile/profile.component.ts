@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { DatabaseService } from 'src/app/database.service';
@@ -15,8 +16,11 @@ import { DatabaseUser } from 'src/app/types/DatabaseUser';
 export class ProfileComponent implements OnInit, OnDestroy {
   dbUser: DatabaseUser | null = null;
   userSub: Subscription = new Subscription();
+  profileId: string = '';
+  routeSub: Subscription = new Subscription();
   posts: DatabasePost[] = [];
   isLoadingPosts: boolean = true;
+  isOwnProfile: boolean = false;
 
   showEditProfile: boolean = false;
   editForm: FormGroup | null = null;
@@ -26,7 +30,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private databaseService: DatabaseService,
     private utilService: UtilService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -35,9 +41,26 @@ export class ProfileComponent implements OnInit, OnDestroy {
     });
     const userId = this.authService.user.value?.id;
     if (!userId) return;
-    // error message for user
 
-    this.userSub = this.databaseService.getUserData(userId).subscribe(
+    this.routeSub = this.activatedRoute.params.subscribe((params) => {
+      this.profileId = params['profileId'];
+      if (this.profileId && userId && this.profileId === userId) {
+        this.isOwnProfile = true;
+      } else {
+        this.isOwnProfile = false;
+      }
+
+      this.loadData();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.userSub.unsubscribe();
+    this.routeSub.unsubscribe();
+  }
+
+  loadData() {
+    this.userSub = this.databaseService.getUserData(this.profileId).subscribe(
       (dbUserData) => {
         this.dbUser = dbUserData;
         this.updateEditForm();
@@ -46,15 +69,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
         console.error('Error fetching user:', error);
       }
     );
-    this.databaseService.getPostsByUser(userId).subscribe((posts) => {
+    this.databaseService.getPostsByUser(this.profileId).subscribe((posts) => {
       this.posts = posts;
       this.isLoadingPosts = false;
     });
   }
 
-  ngOnDestroy(): void {
-    this.userSub.unsubscribe();
-  }
   updateEditForm() {
     if (this.editForm) {
       this.editForm.patchValue({

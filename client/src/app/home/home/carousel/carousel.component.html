@@ -24,14 +24,25 @@
             alt="..."
           />
         </div>
-        <div class="card-body" *ngIf="movie.timeline">
-          <h5 class="card-title">{{ movie.title }} ({{ movie.year }})</h5>
+        <div class="card-body" *ngIf="!movie.weeksReleased">
+          <h5 class="card-title">
+            {{ movie.title }}
+          </h5>
           <hr />
-          <p class="card-text">Running Time: {{ movie.timeline }}</p>
-          <p class="card-text">Rating: {{ movie.rating }}</p>
+          <p class="card-text">
+            Year of release: {{ movie.year ? movie.year : "N/A" }}
+          </p>
+          <p class="card-text">
+            Running Time: {{ movie.timeline ? movie.timeline : "N/A" }}
+          </p>
+          <p class="card-text">
+            Rating: {{ movie.rating ? movie.rating : "N/A" }}
+          </p>
         </div>
         <div class="card-body" *ngIf="movie.weeksReleased">
-          <h5 class="card-title">{{ movie.title }}</h5>
+          <h5 class="card-title">
+            {{ movie.title }}
+          </h5>
           <hr />
           <p class="card-text">
             Release: {{ movie.weeksReleased }} week{{
@@ -39,8 +50,12 @@
             }}
             ago
           </p>
-          <p class="card-text">Gross Earnings: {{ movie.totalGross }}</p>
-          <p class="card-text">Rating: {{ movie.imdbRating }}</p>
+          <p class="card-text">
+            Gross Earnings: {{ movie.totalGross ? movie.totalGross : "N/A" }}
+          </p>
+          <p class="card-text">
+            Rating: {{ movie.imdbRating ? movie.imdbRating : "N/A" }}
+          </p>
         </div>
       </div>
     </div>

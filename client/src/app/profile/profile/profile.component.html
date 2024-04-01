@@ -3,7 +3,7 @@
   [data]="dbUser"
   [dataType]="'profile'"
   [editForm]="editForm"
-  *ngIf="showEditProfile && editForm"
+  *ngIf="showEditProfile && editForm && isOwnProfile"
 />
 <!--  error message -->
 <!-- (messages)="addMessages($event)" -->
@@ -46,11 +46,15 @@
   <div class="edit-profile">
     <button
       class="btn btn-primary"
-      *ngIf="!showEditProfile"
+      *ngIf="!showEditProfile && isOwnProfile"
       (click)="switchShowEdit()"
     >
       Edit Profile
     </button>
   </div>
-  <app-my-posts [posts]="posts" [isLoadingPosts]="isLoadingPosts" />
+  <app-my-posts
+    [posts]="posts"
+    [isLoadingPosts]="isLoadingPosts"
+    [isOwnPost]="isOwnProfile"
+  />
 </div>
