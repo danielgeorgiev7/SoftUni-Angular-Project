@@ -5,4 +5,5 @@ export interface DatabaseUser {
   createdAt: string | undefined;
   imageUrl: string;
   bio: string;
+  favoriteMovie: string;
 }

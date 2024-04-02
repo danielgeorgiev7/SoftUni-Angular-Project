@@ -47,7 +47,9 @@
           </div>
           <div *ngFor="let input of values | keyvalue">
             <div *ngIf="input.key !== 'title'">
-              <label for="{{ input.key }}">{{ input.key | titlecase }}</label>
+              <label for="{{ input.key }}">{{
+                input.key | splitCamelCase | titlecase
+              }}</label>
               <div
                 class="mb-3 input-group"
                 [ngClass]="

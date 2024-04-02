@@ -37,7 +37,6 @@ export class EditModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.values = this.editForm.value;
-    console.log(this.editForm);
   }
 
   onSelectedFileChange(selectedFile: File | null) {

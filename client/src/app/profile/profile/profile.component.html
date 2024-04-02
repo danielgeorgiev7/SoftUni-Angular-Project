@@ -29,10 +29,24 @@
             class="card-text"
             [ngStyle]="{
               'font-style': !dbUser.bio ? 'italic' : 'normal',
-              color: !dbUser.bio ? '#ccc' : 'inherit'
+              color: !dbUser.bio ? '#bbb' : 'inherit'
             }"
           >
             {{ !dbUser.bio ? "No bio provided." : dbUser.bio }}
+          </p>
+
+          <p
+            class="card-text"
+            [ngStyle]="{
+              'font-style': !dbUser.favoriteMovie ? 'italic' : 'normal',
+              color: !dbUser.favoriteMovie ? '#bbb' : 'inherit'
+            }"
+          >
+            {{
+              !dbUser.favoriteMovie
+                ? "No favorite movie provided."
+                : "Favorite Movie: " + dbUser.favoriteMovie
+            }}
           </p>
           <p class="card-text">Email: {{ dbUser.email }}</p>
           <p class="card-text">

@@ -59,6 +59,7 @@ export class AuthService {
               imageUrl: user.photoURL,
               createdAt: user?.metadata.creationTime,
               bio: '',
+              favoriteMovie: '',
             };
             return this.databaseService.createUserNode(user.uid, userData);
           });

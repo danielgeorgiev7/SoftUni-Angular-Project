@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { DatabaseService } from 'src/app/database.service';
@@ -31,13 +31,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private databaseService: DatabaseService,
     private utilService: UtilService,
     private fb: FormBuilder,
-    private router: Router,
     private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.editForm = this.fb.group({
       bio: [''],
+      favoriteMovie: [''],
     });
     const userId = this.authService.user.value?.id;
     if (!userId) return;
@@ -79,6 +79,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     if (this.editForm) {
       this.editForm.patchValue({
         bio: this.dbUser?.bio || '',
+        favoriteMovie: this.dbUser?.favoriteMovie || '',
       });
     }
   }

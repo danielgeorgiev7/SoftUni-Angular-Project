@@ -6,6 +6,7 @@ import { SmallModalComponent } from './small-modal/small-modal.component';
 import { EditModalComponent } from './edit-modal/edit-modal.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MessagesModule } from 'primeng/messages';
+import { PipesModule } from '../pipes/pipes.module';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,7 @@ import { MessagesModule } from 'primeng/messages';
     SmallModalComponent,
     EditModalComponent,
   ],
-  imports: [CommonModule, ReactiveFormsModule, MessagesModule],
+  imports: [CommonModule, ReactiveFormsModule, MessagesModule, PipesModule],
   exports: [
     LoadingSpinnerComponent,
     UploadComponent,
