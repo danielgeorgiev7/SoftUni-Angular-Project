@@ -54,13 +54,13 @@ export class EditModalComponent implements OnInit {
         severity: 'error',
         summary: 'Unauthorized User:',
         detail: 'Try logging in again',
-        life: 2500,
+        life: 5000,
       });
       return;
     }
 
     try {
-      if (!this.isFormChanged()) {
+      if (!this.isFormChanged() && this.selectedFile === null) {
         if (this.closeEditModal) this.closeEditModal();
         return;
       }
@@ -91,6 +91,7 @@ export class EditModalComponent implements OnInit {
           editData
         );
       }
+
       if (this.dataType === 'comment') {
         (editData as Partial<DatabaseCommentData>).comment =
           this.editForm.value.comment;
@@ -101,14 +102,17 @@ export class EditModalComponent implements OnInit {
           editData
         );
       }
+
       if (this.dataType === 'profile') {
         (editData as Partial<DatabaseUser>).bio = this.editForm.value.bio;
-        await this.databaseService.updateUserBio(
+        (editData as Partial<DatabaseUser>).favoriteMovie =
+          this.editForm.value.favoriteMovie;
+        await this.databaseService.updateUserData(
           (this.data as DatabaseUser).userId,
           editData
         );
         if (downloadUrl !== '') {
-          await this.databaseService.changeImage(this.data.userId, downloadUrl);
+          await this.authService.updateUserPhoto(this.data.userId, downloadUrl);
         }
       }
 
@@ -118,7 +122,7 @@ export class EditModalComponent implements OnInit {
         detail: `${
           this.dataType.charAt(0).toUpperCase() + this.dataType.slice(1)
         } has been ${this.dataType === 'profile' ? 'updated' : 'edited'}.`,
-        life: 2500,
+        life: 5000,
       });
 
       this.editForm.reset();
@@ -138,7 +142,7 @@ export class EditModalComponent implements OnInit {
           this.dataType === 'profile' ? 'Updating' : 'Editing'
         } Error:`,
         detail: errorMessage,
-        life: 2500,
+        life: 5000,
       });
     } finally {
       this.selectedFile = null;
@@ -150,7 +154,7 @@ export class EditModalComponent implements OnInit {
 
   getBtnText() {
     if (
-      this.dataType !== 'profile' ||
+      this.dataType === 'profile' ||
       !!(this.data as DatabaseCommentData | DatabasePostData).attachedPhoto
         ?.length
     ) {

@@ -3,9 +3,10 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { DatabaseService } from '../services/database.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { LocalUser } from './LocalUser.model';
+import { LocalUser } from '../types/LocalUser';
 import { HttpClient } from '@angular/common/http';
 import { DatabaseComment } from '../types/DatabaseComment';
+import { MessagesHandlerService } from '../services/messages-handler.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,10 +15,10 @@ export class AuthService {
   user = new BehaviorSubject<LocalUser | null>(null);
 
   constructor(
-    private http: HttpClient,
     private router: Router,
+    private afAuth: AngularFireAuth,
     private databaseService: DatabaseService,
-    private afAuth: AngularFireAuth
+    private messageHandlerService: MessagesHandlerService
   ) {}
 
   signUp(email: string, password: string, username: string) {
@@ -102,7 +103,19 @@ export class AuthService {
         this.user.next(null);
       })
       .catch((error) => {
-        console.error('Error logging out:', error);
+        let errorMessage: string;
+        if (error instanceof Error) {
+          errorMessage = error.message;
+        } else {
+          errorMessage = 'An error occurred while logging out.';
+        }
+
+        this.messageHandlerService.addMessage({
+          severity: 'error',
+          summary: 'Logout Error:',
+          detail: errorMessage,
+          life: 5000,
+        });
       });
   }
 
@@ -131,5 +144,63 @@ export class AuthService {
 
     this.user.next(user);
     localStorage.setItem('userData', JSON.stringify(user));
+  }
+
+  async updateUserPhoto(userId: string, imageUrl: string) {
+    const user = await this.afAuth.currentUser;
+    if (user) {
+      return user
+        .updateProfile({
+          photoURL: imageUrl,
+        })
+        .then(() => {
+          if (
+            !user.email ||
+            !user.metadata?.lastSignInTime ||
+            !user.refreshToken ||
+            !user.displayName
+          ) {
+            this.messageHandlerService.addMessage({
+              severity: 'error',
+              summary: 'Error:',
+              detail: 'User is not signed in. Try signing in again.',
+              life: 5000,
+            });
+            return;
+          }
+          this.handleLocalUser(
+            user.email,
+            user.uid,
+            user.refreshToken,
+            user.metadata?.lastSignInTime,
+            user.displayName,
+            imageUrl
+          );
+          this.databaseService.changeImage(userId, imageUrl);
+        })
+        .catch((error) => {
+          let errorMessage: string;
+          if (error instanceof Error) {
+            errorMessage = error.message;
+          } else {
+            errorMessage = 'An error occurred while logging out.';
+          }
+
+          this.messageHandlerService.addMessage({
+            severity: 'error',
+            summary: 'Error:',
+            detail: errorMessage,
+            life: 5000,
+          });
+        });
+    } else {
+      this.messageHandlerService.addMessage({
+        severity: 'error',
+        summary: 'Error:',
+        detail: 'User is not signed in. Try signing in again.',
+        life: 5000,
+      });
+      return Promise.reject('User is not signed in.');
+    }
   }
 }
