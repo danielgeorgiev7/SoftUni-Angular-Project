@@ -58,21 +58,21 @@ export class CreatePostComponent {
         severity: 'success',
         summary: 'Success!',
         detail: 'Post has been created.',
-        life: 2500,
+        life: 5000,
       });
     } catch (error) {
       let errorMessage: string;
       if (error instanceof Error) {
         errorMessage = error.message;
       } else {
-        errorMessage = 'An error occurred while editing.';
+        errorMessage = 'An error occurred while posting.';
       }
 
       this.messageHandlerService.addMessage({
         severity: 'error',
-        summary: 'Editing Error:',
+        summary: 'Posting Error:',
         detail: errorMessage,
-        life: 2500,
+        life: 5000,
       });
     } finally {
       this.selectedFile = null;
@@ -87,7 +87,7 @@ export class CreatePostComponent {
         severity: 'error',
         summary: 'Unauthorized User:',
         detail: 'Try logging in again',
-        life: 2500,
+        life: 5000,
       });
       return;
     }

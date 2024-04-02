@@ -47,9 +47,7 @@ export class AppModule {}
 
 // TODO:
 
-// Add loading on missing places
 // Toast multiple msg fix and add custom message service ?
-// Add error handling
 
 // Add lazy loading
 // Add angular animations

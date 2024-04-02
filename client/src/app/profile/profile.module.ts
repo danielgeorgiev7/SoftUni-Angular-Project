@@ -4,10 +4,9 @@ import { ProfileComponent } from './profile/profile.component';
 import { SharedModule } from '../shared/shared.module';
 import { MyPostsComponent } from './profile/my-posts/my-posts.component';
 import { RouterModule } from '@angular/router';
-import { EditProfileComponent } from './profile/edit-profile/edit-profile.component';
 
 @NgModule({
-  declarations: [ProfileComponent, MyPostsComponent, EditProfileComponent],
+  declarations: [ProfileComponent, MyPostsComponent],
   imports: [CommonModule, SharedModule, RouterModule],
 })
 export class ProfileModule {}

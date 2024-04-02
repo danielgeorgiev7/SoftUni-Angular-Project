@@ -3,17 +3,18 @@
 }
 
 .card {
-  padding: 3.5rem;
+  padding: 3rem;
   background-color: #333;
   color: white;
   font-size: 1.4rem;
 }
 
 .profile-photo {
-  height: 13rem;
-  width: 13rem;
+  height: 14.5rem;
+  width: 14.5rem;
   border-radius: 50%;
   object-fit: cover;
+  border: 3px solid #bbb;
 }
 
 .edit-profile {
@@ -23,10 +24,6 @@
 }
 
 .edit-profile button {
-  font-size: 1.4rem;
-  padding: 0.6rem 1.2rem;
-}
-
-.background-blur {
-  filter: blur(5px);
+  font-size: 1.5rem;
+  padding: 0.75rem 1.5rem;
 }

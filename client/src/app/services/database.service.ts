@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
-import { Observable, filter, map } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { DatabaseUser } from '../types/DatabaseUser';
 import { DatabasePost, DatabasePostData } from '../types/DatabasePost';
 import { DatabaseComment, DatabaseCommentData } from '../types/DatabaseComment';
@@ -20,7 +20,7 @@ export class DatabaseService {
     return userRef.valueChanges();
   }
 
-  updateUserBio(userId: string, editData: Partial<DatabaseUser>) {
+  updateUserData(userId: string, editData: Partial<DatabaseUser>) {
     const userRef = this.db.object<DatabaseUser>(`users/${userId}`);
     return userRef.update(editData);
   }

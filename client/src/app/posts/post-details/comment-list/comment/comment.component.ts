@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { Message } from 'primeng/api';
 import { Subscription } from 'rxjs';
-import { LocalUser } from 'src/app/auth/LocalUser.model';
+import { LocalUser } from 'src/app/types/LocalUser';
 import { DatabaseService } from 'src/app/services/database.service';
 import { MessagesHandlerService } from 'src/app/services/messages-handler.service';
 import { UtilService } from 'src/app/shared/util.service';
@@ -51,7 +51,7 @@ export class CommentComponent implements OnInit {
           severity: 'error',
           summary: 'Unauthorized User:',
           detail: 'Try logging in again',
-          life: 2500,
+          life: 5000,
         });
         return;
       }
@@ -60,7 +60,7 @@ export class CommentComponent implements OnInit {
           severity: 'error',
           summary: 'Comment not found.',
           detail: 'Try refreshing the page.',
-          life: 2500,
+          life: 5000,
         });
         return;
       }
@@ -97,7 +97,7 @@ export class CommentComponent implements OnInit {
         severity: 'error',
         summary: 'Commenting Error:',
         detail: errorMessage,
-        life: 2500,
+        life: 5000,
       });
     }
   }

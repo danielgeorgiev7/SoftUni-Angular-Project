@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Message } from 'primeng/api';
 import { Subscription } from 'rxjs';
-import { LocalUser } from 'src/app/auth/LocalUser.model';
+import { LocalUser } from 'src/app/types/LocalUser';
 import { AuthService } from 'src/app/auth/auth.service';
 import { DatabaseService } from 'src/app/services/database.service';
 import { MessagesHandlerService } from 'src/app/services/messages-handler.service';
@@ -113,7 +113,7 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
           severity: 'error',
           summary: 'Unauthorized User:',
           detail: 'Try logging in again',
-          life: 2500,
+          life: 5000,
         });
         return;
       }
@@ -176,10 +176,28 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
       .then(() => {
         this.showDeleteModalFor = null;
         this.closeDeleteModal();
+        this.messageHandlerService.addMessage({
+          severity: 'success',
+          summary: 'Success!',
+          detail: 'Post has been deleted.',
+          life: 5000,
+        });
         this.router.navigate(['/posts']);
       })
       .catch((error) => {
-        console.log(error);
+        let errorMessage: string;
+        if (error instanceof Error) {
+          errorMessage = error.message;
+        } else {
+          errorMessage = 'An error occurred while deleting.';
+        }
+
+        this.messageHandlerService.addMessage({
+          severity: 'error',
+          summary: 'Delete Error:',
+          detail: errorMessage,
+          life: 5000,
+        });
       });
   }
 
@@ -189,9 +207,27 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
       .deleteComment(this.postId, this.currentComment.data.commentId)
       .then(() => {
         this.closeDeleteModal();
+        this.messageHandlerService.addMessage({
+          severity: 'success',
+          summary: 'Success!',
+          detail: 'Comment has been deleted.',
+          life: 5000,
+        });
       })
       .catch((error) => {
-        console.log(error);
+        let errorMessage: string;
+        if (error instanceof Error) {
+          errorMessage = error.message;
+        } else {
+          errorMessage = 'An error occurred while deleting.';
+        }
+
+        this.messageHandlerService.addMessage({
+          severity: 'error',
+          summary: 'Delete Error:',
+          detail: errorMessage,
+          life: 5000,
+        });
       });
   }
 

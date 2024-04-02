@@ -64,13 +64,18 @@
         </p>
       </div>
     </div>
+    <app-loading-spinner *ngIf="isLoading" />
+
     <div class="btn-wrapper">
       <app-upload
         (selectedFileChange)="onSelectedFileChange($event)"
         [selectedFile]="selectedFile"
         [btnText]="'Attach Image'"
       ></app-upload>
-      <button class="btn btn-primary" [disabled]="postForm.invalid">
+      <button
+        class="btn btn-primary"
+        [disabled]="postForm.invalid || isLoading"
+      >
         Post
       </button>
       <button

@@ -21,7 +21,7 @@ export class CarouselComponent {
     slidesToShow: 5,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 2500,
+    autoplaySpeed: 3500,
     pauseOnHover: true,
     infinite: true,
     responsive: [

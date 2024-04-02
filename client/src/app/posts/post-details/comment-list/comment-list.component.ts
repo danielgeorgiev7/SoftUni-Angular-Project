@@ -7,7 +7,7 @@ import {
   Output,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { LocalUser } from 'src/app/auth/LocalUser.model';
+import { LocalUser } from 'src/app/types/LocalUser';
 import { AuthService } from 'src/app/auth/auth.service';
 import { DatabaseComment } from 'src/app/types/DatabaseComment';
 

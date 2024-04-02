@@ -13,7 +13,5 @@ export class MessagesHandlerService {
 
   addMessage(msg: Message) {
     this.currentMessage.next(msg);
-    console.log(this.currentMessage.value);
-    console.log('from service');
   }
 }

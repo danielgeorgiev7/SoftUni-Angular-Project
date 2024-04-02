@@ -3,10 +3,9 @@
   [data]="dbUser"
   [dataType]="'profile'"
   [editForm]="editForm"
+  (messages)="addMessages($event)"
   *ngIf="showEditProfile && editForm && isOwnProfile"
 />
-<!--  error message -->
-<!-- (messages)="addMessages($event)" -->
 
 <div class="profile" [ngClass]="{ 'background-blur': showBlur }">
   <app-loading-spinner *ngIf="!dbUser" />
@@ -48,6 +47,7 @@
                 : "Favorite Movie: " + dbUser.favoriteMovie
             }}
           </p>
+          <hr />
           <p class="card-text">Email: {{ dbUser.email }}</p>
           <p class="card-text">
             Registered on: {{ getFormattedDate(dbUser.createdAt) }}

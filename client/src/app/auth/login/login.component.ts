@@ -14,7 +14,6 @@ import { MessagesHandlerService } from 'src/app/services/messages-handler.servic
 export class LoginComponent implements OnInit, OnDestroy {
   loginSub: Subscription = new Subscription();
   isLoading: boolean = false;
-  error: string = '';
   messages: Message[] = [];
   messagesSub: Subscription = new Subscription();
 
@@ -60,7 +59,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           severity: 'error',
           summary: 'Logging Error:',
           detail: 'Incorrect email or password',
-          life: 2500,
+          life: 5000,
         });
       })
       .finally(() => (this.isLoading = false));

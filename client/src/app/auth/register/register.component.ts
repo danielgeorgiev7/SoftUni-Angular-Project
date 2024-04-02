@@ -14,7 +14,6 @@ import { MessagesHandlerService } from 'src/app/services/messages-handler.servic
 export class RegisterComponent implements OnInit, OnDestroy {
   signupSub: Subscription = new Subscription();
   isLoading: boolean = false;
-  error: string = '';
   registerForm: FormGroup;
   messages: Message[] = [];
   messagesSub: Subscription = new Subscription();
@@ -49,7 +48,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         severity: 'error',
         summary: 'Signup Error:',
         detail: 'Passwords do not match',
-        life: 2500,
+        life: 5000,
       });
       this.registerForm.get('password')?.setValue('');
       this.registerForm.get('password')?.markAsUntouched();
@@ -64,12 +63,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
       .then(() => {
         this.router.navigate(['/home']);
       })
-      .catch((error) => {
+      .catch(() => {
         this.messageHandlerService.addMessage({
           severity: 'error',
           summary: 'Signup Error:',
           detail: 'Email is already in use.',
-          life: 2500,
+          life: 5000,
         });
         this.registerForm.reset();
       })

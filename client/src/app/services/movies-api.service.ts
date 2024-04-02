@@ -83,7 +83,7 @@ export class MoviesApiService {
       .pipe(
         map(
           (movies) => {
-            console.log(movies);
+            // console.log(movies);
             return movies?.movies.slice();
           },
           catchError((error: HttpErrorResponse) => {

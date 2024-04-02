@@ -62,7 +62,7 @@ export class AddCommentComponent implements OnInit, OnDestroy {
         severity: 'success',
         summary: 'Success!',
         detail: 'Comment has been added.',
-        life: 2500,
+        life: 5000,
       });
     } catch (error) {
       let errorMessage: string;
@@ -74,9 +74,9 @@ export class AddCommentComponent implements OnInit, OnDestroy {
 
       this.messageHandlerService.addMessage({
         severity: 'error',
-        summary: 'Commenting Error:',
+        summary: 'Error:',
         detail: errorMessage,
-        life: 2500,
+        life: 5000,
       });
     } finally {
       this.selectedFile = null;
@@ -90,7 +90,7 @@ export class AddCommentComponent implements OnInit, OnDestroy {
         severity: 'error',
         summary: 'Unauthorized User:',
         detail: 'Try logging in again',
-        life: 2500,
+        life: 5000,
       });
       return;
     }
