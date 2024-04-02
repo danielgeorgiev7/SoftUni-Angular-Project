@@ -2,11 +2,12 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Message, MessageService } from 'primeng/api';
+import { Message } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { LocalUser } from 'src/app/auth/LocalUser.model';
 import { AuthService } from 'src/app/auth/auth.service';
-import { DatabaseService } from 'src/app/database.service';
+import { DatabaseService } from 'src/app/services/database.service';
+import { MessagesHandlerService } from 'src/app/services/messages-handler.service';
 import { UtilService } from 'src/app/shared/util.service';
 import { DatabaseComment } from 'src/app/types/DatabaseComment';
 import { DatabasePost } from 'src/app/types/DatabasePost';
@@ -15,7 +16,6 @@ import { DatabasePost } from 'src/app/types/DatabasePost';
   selector: 'app-post-details',
   templateUrl: './post-details.component.html',
   styleUrls: ['./post-details.component.css'],
-  providers: [MessageService],
   // animations: [
   //   trigger('modalAnimation', [
   //     transition(':enter', [
@@ -52,7 +52,6 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
   postSub: Subscription = new Subscription();
   commentSub: Subscription = new Subscription();
   currentUserSub: Subscription = new Subscription();
-  messagesSub: Subscription = new Subscription();
 
   messages: Message[] = [];
 
@@ -63,7 +62,7 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
     private utilService: UtilService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private messageService: MessageService
+    private messageHandlerService: MessagesHandlerService
   ) {}
 
   ngOnInit(): void {
@@ -90,15 +89,6 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
           .subscribe((comments: DatabaseComment[]) => {
             this.comments = comments;
           });
-        this.messagesSub = this.messageService.messageObserver.subscribe(
-          (messages) => {
-            if (Array.isArray(messages)) {
-              this.messages = messages;
-            } else {
-              this.messages = [messages];
-            }
-          }
-        );
       });
     });
   }
@@ -108,19 +98,18 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
     this.postSub.unsubscribe();
     this.commentSub.unsubscribe();
     this.currentUserSub.unsubscribe();
-    this.messagesSub.unsubscribe();
   }
 
   addMessages(msg: Message[]) {
     msg.forEach((message) => {
-      this.messageService.add(message);
+      this.messageHandlerService.addMessage(message);
     });
   }
 
   onLikeSwitch() {
     try {
       if (!this.currentUser) {
-        this.messageService.add({
+        this.messageHandlerService.addMessage({
           severity: 'error',
           summary: 'Unauthorized User:',
           detail: 'Try logging in again',

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { Observable, filter, map } from 'rxjs';
-import { DatabaseUser } from './types/DatabaseUser';
-import { DatabasePost, DatabasePostData } from './types/DatabasePost';
-import { DatabaseComment, DatabaseCommentData } from './types/DatabaseComment';
+import { DatabaseUser } from '../types/DatabaseUser';
+import { DatabasePost, DatabasePostData } from '../types/DatabasePost';
+import { DatabaseComment, DatabaseCommentData } from '../types/DatabaseComment';
 
 @Injectable({
   providedIn: 'root',

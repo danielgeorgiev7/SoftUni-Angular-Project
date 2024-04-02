@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { DatabasePost } from 'src/app/types/DatabasePost';
-import { DatabaseService } from 'src/app/database.service';
+import { DatabaseService } from 'src/app/services/database.service';
 
 @Component({
   selector: 'app-posts',

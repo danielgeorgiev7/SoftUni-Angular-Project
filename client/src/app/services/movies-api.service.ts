@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Movie } from './types/Movie';
+import { Movie } from '../types/Movie';
 import { environment } from 'src/environments/environment.development';
 import { BehaviorSubject, catchError, map, throwError } from 'rxjs';
 

@@ -17,6 +17,8 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { environment } from '../environments/environment';
 import { ProfileModule } from './profile/profile.module';
 import { PipesModule } from './pipes/pipes.module';
+import { MessagesModule } from 'primeng/messages';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,18 +34,20 @@ import { PipesModule } from './pipes/pipes.module';
     PostsModule,
     ProfileModule,
     PipesModule,
+    MessagesModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireDatabaseModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
   ],
-  providers: [],
+  providers: [MessageService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
 
 // TODO:
 
+// Add loading on missing places
 // Toast multiple msg fix and add custom message service ?
 // Add error handling
 

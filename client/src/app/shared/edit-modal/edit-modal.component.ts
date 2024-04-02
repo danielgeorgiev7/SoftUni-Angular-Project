@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Message, MessageService } from 'primeng/api';
+import { Message } from 'primeng/api';
 import { AuthService } from 'src/app/auth/auth.service';
-import { DatabaseService } from 'src/app/database.service';
+import { DatabaseService } from 'src/app/services/database.service';
 import { UtilService } from 'src/app/shared/util.service';
 import { DatabaseCommentData } from 'src/app/types/DatabaseComment';
 import { DatabasePostData } from 'src/app/types/DatabasePost';
@@ -12,7 +12,6 @@ import { DatabaseUser } from 'src/app/types/DatabaseUser';
   selector: 'app-edit-modal',
   templateUrl: './edit-modal.component.html',
   styleUrls: ['./edit-modal.component.css'],
-  providers: [MessageService],
 })
 export class EditModalComponent implements OnInit {
   @Input('closeEditModal') closeEditModal: VoidFunction | null = null;

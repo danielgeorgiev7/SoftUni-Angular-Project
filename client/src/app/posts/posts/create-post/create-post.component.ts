@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Message, MessageService } from 'primeng/api';
+import { Message } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
-import { DatabaseService } from 'src/app/database.service';
+import { DatabaseService } from 'src/app/services/database.service';
+import { MessagesHandlerService } from 'src/app/services/messages-handler.service';
 import { UtilService } from 'src/app/shared/util.service';
 import { DatabasePost } from 'src/app/types/DatabasePost';
 
@@ -11,43 +12,25 @@ import { DatabasePost } from 'src/app/types/DatabasePost';
   selector: 'app-create-post',
   templateUrl: './create-post.component.html',
   styleUrls: ['./create-post.component.css'],
-  providers: [MessageService],
 })
-export class CreatePostComponent implements OnInit, OnDestroy {
+export class CreatePostComponent {
   showCreatePost = false;
   selectedFile: File | null = null;
   isLoading: boolean = false;
   postForm: FormGroup;
   messages: Message[] = [];
-  messagesSub: Subscription = new Subscription();
 
   constructor(
     private authService: AuthService,
     private databaseService: DatabaseService,
     private utilService: UtilService,
     private formBuilder: FormBuilder,
-    private messageService: MessageService
+    private messageHandlerService: MessagesHandlerService
   ) {
     this.postForm = this.formBuilder.group({
       title: ['', [Validators.required, Validators.minLength(6)]],
       content: ['', [Validators.required, Validators.minLength(6)]],
     });
-  }
-
-  ngOnInit(): void {
-    this.messagesSub = this.messageService.messageObserver.subscribe(
-      (messages) => {
-        if (Array.isArray(messages)) {
-          this.messages = messages;
-        } else {
-          this.messages = [messages];
-        }
-      }
-    );
-  }
-
-  ngOnDestroy(): void {
-    this.messagesSub.unsubscribe();
   }
 
   switchShowCreatePost() {
@@ -71,7 +54,7 @@ export class CreatePostComponent implements OnInit, OnDestroy {
 
       this.postForm.reset();
       this.showCreatePost = false;
-      this.messageService.add({
+      this.messageHandlerService.addMessage({
         severity: 'success',
         summary: 'Success!',
         detail: 'Post has been created.',
@@ -85,7 +68,7 @@ export class CreatePostComponent implements OnInit, OnDestroy {
         errorMessage = 'An error occurred while editing.';
       }
 
-      this.messageService.add({
+      this.messageHandlerService.addMessage({
         severity: 'error',
         summary: 'Editing Error:',
         detail: errorMessage,
@@ -100,7 +83,7 @@ export class CreatePostComponent implements OnInit, OnDestroy {
   buildPost(title: string, content: string, photoURL: string) {
     const currentUser = this.authService.user.value;
     if (!currentUser || !currentUser.id) {
-      this.messageService.add({
+      this.messageHandlerService.addMessage({
         severity: 'error',
         summary: 'Unauthorized User:',
         detail: 'Try logging in again',

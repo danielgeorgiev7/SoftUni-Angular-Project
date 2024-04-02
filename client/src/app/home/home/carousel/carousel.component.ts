@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { MoviesApiService } from 'src/app/movies-api.service';
+import { MoviesApiService } from 'src/app/services/movies-api.service';
 import { Movie } from 'src/app/types/Movie';
 
 @Component({

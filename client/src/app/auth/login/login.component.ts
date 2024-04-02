@@ -1,15 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Message, MessageService } from 'primeng/api';
+import { Message } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { MessagesHandlerService } from 'src/app/services/messages-handler.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  providers: [MessageService],
 })
 export class LoginComponent implements OnInit, OnDestroy {
   loginSub: Subscription = new Subscription();
@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private messageService: MessageService,
+    private messageHandlerService: MessagesHandlerService,
     private formBuilder: FormBuilder
   ) {
     this.loginForm = this.formBuilder.group({
@@ -32,17 +32,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void {
-    this.messagesSub = this.messageService.messageObserver.subscribe(
-      (messages) => {
-        if (Array.isArray(messages)) {
-          this.messages = messages;
-        } else {
-          this.messages = [messages];
-        }
-      }
-    );
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.loginSub.unsubscribe();
@@ -66,7 +56,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       .catch(() => {
         this.loginForm.get('password')?.setValue('');
         this.loginForm.get('password')?.markAsUntouched();
-        this.messageService.add({
+        this.messageHandlerService.addMessage({
           severity: 'error',
           summary: 'Logging Error:',
           detail: 'Incorrect email or password',

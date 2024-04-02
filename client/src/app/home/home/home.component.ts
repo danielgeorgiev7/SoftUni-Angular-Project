@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { MoviesApiService } from 'src/app/movies-api.service';
+import { MoviesApiService } from 'src/app/services/movies-api.service';
 import { Movie } from 'src/app/types/Movie';
 
 @Component({

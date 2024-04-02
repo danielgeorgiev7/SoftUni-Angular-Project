@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DatabaseService } from 'src/app/database.service';
+import { DatabaseService } from 'src/app/services/database.service';
 import { UtilService } from 'src/app/shared/util.service';
 import { DatabasePost } from 'src/app/types/DatabasePost';
 

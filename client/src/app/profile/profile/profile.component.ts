@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
-import { DatabaseService } from 'src/app/database.service';
+import { DatabaseService } from 'src/app/services/database.service';
 import { UtilService } from 'src/app/shared/util.service';
 import { DatabasePost } from 'src/app/types/DatabasePost';
 import { DatabaseUser } from 'src/app/types/DatabaseUser';

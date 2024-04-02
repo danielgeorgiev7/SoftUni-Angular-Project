@@ -6,10 +6,11 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { Message, MessageService } from 'primeng/api';
+import { Message } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { LocalUser } from 'src/app/auth/LocalUser.model';
-import { DatabaseService } from 'src/app/database.service';
+import { DatabaseService } from 'src/app/services/database.service';
+import { MessagesHandlerService } from 'src/app/services/messages-handler.service';
 import { UtilService } from 'src/app/shared/util.service';
 import { DatabaseComment } from 'src/app/types/DatabaseComment';
 
@@ -17,9 +18,8 @@ import { DatabaseComment } from 'src/app/types/DatabaseComment';
   selector: 'app-comment',
   templateUrl: './comment.component.html',
   styleUrls: ['./comment.component.css'],
-  providers: [MessageService],
 })
-export class CommentComponent implements OnInit, OnDestroy {
+export class CommentComponent implements OnInit {
   @Input('comment') comment: DatabaseComment | null = null;
   @Input('currentUser') currentUser: LocalUser | null = null;
   @Output() commentEdit = new EventEmitter<DatabaseComment>();
@@ -27,24 +27,14 @@ export class CommentComponent implements OnInit, OnDestroy {
   hasUserLiked = false;
 
   messages: Message[] = [];
-  messagesSub: Subscription = new Subscription();
 
   constructor(
     private databaseService: DatabaseService,
     private utilService: UtilService,
-    private messageService: MessageService
+    private messageHandlerService: MessagesHandlerService
   ) {}
 
   ngOnInit(): void {
-    this.messagesSub = this.messageService.messageObserver.subscribe(
-      (messages) => {
-        if (Array.isArray(messages)) {
-          this.messages = messages;
-        } else {
-          this.messages = [messages];
-        }
-      }
-    );
     if (
       this.comment &&
       this.comment.likes &&
@@ -54,14 +44,10 @@ export class CommentComponent implements OnInit, OnDestroy {
       this.hasUserLiked = true;
   }
 
-  ngOnDestroy(): void {
-    this.messagesSub.unsubscribe();
-  }
-
   onLikeSwitch() {
     try {
       if (!this.currentUser) {
-        this.messageService.add({
+        this.messageHandlerService.addMessage({
           severity: 'error',
           summary: 'Unauthorized User:',
           detail: 'Try logging in again',
@@ -70,7 +56,7 @@ export class CommentComponent implements OnInit, OnDestroy {
         return;
       }
       if (!this.comment?.data) {
-        this.messageService.add({
+        this.messageHandlerService.addMessage({
           severity: 'error',
           summary: 'Comment not found.',
           detail: 'Try refreshing the page.',
@@ -107,7 +93,7 @@ export class CommentComponent implements OnInit, OnDestroy {
         }liking.`;
       }
 
-      this.messageService.add({
+      this.messageHandlerService.addMessage({
         severity: 'error',
         summary: 'Commenting Error:',
         detail: errorMessage,

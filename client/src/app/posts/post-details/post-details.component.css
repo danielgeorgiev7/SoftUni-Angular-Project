@@ -88,11 +88,3 @@ img {
 .background-blur {
   filter: blur(5px);
 }
-
-.message-wrapper {
-  max-width: fit-content;
-  position: fixed;
-  top: 0.5rem;
-  right: 1rem;
-  margin: 0 auto;
-}

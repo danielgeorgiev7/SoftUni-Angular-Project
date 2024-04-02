@@ -1,9 +1,10 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
-import { Message, MessageService } from 'primeng/api';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Message } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
-import { DatabaseService } from 'src/app/database.service';
+import { DatabaseService } from 'src/app/services/database.service';
+import { MessagesHandlerService } from 'src/app/services/messages-handler.service';
 import { UtilService } from 'src/app/shared/util.service';
 import { DatabaseComment } from 'src/app/types/DatabaseComment';
 
@@ -11,7 +12,6 @@ import { DatabaseComment } from 'src/app/types/DatabaseComment';
   selector: 'app-add-comment',
   templateUrl: './add-comment.component.html',
   styleUrls: ['./add-comment.component.css'],
-  providers: [MessageService],
 })
 export class AddCommentComponent implements OnInit, OnDestroy {
   @Input('postId') postId: string = '';
@@ -27,24 +27,14 @@ export class AddCommentComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private utilService: UtilService,
     private databaseService: DatabaseService,
-    private messageService: MessageService
+    private messageHandlerService: MessagesHandlerService
   ) {
     this.commentForm = this.formBuilder.group({
       comment: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
-  ngOnInit(): void {
-    this.messagesSub = this.messageService.messageObserver.subscribe(
-      (messages) => {
-        if (Array.isArray(messages)) {
-          this.messages = messages;
-        } else {
-          this.messages = [messages];
-        }
-      }
-    );
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.messagesSub.unsubscribe();
@@ -68,7 +58,7 @@ export class AddCommentComponent implements OnInit, OnDestroy {
 
       this.commentForm.reset();
       this.addCommentMode = false;
-      this.messageService.add({
+      this.messageHandlerService.addMessage({
         severity: 'success',
         summary: 'Success!',
         detail: 'Comment has been added.',
@@ -82,7 +72,7 @@ export class AddCommentComponent implements OnInit, OnDestroy {
         errorMessage = 'An error occurred while commenting.';
       }
 
-      this.messageService.add({
+      this.messageHandlerService.addMessage({
         severity: 'error',
         summary: 'Commenting Error:',
         detail: errorMessage,
@@ -96,7 +86,7 @@ export class AddCommentComponent implements OnInit, OnDestroy {
   buildComment(postId: string, comment: string, photoURL: string) {
     const currentUser = this.authService.user.value;
     if (!currentUser || !currentUser.id) {
-      this.messageService.add({
+      this.messageHandlerService.addMessage({
         severity: 'error',
         summary: 'Unauthorized User:',
         detail: 'Try logging in again',

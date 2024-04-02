@@ -3,13 +3,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
-import { Message, MessageService } from 'primeng/api';
+import { Message } from 'primeng/api';
+import { MessagesHandlerService } from 'src/app/services/messages-handler.service';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
-  providers: [MessageService],
 })
 export class RegisterComponent implements OnInit, OnDestroy {
   signupSub: Subscription = new Subscription();
@@ -22,7 +22,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private messageService: MessageService,
+    private messageHandlerService: MessagesHandlerService,
     private formBuilder: FormBuilder
   ) {
     this.registerForm = this.formBuilder.group({
@@ -33,17 +33,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void {
-    this.messagesSub = this.messageService.messageObserver.subscribe(
-      (messages) => {
-        if (Array.isArray(messages)) {
-          this.messages = messages;
-        } else {
-          this.messages = [messages];
-        }
-      }
-    );
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.signupSub.unsubscribe();
@@ -55,7 +45,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
     const { username, email, password, rePassword } = this.registerForm.value;
     if (password !== rePassword) {
-      this.messageService.add({
+      this.messageHandlerService.addMessage({
         severity: 'error',
         summary: 'Signup Error:',
         detail: 'Passwords do not match',
@@ -75,12 +65,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
         this.router.navigate(['/home']);
       })
       .catch((error) => {
-        this.messageService.add({
+        this.messageHandlerService.addMessage({
           severity: 'error',
           summary: 'Signup Error:',
           detail: 'Email is already in use.',
           life: 2500,
         });
+        this.registerForm.reset();
       })
       .finally(() => {
         this.isLoading = false;
