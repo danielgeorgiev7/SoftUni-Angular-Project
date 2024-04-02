@@ -16,6 +16,7 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { environment } from '../environments/environment';
 import { ProfileModule } from './profile/profile.module';
+import { PipesModule } from './pipes/pipes.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -30,6 +31,7 @@ import { ProfileModule } from './profile/profile.module';
     AuthModule,
     PostsModule,
     ProfileModule,
+    PipesModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireDatabaseModule,
     AngularFirestoreModule,
@@ -42,19 +44,12 @@ export class AppModule {}
 
 // TODO:
 
-// Important:
-// Edit check if info is the same
-// Toast multiple msg fix
+// Toast multiple msg fix and add custom message service ?
 // Add error handling
-// Add form validations
-// Footer fix
 
-// Profile:
-// Add Change profile picture
-// Add My Posts to profile page
-
-// General:
 // Add lazy loading
 // Add angular animations
 // Add state management ?
+
 // Deploy
+// Add doc

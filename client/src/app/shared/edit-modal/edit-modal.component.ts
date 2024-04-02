@@ -43,6 +43,10 @@ export class EditModalComponent implements OnInit {
     this.selectedFile = selectedFile;
   }
 
+  isFormChanged(): boolean {
+    return JSON.stringify(this.editForm.value) !== JSON.stringify(this.values);
+  }
+
   async onSubmit() {
     if (this.editForm.invalid) return;
     if (!this.data || !this.dataType) return;
@@ -57,6 +61,11 @@ export class EditModalComponent implements OnInit {
     }
 
     try {
+      if (!this.isFormChanged()) {
+        if (this.closeEditModal) this.closeEditModal();
+        return;
+      }
+
       const downloadUrl = await this.utilService.upload(this.selectedFile);
       const timestamp = new Date();
 

@@ -147,42 +147,38 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
     return Object.keys(this.post.likes).length;
   }
 
-  switchBlur() {
-    this.showBlur = !this.showBlur;
-  }
-
   closeDeleteModal() {
     this.showDeleteModalFor = null;
-    this.switchBlur();
+    this.showBlur = false;
   }
 
   closeEditModal() {
     this.showEditModalFor = null;
-    this.switchBlur();
+    this.showBlur = false;
   }
 
   onPostDeleteClick() {
     this.showDeleteModalFor = 'post';
-    this.switchBlur();
+    this.showBlur = true;
   }
 
   onCommentDeleteClick(comment: DatabaseComment) {
     this.currentComment = comment;
     this.showDeleteModalFor = 'comment';
-    this.switchBlur();
+    this.showBlur = true;
   }
 
   onPostEditClick() {
     this.showEditModalFor = 'post';
     this.editForm = this.buildEditForm();
-    this.switchBlur();
+    this.showBlur = true;
   }
 
   onCommentEditClick(comment: DatabaseComment) {
     this.showEditModalFor = 'comment';
     this.currentComment = comment;
     this.editForm = this.buildEditForm();
-    this.switchBlur();
+    this.showBlur = true;
   }
 
   onDeletePost() {
