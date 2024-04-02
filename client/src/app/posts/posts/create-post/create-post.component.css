@@ -21,9 +21,23 @@ button {
   margin-bottom: 2px;
 }
 
+input,
+textarea {
+  font-size: 1.3rem;
+}
+
 .invalid-feedback p {
   font-size: 1.4rem;
   margin-top: 1rem;
   color: white;
   text-align: center;
+}
+
+.heading {
+  color: white;
+  margin: 0 auto;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid white;
+  width: fit-content;
 }

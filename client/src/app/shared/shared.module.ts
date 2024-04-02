@@ -6,6 +6,7 @@ import { SmallModalComponent } from './small-modal/small-modal.component';
 import { EditModalComponent } from './edit-modal/edit-modal.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PipesModule } from '../pipes/pipes.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,12 @@ import { PipesModule } from '../pipes/pipes.module';
     SmallModalComponent,
     EditModalComponent,
   ],
-  imports: [CommonModule, ReactiveFormsModule, PipesModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    PipesModule,
+    BrowserAnimationsModule,
+  ],
   exports: [
     LoadingSpinnerComponent,
     UploadComponent,

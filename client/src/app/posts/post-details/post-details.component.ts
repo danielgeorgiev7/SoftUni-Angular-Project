@@ -16,23 +16,11 @@ import { DatabasePost } from 'src/app/types/DatabasePost';
   selector: 'app-post-details',
   templateUrl: './post-details.component.html',
   styleUrls: ['./post-details.component.css'],
-  // animations: [
-  //   trigger('modalAnimation', [
-  //     transition(':enter', [
-  //       style({ transform: 'translateY(-100%)', opacity: 0 }),
-  //       animate(
-  //         '0.3s ease-out',
-  //         style({ transform: 'translateY(0)', opacity: 1 })
-  //       ),
-  //     ]),
-  //     transition(':leave', [
-  //       animate(
-  //         '0.3s ease-in',
-  //         style({ transform: 'translateY(-100%)', opacity: 0 })
-  //       ),
-  //     ]),
-  //   ]),
-  // ],
+  animations: [
+    trigger('modalAnimation', [
+      transition(':leave', [animate('0.2s ease-out', style({ opacity: 0 }))]),
+    ]),
+  ],
 })
 export class PostDetailsComponent implements OnInit, OnDestroy {
   postId: string = '';

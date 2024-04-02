@@ -1,5 +1,6 @@
 .modal {
   display: block !important;
+  z-index: 2000;
 }
 
 .modal-dialog {
@@ -8,7 +9,7 @@
 }
 
 .modal-content {
-  border: 3px solid #444;
+  border: 3px solid #555;
 }
 
 button {

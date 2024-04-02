@@ -1,9 +1,18 @@
+import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-small-modal',
   templateUrl: './small-modal.component.html',
   styleUrls: ['./small-modal.component.css'],
+  animations: [
+    trigger('modalAnimation', [
+      transition(':enter', [
+        style({ top: '-600px', opacity: 0 }),
+        animate('0.3s ease-out', style({ top: '0', opacity: 1 })),
+      ]),
+    ]),
+  ],
 })
 export class SmallModalComponent {
   @Input('modalStyle') modalStyle: string = '';

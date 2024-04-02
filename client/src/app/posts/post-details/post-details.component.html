@@ -1,5 +1,6 @@
 <app-small-modal
   *ngIf="showDeleteModalFor"
+  [@modalAnimation]
   [title]="'Delete ' + showDeleteModalFor"
   [text]="'Are you sure you want to delete this ' + showDeleteModalFor + '?'"
   [secondaryBtnText]="'Cancel'"
@@ -14,11 +15,12 @@
   [closeBtnClick]="closeDeleteModal.bind(this)"
 />
 <app-edit-modal
+  *ngIf="showEditModalFor && editForm"
+  [@modalAnimation]
   [closeEditModal]="closeEditModal.bind(this)"
   [data]="showEditModalFor === 'comment' ? currentComment?.data : post?.data"
   [dataType]="showEditModalFor"
   [editForm]="editForm"
-  *ngIf="showEditModalFor && editForm"
   (messages)="addMessages($event)"
 />
 

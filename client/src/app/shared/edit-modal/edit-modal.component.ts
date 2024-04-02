@@ -1,3 +1,4 @@
+import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Message } from 'primeng/api';
@@ -12,6 +13,14 @@ import { DatabaseUser } from 'src/app/types/DatabaseUser';
   selector: 'app-edit-modal',
   templateUrl: './edit-modal.component.html',
   styleUrls: ['./edit-modal.component.css'],
+  animations: [
+    trigger('modalAnimation', [
+      transition(':enter', [
+        style({ top: '-650px', opacity: 0 }),
+        animate('0.3s ease-out', style({ top: '0', opacity: 1 })),
+      ]),
+    ]),
+  ],
 })
 export class EditModalComponent implements OnInit {
   @Input('closeEditModal') closeEditModal: VoidFunction | null = null;

@@ -19,6 +19,7 @@ import { ProfileModule } from './profile/profile.module';
 import { PipesModule } from './pipes/pipes.module';
 import { MessagesModule } from 'primeng/messages';
 import { MessageService } from 'primeng/api';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent],
@@ -35,6 +36,7 @@ import { MessageService } from 'primeng/api';
     ProfileModule,
     PipesModule,
     MessagesModule,
+    BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireDatabaseModule,
     AngularFirestoreModule,
@@ -47,10 +49,7 @@ export class AppModule {}
 
 // TODO:
 
-// Toast multiple msg fix and add custom message service ?
-
 // Add lazy loading
-// Add angular animations
 // Add state management ?
 
 // Deploy
