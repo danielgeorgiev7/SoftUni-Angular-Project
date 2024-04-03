@@ -46,7 +46,7 @@ The website offers information about most popular movies, top box office and 20 
 
   Profile page for logged-in users displaying user information and posts by user.
 
-  Profile page is accessible through /profile/:profileId, navigation bar or clicking on username/user icon.
+  Profile page is accessible through navigation bar and /profile.
 
   Profile information such as profile image, bio and favourite movie can be edited there.
 
