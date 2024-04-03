@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { UserGuardService } from './auth/user-guard.service';
+import { GuestGuardService } from './auth/guest-guard.service';
 
 const routes: Routes = [
   {
@@ -19,16 +21,19 @@ const routes: Routes = [
   {
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
+    canActivate: [UserGuardService],
   },
   {
     path: 'posts',
     loadChildren: () =>
       import('./posts/posts.module').then((m) => m.PostsModule),
+    canActivate: [GuestGuardService],
   },
   {
     path: 'profile',
     loadChildren: () =>
       import('./profile/profile.module').then((m) => m.ProfileModule),
+    canActivate: [GuestGuardService],
   },
 ];
 

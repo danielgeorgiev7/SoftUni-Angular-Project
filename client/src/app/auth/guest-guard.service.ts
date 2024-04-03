@@ -15,7 +15,7 @@ export class GuestGuardService {
         if (user !== null) {
           return true;
         } else {
-          this.router.navigate(['/login']);
+          this.router.navigate(['/auth/login']);
           return false;
         }
       })
