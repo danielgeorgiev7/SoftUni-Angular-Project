@@ -56,7 +56,11 @@ The website offers information about most popular movies, top box office and 20 
 
 ### Angular: 
 
-Used for building the user interface.
+Used for building the user interface. 
+
+### Boostrap
+
+Used for styling components in combination with regular CSS.
 
 ## API Integration
 
