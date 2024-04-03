@@ -15,9 +15,7 @@
       <a routerLinkActive="active" routerLink="/register">Register</a>
     </li>
     <li *ngIf="user">
-      <a routerLinkActive="active" routerLink="/profile/{{ user.id }}"
-        >Profile</a
-      >
+      <a routerLinkActive="active" routerLink="/profile">Profile</a>
     </li>
     <li *ngIf="user"><a (click)="onLogout()">Logout</a></li>
   </ul>

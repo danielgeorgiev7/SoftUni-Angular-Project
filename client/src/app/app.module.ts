@@ -46,11 +46,3 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   bootstrap: [AppComponent],
 })
 export class AppModule {}
-
-// TODO:
-
-// Add lazy loading
-// Add state management ?
-
-// Deploy
-// Add doc

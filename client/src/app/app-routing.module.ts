@@ -50,7 +50,7 @@ const routes: Routes = [
     canActivate: [GuestGuardService],
   },
   {
-    path: 'profile/:profileId',
+    path: 'profile',
     component: ProfileComponent,
     canActivate: [GuestGuardService],
   },

@@ -26,7 +26,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.moviesApiService.getPopularMovies();
     this.moviesApiService.getTopBoxOffice();
     this.currentMessageSub =
-      this.messagesHandlerService.currentMessage.subscribe((message) => {
+      this.messagesHandlerService.currentMessage$.subscribe((message) => {
         this.messageService.add(message);
       });
 

@@ -3,7 +3,6 @@
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 2rem;
-  background-image: url(/assets/2.png);
 }
 
 .category-wrapper {

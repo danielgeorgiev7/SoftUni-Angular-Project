@@ -14,9 +14,10 @@
               src="{{ post.data.userPhoto }}"
               alt="{{ post.data.username }}"
               class="user-photo"
-              routerLink="/profile/{{ post.data.userId }}"
             />
-            <p class="card-text">{{ post.data.username }}</p>
+            <p class="card-title">
+              {{ post.data.username }}
+            </p>
           </div>
           <h5 class="card-title">{{ post.data.title }}</h5>
           <p class="card-text">

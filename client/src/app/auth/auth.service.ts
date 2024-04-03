@@ -4,8 +4,6 @@ import { Router } from '@angular/router';
 import { DatabaseService } from '../services/database.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { LocalUser } from '../types/LocalUser';
-import { HttpClient } from '@angular/common/http';
-import { DatabaseComment } from '../types/DatabaseComment';
 import { MessagesHandlerService } from '../services/messages-handler.service';
 
 @Injectable({

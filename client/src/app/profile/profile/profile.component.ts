@@ -18,11 +18,10 @@ import { DatabaseUser } from 'src/app/types/DatabaseUser';
 export class ProfileComponent implements OnInit, OnDestroy {
   dbUser: DatabaseUser | null = null;
   userSub: Subscription = new Subscription();
-  profileId: string = '';
-  routeSub: Subscription = new Subscription();
+
   posts: DatabasePost[] = [];
+  postsSub: Subscription = new Subscription();
   isLoadingPosts: boolean = true;
-  isOwnProfile: boolean = false;
 
   showEditProfile: boolean = false;
   editForm: FormGroup | null = null;
@@ -33,7 +32,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private databaseService: DatabaseService,
     private utilService: UtilService,
     private fb: FormBuilder,
-    private activatedRoute: ActivatedRoute,
     private messageHandlerService: MessagesHandlerService
   ) {}
 
@@ -45,46 +43,54 @@ export class ProfileComponent implements OnInit, OnDestroy {
     const userId = this.authService.user.value?.id;
     if (!userId) return;
 
-    this.routeSub = this.activatedRoute.params.subscribe((params) => {
-      this.profileId = params['profileId'];
-      if (this.profileId && userId && this.profileId === userId) {
-        this.isOwnProfile = true;
-      } else {
-        this.isOwnProfile = false;
-      }
-
-      this.userSub = this.databaseService.getUserData(this.profileId).subscribe(
-        (dbUserData) => {
-          this.dbUser = dbUserData;
-          this.updateEditForm();
-        },
-        (error) => {
-          let errorMessage: string;
-          if (error instanceof Error) {
-            errorMessage = error.message;
-          } else {
-            errorMessage = 'An error occurred while retrieving user data';
-          }
-
-          this.messageHandlerService.addMessage({
-            severity: 'error',
-            summary: 'Error',
-            detail: errorMessage,
-            life: 5000,
-          });
+    this.userSub = this.databaseService.getUserData(userId).subscribe(
+      (dbUserData) => {
+        this.dbUser = dbUserData;
+        this.updateEditForm();
+      },
+      (error) => {
+        let errorMessage: string;
+        if (error instanceof Error) {
+          errorMessage = error.message;
+        } else {
+          errorMessage = 'An error occurred while retrieving user data';
         }
-      );
 
-      this.databaseService.getPostsByUser(this.profileId).subscribe((posts) => {
+        this.messageHandlerService.addMessage({
+          severity: 'error',
+          summary: 'Error',
+          detail: errorMessage,
+          life: 5000,
+        });
+      }
+    );
+
+    this.postsSub = this.databaseService.getPostsByUser(userId).subscribe(
+      (posts) => {
         this.posts = posts;
         this.isLoadingPosts = false;
-      });
-    });
+      },
+      (error) => {
+        let errorMessage: string;
+        if (error instanceof Error) {
+          errorMessage = error.message;
+        } else {
+          errorMessage = 'An error occurred while retrieving user posts';
+        }
+
+        this.messageHandlerService.addMessage({
+          severity: 'error',
+          summary: 'Error',
+          detail: errorMessage,
+          life: 5000,
+        });
+      }
+    );
   }
 
   ngOnDestroy(): void {
     this.userSub.unsubscribe();
-    this.routeSub.unsubscribe();
+    this.postsSub.unsubscribe();
   }
 
   updateEditForm() {

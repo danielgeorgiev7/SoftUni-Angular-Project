@@ -1,5 +1,5 @@
 <div class="posts-list">
-  <h1 class="heading-underline">{{ isOwnPost ? "My " : "" }}Posts</h1>
+  <h1 class="heading-underline">My Posts</h1>
   <app-loading-spinner *ngIf="isLoadingPosts" />
   <h2 class="heading" *ngIf="posts.length === 0 && !isLoadingPosts">
     No posts yet.

@@ -1,17 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Message } from 'primeng/api';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MessagesHandlerService {
-  public currentMessage: BehaviorSubject<Message> =
+  private currentMessage: BehaviorSubject<Message> =
     new BehaviorSubject<Message>({});
-
-  // constructor(private messageService: MessageService) {}
 
   addMessage(msg: Message) {
     this.currentMessage.next(msg);
+  }
+
+  get currentMessage$(): Observable<Message> {
+    return this.currentMessage.asObservable();
   }
 }

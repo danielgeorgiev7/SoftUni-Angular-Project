@@ -10,7 +10,6 @@ import { DatabasePost } from 'src/app/types/DatabasePost';
 export class MyPostsComponent {
   @Input('posts') posts: DatabasePost[] = [];
   @Input('isLoadingPosts') isLoadingPosts: boolean = true;
-  @Input('isOwnPost') isOwnPost: boolean = false;
 
   constructor(private utilService: UtilService) {}
 

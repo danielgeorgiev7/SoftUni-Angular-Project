@@ -65,12 +65,18 @@ export class EditModalComponent implements OnInit {
         detail: 'Try logging in again',
         life: 5000,
       });
+      this.messageEmit.emit(this.messages);
       return;
     }
 
     try {
       if (!this.isFormChanged() && this.selectedFile === null) {
-        if (this.closeEditModal) this.closeEditModal();
+        this.messages.push({
+          severity: 'error',
+          summary: 'Error:',
+          detail: 'No changes were made',
+          life: 5000,
+        });
         return;
       }
 

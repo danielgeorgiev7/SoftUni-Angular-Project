@@ -13,7 +13,6 @@
 
 .card {
   width: 100%;
-  cursor: pointer;
   padding: 0.75rem;
 }
 
@@ -46,7 +45,6 @@ img {
   width: 2.5rem;
   border-radius: 50%;
   object-fit: cover;
-  cursor: pointer;
 }
 
 .icon-wrapper {
@@ -74,6 +72,8 @@ img {
   display: flex;
   gap: 0.5rem;
   margin-left: 0.5rem;
+  width: fit-content;
+  cursor: pointer;
 }
 
 .owner-like {

@@ -4,7 +4,7 @@
   [dataType]="'profile'"
   [editForm]="editForm"
   (messages)="addMessages($event)"
-  *ngIf="showEditProfile && editForm && isOwnProfile"
+  *ngIf="showEditProfile && editForm"
 />
 
 <div class="profile" [ngClass]="{ 'background-blur': showBlur }">
@@ -60,15 +60,11 @@
   <div class="edit-profile">
     <button
       class="btn btn-primary"
-      *ngIf="!showEditProfile && isOwnProfile"
+      *ngIf="!showEditProfile"
       (click)="switchShowEdit()"
     >
       Edit Profile
     </button>
   </div>
-  <app-my-posts
-    [posts]="posts"
-    [isLoadingPosts]="isLoadingPosts"
-    [isOwnPost]="isOwnProfile"
-  />
+  <app-my-posts [posts]="posts" [isLoadingPosts]="isLoadingPosts" />
 </div>

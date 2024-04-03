@@ -7,9 +7,10 @@
             src="{{ comment.data.userPhoto }}"
             alt="{{ comment.data.username }}"
             class="user-photo"
-            routerLink="/profile/{{ comment.data.userId }}"
           />
-          <p class="card-title">{{ comment.data.username }}</p>
+          <p class="card-title">
+            {{ comment.data.username }}
+          </p>
         </div>
         <p class="card-text">
           {{ comment.data.comment }}
