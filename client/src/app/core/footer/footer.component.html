@@ -11,8 +11,8 @@
     <a routerLink="/home">Home</a>
     <a routerLink="/categories">Categories</a>
     <a routerLink="/posts" *ngIf="user">Posts</a>
-    <a routerLink="/login" *ngIf="!user">Login</a>
-    <a routerLink="/register" *ngIf="!user">Register</a>
+    <a routerLink="/auth/login" *ngIf="!user">Login</a>
+    <a routerLink="/auth/register" *ngIf="!user">Register</a>
     <a routerLink="/profile" *ngIf="user">Profile</a>
   </div>
 </footer>

@@ -6,7 +6,7 @@ import { SmallModalComponent } from './small-modal/small-modal.component';
 import { EditModalComponent } from './edit-modal/edit-modal.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PipesModule } from '../pipes/pipes.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 
 @NgModule({
   declarations: [
@@ -19,7 +19,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CommonModule,
     ReactiveFormsModule,
     PipesModule,
-    BrowserAnimationsModule,
+    AngularFireStorageModule,
   ],
   exports: [
     LoadingSpinnerComponent,

@@ -12,7 +12,7 @@ import { CommentListComponent } from './post-details/comment-list/comment-list.c
 import { CreatePostComponent } from './posts/create-post/create-post.component';
 import { PostsListComponent } from './posts/posts-list/posts-list.component';
 import { CommentComponent } from './post-details/comment-list/comment/comment.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { PostsRoutingModule } from './posts-routing.module';
 
 @NgModule({
   declarations: [
@@ -28,9 +28,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CommonModule,
     FormsModule,
     SharedModule,
-    RouterModule,
+    PostsRoutingModule,
     ReactiveFormsModule,
-    BrowserAnimationsModule,
     NgxBootstrapIconsModule.pick(environment.icons),
   ],
   exports: [PostsComponent],

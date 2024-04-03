@@ -9,10 +9,10 @@
       <a routerLinkActive="active" routerLink="/posts">Posts</a>
     </li>
     <li *ngIf="!user">
-      <a routerLinkActive="active" routerLink="/login">Login</a>
+      <a routerLinkActive="active" routerLink="/auth/login">Login</a>
     </li>
     <li *ngIf="!user">
-      <a routerLinkActive="active" routerLink="/register">Register</a>
+      <a routerLinkActive="active" routerLink="/auth/register">Register</a>
     </li>
     <li *ngIf="user">
       <a routerLinkActive="active" routerLink="/profile">Profile</a>

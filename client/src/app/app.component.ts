@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MoviesApiService } from './services/movies-api.service';
 import { AuthService } from './auth/auth.service';
 import { MessagesHandlerService } from './services/messages-handler.service';
 import { Message, MessageService } from 'primeng/api';

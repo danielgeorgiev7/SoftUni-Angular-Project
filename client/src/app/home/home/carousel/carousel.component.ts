@@ -24,25 +24,6 @@ export class CarouselComponent {
     autoplaySpeed: 3500,
     pauseOnHover: true,
     infinite: true,
-    responsive: [
-      // {
-      //   breakpoint: 992,
-      //   settings: {
-      //     arrows: true,
-      //     infinite: true,
-      //     slidesToShow: 3,
-      //     slidesToScroll: 3,
-      //   },
-      // },
-      // {
-      //   breakpoint: 768,
-      //   settings: {
-      //     arrows: true,
-      //     infinite: true,
-      //     slidesToShow: 1,
-      //     slidesToScroll: 1,
-      //   },
-      // },
-    ],
+    responsive: [],
   };
 }
