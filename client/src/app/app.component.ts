@@ -16,15 +16,12 @@ export class AppComponent implements OnInit, OnDestroy {
   messageObserverSub: Subscription = new Subscription();
 
   constructor(
-    private moviesApiService: MoviesApiService,
     private authService: AuthService,
     private messagesHandlerService: MessagesHandlerService,
     private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
-    this.moviesApiService.getPopularMovies();
-    this.moviesApiService.getTopBoxOffice();
     this.currentMessageSub =
       this.messagesHandlerService.currentMessage$.subscribe((message) => {
         this.messageService.add(message);

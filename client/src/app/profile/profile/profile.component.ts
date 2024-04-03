@@ -1,6 +1,6 @@
+import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 import { Message } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
@@ -14,6 +14,11 @@ import { DatabaseUser } from 'src/app/types/DatabaseUser';
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css'],
+  animations: [
+    trigger('modalAnimation', [
+      transition(':leave', [animate('0.2s ease-out', style({ opacity: 0 }))]),
+    ]),
+  ],
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   dbUser: DatabaseUser | null = null;
@@ -36,17 +41,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.editForm = this.fb.group({
-      bio: [''],
-      favoriteMovie: [''],
-    });
     const userId = this.authService.user.value?.id;
     if (!userId) return;
 
     this.userSub = this.databaseService.getUserData(userId).subscribe(
       (dbUserData) => {
         this.dbUser = dbUserData;
-        this.updateEditForm();
+        console.log(this.editForm);
       },
       (error) => {
         let errorMessage: string;
@@ -93,18 +94,17 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.postsSub.unsubscribe();
   }
 
-  updateEditForm() {
-    if (this.editForm) {
-      this.editForm.patchValue({
-        bio: this.dbUser?.bio || '',
-        favoriteMovie: this.dbUser?.favoriteMovie || '',
-      });
-    }
+  buildEditForm(): FormGroup<any> | null {
+    return this.fb.group({
+      bio: [this.dbUser?.bio || ''],
+      favoriteMovie: [this.dbUser?.favoriteMovie || ''],
+    });
   }
 
   switchShowEdit() {
     this.showEditProfile = !this.showEditProfile;
     this.showBlur = !this.showBlur;
+    if (this.showEditProfile) this.editForm = this.buildEditForm();
   }
 
   addMessages(msg: Message[]) {

@@ -2,9 +2,9 @@
   <div class="footer-content">
     <img src="assets/logo.png" alt="Logo" routerLink="/home" />
     <ul>
-      <li><a href="#">Privacy Policy</a></li>
-      <li><a href="#">Terms of Service</a></li>
-      <li><a href="#">Contact Us</a></li>
+      <li><a>Privacy Policy</a></li>
+      <li><a>Terms of Service</a></li>
+      <li><a>Contact Us</a></li>
     </ul>
   </div>
   <div class="pagination">
@@ -13,6 +13,6 @@
     <a routerLink="/posts" *ngIf="user">Posts</a>
     <a routerLink="/login" *ngIf="!user">Login</a>
     <a routerLink="/register" *ngIf="!user">Register</a>
-    <a (click)="onLogout()" *ngIf="user">Logout</a>
+    <a routerLink="/profile" *ngIf="user">Profile</a>
   </div>
 </footer>

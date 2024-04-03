@@ -5,6 +5,7 @@
   [editForm]="editForm"
   (messages)="addMessages($event)"
   *ngIf="showEditProfile && editForm"
+  [@modalAnimation]
 />
 
 <div class="profile" [ngClass]="{ 'background-blur': showBlur }">

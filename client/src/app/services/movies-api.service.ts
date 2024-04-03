@@ -1,19 +1,27 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Movie } from '../types/Movie';
 import { environment } from 'src/environments/environment.development';
-import { BehaviorSubject, catchError, map, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, map } from 'rxjs';
+import { MessagesHandlerService } from './messages-handler.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MoviesApiService {
-  constructor(private http: HttpClient) {}
-  popularMovies = new BehaviorSubject<Movie[]>([]);
-  topBoxOfficeMovies = new BehaviorSubject<Movie[]>([]);
+  constructor(
+    private http: HttpClient,
+    private messagesHandlerService: MessagesHandlerService
+  ) {}
+
+  private popularMoviesSubject = new BehaviorSubject<Movie[]>([]);
+  popularMovies$ = this.popularMoviesSubject.asObservable();
+
+  private topBoxOfficeMoviesSubject = new BehaviorSubject<Movie[]>([]);
+  topBoxOfficeMovies$ = this.topBoxOfficeMoviesSubject.asObservable();
 
   getPopularMovies() {
-    this.http
+    return this.http
       .get<{ movies: Movie[] }>(
         'https://moviesverse1.p.rapidapi.com/most-popular-movies',
         {
@@ -23,25 +31,14 @@ export class MoviesApiService {
           },
         }
       )
-      .pipe(
-        map(
-          (movies) => {
-            return movies?.movies.slice(0, 15);
-          },
-          catchError((error: HttpErrorResponse) => {
-            console.error('An error occurred:', error);
-            return throwError('Something went wrong. Please try again later.');
-          })
-        )
-      )
-      .subscribe((movies) => {
-        this.popularMovies.next(movies);
-        // console.log(movies);
+      .pipe(catchError(this.handleError))
+      .subscribe((response) => {
+        this.popularMoviesSubject.next(response.movies.slice(0, 15));
       });
   }
 
-  getTopBoxOffice() {
-    this.http
+  getTopBoxOfficeMovies() {
+    return this.http
       .get<{ movies: Movie[] }>(
         'https://moviesverse1.p.rapidapi.com/top-box-office',
         {
@@ -51,20 +48,9 @@ export class MoviesApiService {
           },
         }
       )
-      .pipe(
-        map(
-          (movies) => {
-            return movies?.movies.slice(0, 10);
-          },
-          catchError((error: HttpErrorResponse) => {
-            console.error('An error occurred:', error);
-            return throwError('Something went wrong. Please try again later.');
-          })
-        )
-      )
-      .subscribe((movies) => {
-        this.topBoxOfficeMovies.next(movies);
-        // console.log(movies);
+      .pipe(catchError(this.handleError))
+      .subscribe((response) => {
+        this.topBoxOfficeMoviesSubject.next(response.movies.slice(0, 10));
       });
   }
 
@@ -81,16 +67,20 @@ export class MoviesApiService {
         }
       )
       .pipe(
-        map(
-          (movies) => {
-            // console.log(movies);
-            return movies?.movies.slice();
-          },
-          catchError((error: HttpErrorResponse) => {
-            console.error('An error occurred:', error);
-            return throwError('Something went wrong. Please try again later.');
-          })
-        )
+        map((movies) => {
+          // console.log(movies);
+          return movies?.movies.slice();
+        }),
+        catchError(this.handleError)
       );
+  }
+
+  private handleError() {
+    this.messagesHandlerService.addMessage({
+      severity: 'error',
+      summary: 'Error:',
+      detail: "Couldn't load movies data.",
+    });
+    return [];
   }
 }

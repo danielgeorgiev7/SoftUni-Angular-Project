@@ -60,7 +60,31 @@ export class AuthService {
               bio: '',
               favoriteMovie: '',
             };
+
             return this.databaseService.createUserNode(user.uid, userData);
+          })
+          .then(() => {
+            this.messageHandlerService.addMessage({
+              severity: 'success',
+              summary: 'Success!',
+              detail: 'Logged in successfully',
+              life: 5000,
+            });
+          })
+          .catch((error) => {
+            let errorMessage: string;
+            if (error instanceof Error) {
+              errorMessage = error.message;
+            } else {
+              errorMessage = 'An error occurred while registering.';
+            }
+
+            this.messageHandlerService.addMessage({
+              severity: 'error',
+              summary: 'Register Error:',
+              detail: errorMessage,
+              life: 5000,
+            });
           });
       });
   }
@@ -89,6 +113,28 @@ export class AuthService {
           user.displayName,
           user.photoURL
         );
+
+        this.messageHandlerService.addMessage({
+          severity: 'success',
+          summary: 'Success!',
+          detail: 'Logged in successfully',
+          life: 5000,
+        });
+      })
+      .catch((error) => {
+        let errorMessage: string;
+        if (error instanceof Error) {
+          errorMessage = error.message;
+        } else {
+          errorMessage = 'An error occurred while logging in.';
+        }
+
+        this.messageHandlerService.addMessage({
+          severity: 'error',
+          summary: 'Login Error:',
+          detail: errorMessage,
+          life: 5000,
+        });
       });
   }
 
@@ -99,6 +145,12 @@ export class AuthService {
         this.router.navigate(['/home']);
         localStorage.removeItem('userData');
         this.user.next(null);
+        this.messageHandlerService.addMessage({
+          severity: 'success',
+          summary: 'Success!',
+          detail: 'Logged out successfully',
+          life: 5000,
+        });
       })
       .catch((error) => {
         let errorMessage: string;

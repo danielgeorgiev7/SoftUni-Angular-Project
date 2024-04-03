@@ -17,17 +17,23 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(private moviesApiService: MoviesApiService) {}
 
   ngOnInit(): void {
-    this.mostPopularMoviesSub = this.moviesApiService.popularMovies.subscribe(
+    this.mostPopularMoviesSub = this.moviesApiService.popularMovies$.subscribe(
       (movies) => {
         this.mostPopularMovies = movies;
-        // console.log(movies);
       }
     );
     this.topBoxOfficeMoviesSub =
-      this.moviesApiService.topBoxOfficeMovies.subscribe((movies) => {
+      this.moviesApiService.topBoxOfficeMovies$.subscribe((movies) => {
         this.topBoxOfficeMovies = movies;
-        // console.log(movies);
       });
+
+    // Fetch data only if not already fetched
+    if (this.mostPopularMovies.length === 0) {
+      this.moviesApiService.getPopularMovies();
+    }
+    if (this.topBoxOfficeMovies.length === 0) {
+      this.moviesApiService.getTopBoxOfficeMovies();
+    }
   }
 
   ngOnDestroy(): void {
