@@ -1,17 +1,6 @@
 {
   "rules": {
-    "users": {
-      "$uid": {
-        ".read": "auth != null",
-        ".write": "auth != null && auth.uid == $uid"
-      }
-    },
-    "posts": {
-      ".read": true,
-      ".write": "auth != null",
-      "$postId": {
-        ".validate": "newData.hasChildren(['title', 'content', 'uid']) && newData.child('uid').val() === auth.uid"
-      }
-    }
+    ".read": true,
+    ".write": true
   }
 }
